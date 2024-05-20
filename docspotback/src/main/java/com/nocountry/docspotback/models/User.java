@@ -32,7 +32,7 @@ public class User extends Auditable{
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id_user"),
-            inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "idRole"))
+            inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id_role"))
     private List<Role> roles;
 
 
@@ -40,5 +40,7 @@ public class User extends Auditable{
     @JsonIgnore
     private List<Patient> patients;
 
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Professional> professionals;
 }

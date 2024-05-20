@@ -15,6 +15,7 @@ import java.util.UUID;
 public class Role extends Auditable{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "id_role")
     private UUID idRole=UUID.randomUUID();
 
     @Column(name = "name_role",length = 50,nullable = false)

@@ -38,4 +38,6 @@ public class Patient extends Auditable {
     @ManyToOne
     private User user;
 
+    @OneToOne
+    private ClinicalStory clinicalStory;
 }
