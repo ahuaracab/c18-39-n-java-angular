@@ -1,9 +1,9 @@
-interface RoleDTO {
+export interface RoleDTO {
   nameRole: string;
   descriptionRole: string;
 }
 
-interface UserDTO {
+export interface UserDTO {
   email: string;
   password: string;
   active: boolean;
@@ -11,7 +11,7 @@ interface UserDTO {
   patients: Array<any>
 }
 
-interface PacientRegister {
+export interface PacientRegister {
   namePatient: string;
   cellphonePatient: string;
   photoPatient: string;
