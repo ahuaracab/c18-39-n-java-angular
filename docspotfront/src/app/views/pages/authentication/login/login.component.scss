@@ -1,0 +1,25 @@
+.LoginContainer {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .container {
+        border: 2px solid gray;
+        border-radius: 16px;
+        width: 80%;
+
+        form {
+            padding: 32px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+
+            .btn-login {
+                // margin-top: 16px;
+            }
+        }
+    }
+}
