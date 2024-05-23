@@ -43,8 +43,10 @@ public class Professional extends Auditable{
             inverseJoinColumns = @JoinColumn(name = "id_specialty", referencedColumnName = "id_specialty"))
     private List<Specialty> specialties;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "professional", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "professionals_shifts",
+    joinColumns = @JoinColumn(name = "id_professional",referencedColumnName = "id_professional"),
+    inverseJoinColumns = @JoinColumn(name = "id_shift",referencedColumnName = "id_shift"))
     private List<Shift> shifts;
 
 }

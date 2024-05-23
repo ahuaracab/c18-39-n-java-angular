@@ -33,8 +33,6 @@ public class Shift extends Auditable{
     @Column(name = "repeat_shift",nullable = false)
     private Boolean repeatShift;
 
-    @ManyToOne
-    private Professional professional;
 
     @OneToOne
     private Reservation reservation;

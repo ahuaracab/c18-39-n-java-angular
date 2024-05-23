@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -35,9 +36,12 @@ public class Patient extends Auditable {
     @Column(name = "social_work",length = 15)
     private String socialWork;
 
-    @ManyToOne
+    @OneToOne
     private User user;
 
     @OneToOne
     private ClinicalStory clinicalStory;
+
+    @OneToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL,mappedBy = "patient")
+    private List<Reservation> reservations;
 }
