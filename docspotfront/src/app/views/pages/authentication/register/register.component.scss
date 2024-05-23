@@ -1,0 +1,46 @@
+.RegisterContainer {
+    .container {
+        width: 80%;
+        border: 2px solid gray;
+        border-radius: 16px;
+
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+
+        padding: 16px;
+
+        .selectRol {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            gap: 16px;
+            width: 100%;
+
+            p {
+                display: inline-block;
+                margin: 0;
+            }
+
+            .seccionBtn {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                width: 100%;
+
+                gap: 8px;
+                justify-content: center;
+                align-items: center;
+
+            }
+
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+    }
+}
