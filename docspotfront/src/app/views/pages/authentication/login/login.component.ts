@@ -5,11 +5,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { userLogin } from 'src/app/models/authentication-models/login.models';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MatIconModule, MatProgressSpinnerModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
 
   public loginForm!: FormGroup;
   public showPassword: boolean = false;
+  public loading: boolean = false;
   public errorMessage: string = '';
 
   constructor(
@@ -53,7 +55,13 @@ export class LoginComponent implements OnInit {
     // enviar a servicio
 
     // animacion de carga en button
+    this.loading = true;
 
+    setTimeout(()=>{
+      this.loading=false;
+    },5000);
+
+    
     // redireccion
 
     // error message

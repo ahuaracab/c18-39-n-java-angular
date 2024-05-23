@@ -19,6 +19,25 @@
 
             .btn-login {
                 // margin-top: 16px;
+
+                ::ng-deep .mat-progress-spinner circle,
+                .mat-spinner circle {
+                    stroke: white;
+                    opacity: .9;
+                }
+
+                .text1 {
+                    opacity: 1;
+                }
+
+                .text2 {
+                    opacity: .2;
+                }
+
+                .spinner {
+                    position: absolute;
+                    left: calc(50% - 15px);
+                }
             }
         }
     }
