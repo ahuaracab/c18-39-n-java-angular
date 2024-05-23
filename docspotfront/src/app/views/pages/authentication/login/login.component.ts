@@ -4,8 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-
-
+import { userLogin } from 'src/app/models/authentication-models/login.models';
 
 @Component({
   selector: 'app-login',
@@ -40,6 +39,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
+    console.log('Ruta absoluta:', this.router.url);
     if (this.loginForm.invalid) {
       this.errorMessage = 'Por favor, complete el formulario correctamente.';
       return;
