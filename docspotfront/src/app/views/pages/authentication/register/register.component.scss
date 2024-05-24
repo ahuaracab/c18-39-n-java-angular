@@ -33,6 +33,15 @@
                 justify-content: center;
                 align-items: center;
 
+                .btn-select {
+                    color: white;
+                    background-color: blue;
+                }
+
+                .btn-unselect {
+                    color: black;
+                    background-color: white;
+                }
             }
 
         }

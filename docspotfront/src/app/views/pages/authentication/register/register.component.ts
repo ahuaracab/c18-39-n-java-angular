@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
   FormControl,
-  FormGroupDirective,
-  NgForm,
   Validators,
   FormsModule,
   ReactiveFormsModule,
@@ -66,7 +64,7 @@ export class RegisterComponent implements OnInit {
         'especialidad',
         new FormControl('', Validators.required)
       );
-    } else {
+    } else if (this.showForm == this.selectedRol.professional){
       this.register.addControl(
         'cellphone',
         new FormControl('', Validators.required)
@@ -84,18 +82,20 @@ export class RegisterComponent implements OnInit {
 
   public selectPacient(): void {
     this.showTouched = true;
+    this.toggleExtraControls(this.selectedRol.patient);
     this.showForm = this.selectedRol.patient;
-    this.toggleExtraControls();
   }
 
   public selectProfessional(): void {
     this.showTouched = true;
+    this.toggleExtraControls(this.selectedRol.professional);
     this.showForm = this.selectedRol.professional;
-    this.toggleExtraControls();
   }
 
-  public toggleExtraControls(): void {
-    if (this.showForm == this.selectedRol.professional) {
+  public toggleExtraControls(role:string): void {
+    // this.initializedForm();
+
+    if (role == this.selectedRol.professional) {
       this.register.addControl('mp', new FormControl('', Validators.required));
       this.register.addControl(
         'especialidad',
@@ -105,7 +105,8 @@ export class RegisterComponent implements OnInit {
       this.register.removeControl('cellphone');
       this.register.removeControl('photo');
       this.register.removeControl('socialWork');
-    } else {
+
+    } else if (role == this.selectedRol.patient) {
       this.register.addControl(
         'cellphone',
         new FormControl('', Validators.required)

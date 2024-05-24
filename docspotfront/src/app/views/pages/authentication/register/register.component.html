@@ -3,53 +3,55 @@
         <section class="selectRol">
             <p>Desea registrarse como:</p>
             <div class="seccionBtn">
-                <button mat-raised-button (click)="selectPacient()">Paciente</button>
+                <button mat-raised-button  [ngClass]="showForm == selectedRol.patient ? 'btn-select':'btn-unselect'" (click)="selectPacient()">Paciente</button>
                 <p>ó</p>
-                <button mat-raised-button (click)="selectProfessional()">Professional</button>
+                <button mat-raised-button  [ngClass]="showForm == selectedRol.professional ? 'btn-select':'btn-unselect'" (click)="selectProfessional()">Professional</button>
             </div>
         </section>
-        @if (showTouched) {}
-        <form [formGroup]="register" (ngSubmit)="send()">
-            <!-- email -->
-            <mat-form-field appearance="outline" class="">
-                <mat-label>Email</mat-label>
-                <input type="email" matInput formControlName="email"
-                        placeholder="Ex. pat@example.com">
-                <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
-                @if (register.get('email')?.hasError('email') && !register.get('email')?.hasError('required')) {
-                    <mat-error>Please enter a valid email address</mat-error>
-                }
-                @if (register.get('email')?.hasError('required')) {
-                    <mat-error>Email is <strong>required</strong></mat-error>
-                }
-            </mat-form-field>
-
-            @if (this.showForm == this.selectedRol.professional) {
-                <!-- mp -->
+        @if (this.showTouched && this.register) {
+            <form [formGroup]="register" (ngSubmit)="send()">
+                <!-- email -->
                 <mat-form-field appearance="outline" class="">
-                    <mat-label>MP</mat-label>
-                    <input type="text" matInput formControlName="mp"
-                    placeholder="Ex. mp">
+                    <mat-label>Email</mat-label>
+                    <input type="email" matInput formControlName="email"
+                    placeholder="Ex. pat@example.com">
                     <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
-                    @if (register.get('mp')?.hasError('required')) {
-                        <mat-error>Mp is <strong>required</strong></mat-error>
+                    @if (register.get('email')?.hasError('email') && !register.get('email')?.hasError('required')) {
+                        <mat-error>Please enter a valid email address</mat-error>
+                    }
+                    @if (register.get('email')?.hasError('required')) {
+                        <mat-error>Email is <strong>required</strong></mat-error>
                     }
                 </mat-form-field>
-            }
-
-            @if (this.showForm == this.selectedRol.professional) {
-                <!-- cellphone -->
-                <mat-form-field appearance="outline" class="w-100">
-                    <mat-label>cellphone</mat-label>
-                    <input type="text" matInput formControlName="cellphone"
-                    placeholder="Ex. 937445581">
-                    <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
-                    @if (register.get('mp')?.hasError('required')) {
-                        <mat-error>Cellphone is <strong>required</strong></mat-error>
-                    }
-                </mat-form-field>
-            }
-        </form>
+                
+                @if (this.showForm == this.selectedRol.professional) {
+                    <!-- mp -->
+                    <mat-form-field appearance="outline" class="">
+                        <mat-label>MP</mat-label>
+                        <input type="text" matInput formControlName="mp"
+                        placeholder="Ex. mp">
+                        <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
+                        @if (register.get('mp')?.hasError('required')) {
+                            <mat-error>Mp is <strong>required</strong></mat-error>
+                        }
+                    </mat-form-field>
+                }
+                
+                @if (this.showForm == this.selectedRol.patient) {
+                    <!-- cellphone -->
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>cellphone</mat-label>
+                        <input type="text" matInput formControlName="cellphone"
+                        placeholder="Ex. 937445581">
+                        <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
+                        @if (register.get('cellphone')?.hasError('required')) {
+                            <mat-error>Cellphone is <strong>required</strong></mat-error>
+                        }
+                    </mat-form-field>
+                }
+            </form>
+        }
+        </div>
+        
     </div>
-
-</div>
+    
