@@ -64,7 +64,7 @@ export class RegisterComponent implements OnInit {
         'especialidad',
         new FormControl('', Validators.required)
       );
-    } else if (this.showForm == this.selectedRol.professional){
+    } else if (this.showForm == this.selectedRol.professional) {
       this.register.addControl(
         'cellphone',
         new FormControl('', Validators.required)
@@ -84,48 +84,59 @@ export class RegisterComponent implements OnInit {
     this.showTouched = true;
     this.toggleExtraControls(this.selectedRol.patient);
     this.showForm = this.selectedRol.patient;
+    this.register.get('rol')?.patchValue(this.selectedRol.patient);
   }
 
   public selectProfessional(): void {
     this.showTouched = true;
     this.toggleExtraControls(this.selectedRol.professional);
     this.showForm = this.selectedRol.professional;
+    this.register.get('rol')?.patchValue(this.selectedRol.professional);
   }
 
-  public toggleExtraControls(role:string): void {
+  public toggleExtraControls(role: string): void {
     // this.initializedForm();
 
     if (role == this.selectedRol.professional) {
-      this.register.addControl('mp', new FormControl('', Validators.required));
-      this.register.addControl(
-        'especialidad',
-        new FormControl('', Validators.required)
-      );
-
-      this.register.removeControl('cellphone');
-      this.register.removeControl('photo');
-      this.register.removeControl('socialWork');
-
+      this.addControlsProfessional(this.register);
+      this.removeControlsPatient(this.register);
     } else if (role == this.selectedRol.patient) {
-      this.register.addControl(
-        'cellphone',
-        new FormControl('', Validators.required)
-      );
-      this.register.addControl(
-        'photo',
-        new FormControl('', Validators.required)
-      );
-      this.register.addControl(
-        'socialWork',
-        new FormControl('', Validators.required)
-      );
-
-      this.register.removeControl('mp');
-      this.register.removeControl('especialidad');
+      this.addControlsPatient(this.register);
+      this.removeControlsProfessional(this.register);
     }
   }
 
+  private addControlsProfessional(formG:FormGroup): void {
+    formG.addControl('mp', new FormControl('', Validators.required));
+    formG.addControl('especialidad',new FormControl('', Validators.required));
+  }
+
+  private removeControlsPatient(formG:FormGroup): void {
+    formG.removeControl('cellphone');
+    formG.removeControl('photo');
+    formG.removeControl('socialWork');
+  }
+
+  private addControlsPatient(formG:FormGroup): void {
+    formG.addControl('cellphone',new FormControl('', Validators.required));
+    formG.addControl('photo',new FormControl('', Validators.required));
+    formG.addControl('socialWork',new FormControl('', Validators.required));
+  }
+
+  private removeControlsProfessional(formG:FormGroup): void {
+    formG.removeControl('mp');
+    formG.removeControl('especialidad');
+  }
+
   public send(): void {
+    console.log('Form:', this.register.value);
+
+    if (this.showForm == this.selectedRol.patient) {
+
+    } else if (this.showForm == this.selectedRol.professional) {
+
+    }
+
     console.log('Enviar formulario');
   }
 }

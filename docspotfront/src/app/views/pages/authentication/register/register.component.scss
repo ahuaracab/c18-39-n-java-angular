@@ -41,6 +41,11 @@
                 .btn-unselect {
                     color: black;
                     background-color: white;
+                    opacity: 0.5;
+                }
+
+                button:hover {
+                    opacity: 1 !important;
                 }
             }
 
