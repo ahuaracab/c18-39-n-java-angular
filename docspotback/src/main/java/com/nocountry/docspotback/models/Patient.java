@@ -17,27 +17,26 @@ import java.util.UUID;
 public class Patient extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_patient")
-    private UUID idPatient=UUID.randomUUID();
+    private UUID id = UUID.randomUUID();
 
-    @Column(name = "name_patient",length = 150,nullable = false)
+    @Column(name = "name_patient", length = 150, nullable = false)
     private String namePatient;
 
-    @Column(name = "cellphone_patient",length = 10,nullable = false)
+    @Column(name = "cellphone_patient", length = 12, nullable = false)
     private String cellphonePatient;
 
     @Column(name = "photo_patient")
     private String photoPatient;
 
-    @Column(name = "has_social_work",nullable = false)
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    private ClinicalStory clinicalStory;
+
+    @Column(name = "has_social_work", nullable = false)
     private Boolean hasSocialWork;
 
-    @Column(name = "social_work",length = 15)
+    @Column(name = "social_work", length = 15)
     private String socialWork;
 
     @ManyToOne
     private User user;
-
-    @OneToOne
-    private ClinicalStory clinicalStory;
 }
