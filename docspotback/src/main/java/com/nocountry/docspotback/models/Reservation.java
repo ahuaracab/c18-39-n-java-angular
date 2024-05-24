@@ -9,6 +9,9 @@ import lombok.Setter;
 import java.time.Instant;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,9 +31,11 @@ public class Reservation extends Auditable {
     @Column(name = "query_intent", nullable = false)
     private String queryIntent;
 
+    @JsonBackReference
     @ManyToOne
     private Patient patient;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "shift_id", nullable = false)
     private Shift shift;
