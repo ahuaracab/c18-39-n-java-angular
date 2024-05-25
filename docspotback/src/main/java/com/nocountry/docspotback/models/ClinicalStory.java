@@ -19,10 +19,11 @@ import java.util.UUID;
 public class ClinicalStory extends Auditable{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id = UUID.randomUUID();
+    @Column(name = "id_clinical_story")
+    private UUID idClinicalStory = UUID.randomUUID();
 
     @OneToOne
-    @JoinColumn(name = "patient_id")
+    @JoinColumn(name = "id_patient")
     private Patient patient;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "clinicalStory", cascade = CascadeType.ALL)
