@@ -2,6 +2,7 @@ package com.nocountry.docspotback.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 import java.util.List;
@@ -36,11 +37,11 @@ public class User extends Auditable{
     private List<Role> roles;
 
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Patient> patients;
+    private Patient patient;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Professional> professionals;
+    private Professional professional;
 }

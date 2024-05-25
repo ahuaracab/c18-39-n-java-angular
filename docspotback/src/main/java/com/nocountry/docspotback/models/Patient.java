@@ -40,7 +40,7 @@ public class Patient extends Auditable {
     @Column(name = "social_work", length = 15)
     private String socialWork;
 
-    @ManyToOne
+    @OneToOne
     private User user;
 
     @JsonManagedReference

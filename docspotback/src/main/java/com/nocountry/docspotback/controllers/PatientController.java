@@ -1,10 +1,13 @@
 package com.nocountry.docspotback.controllers;
 
 import com.nocountry.docspotback.dto.PatientDTO;
+import com.nocountry.docspotback.dto.ReservationDTO;
 import com.nocountry.docspotback.exception.ModelNotFoundException;
 import com.nocountry.docspotback.models.Patient;
+import com.nocountry.docspotback.models.Reservation;
 import com.nocountry.docspotback.services.impl.PatientServiceImpl;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -87,5 +90,12 @@ public class PatientController {
         resource.add(link1.withRel("patient-info1"));
         resource.add(link2.withRel("patient-info2"));
         return resource;
+    }
+
+    @GetMapping("/all-reservations/{id}")
+    public ResponseEntity<List<ReservationDTO>> findAllReservation(@PathVariable("id")UUID id){
+        List<Reservation> list = service.getAllReservationByPatientId(id);
+        List<ReservationDTO>listDto=mapper.map(list,new TypeToken<List<ReservationDTO>>(){}.getType());
+        return new ResponseEntity<>(listDto, HttpStatus.OK);
     }
 }
