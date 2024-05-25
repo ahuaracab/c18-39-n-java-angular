@@ -107,7 +107,7 @@ public class ProfessionalController {
 
         try {
             List<Professional> list = service.getAllOrder(page, size, sortDir, sort);
-            List<ProfessionalDTO> listDto = mapper.map(list,new TypeToken<List<ReservationDTO>>(){}.getType());
+            List<ProfessionalDTO> listDto = mapper.map(list,new TypeToken<List<ProfessionalDTO>>(){}.getType());
             return new ResponseEntity<>(listDto, HttpStatus.OK);
         } catch (Exception e) {
             // Log the error and return a suitable error response
