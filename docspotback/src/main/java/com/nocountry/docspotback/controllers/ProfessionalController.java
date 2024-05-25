@@ -1,10 +1,15 @@
 package com.nocountry.docspotback.controllers;
 
 import com.nocountry.docspotback.dto.ProfessionalDTO;
+import com.nocountry.docspotback.dto.ReservationDTO;
 import com.nocountry.docspotback.exception.ModelNotFoundException;
 import com.nocountry.docspotback.models.Professional;
+import com.nocountry.docspotback.models.Reservation;
 import com.nocountry.docspotback.services.impl.ProfessionalServiceImpl;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -21,10 +26,15 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/professional")
 public class ProfessionalController {
+
+    private static final Logger log = LoggerFactory.getLogger(ProfessionalController.class);
+
     @Autowired
     private ProfessionalServiceImpl service;
 
@@ -88,10 +98,21 @@ public class ProfessionalController {
         return resource;
     }
 
-    @GetMapping(params = {"page","size","sortDir","sort"})
-    public ResponseEntity<List<ProfessionalDTO>> getOrganizedProfessionals (@RequestParam("page")int page,@RequestParam("size")int size,@RequestParam("sortDir")String sortDir,@RequestParam("sort")String sort){
-        List<ProfessionalDTO> list = service.getAllOrder(page,size,sortDir,sort).stream().map(p->mapper.map(p,ProfessionalDTO.class)).collect(Collectors.toList());
+    @GetMapping("/professional-order")
+    public ResponseEntity<List<ProfessionalDTO>> getOrganizedProfessionals(
+            @RequestParam("page") @Min(0) int page,
+            @RequestParam("size") @Min(1) int size,
+            @RequestParam("sortDir") @Pattern(regexp = "ASC|DESC") String sortDir,
+            @RequestParam("sort") String sort) {
 
-        return new ResponseEntity<List<ProfessionalDTO>>(list, HttpStatus.OK);
+        try {
+            List<Professional> list = service.getAllOrder(page, size, sortDir, sort);
+            List<ProfessionalDTO> listDto = mapper.map(list,new TypeToken<List<ReservationDTO>>(){}.getType());
+            return new ResponseEntity<>(listDto, HttpStatus.OK);
+        } catch (Exception e) {
+            // Log the error and return a suitable error response
+            log.error("Error getting organized professionals", e);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
