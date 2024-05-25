@@ -21,7 +21,7 @@
             <!-- email -->
             <mat-form-field appearance="outline" class="">
                 <mat-label>Email</mat-label>
-                <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com">
+                <input type="number" matInput formControlName="email" placeholder="Ex. pat@example.com">
                 <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
                 @if (register.get('email')?.hasError('email') && !register.get('email')?.hasError('required')) {
                 <mat-error>Please enter a valid email address</mat-error>
@@ -30,6 +30,17 @@
                 <mat-error>Email is <strong>required</strong></mat-error>
                 }
             </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Password</mat-label>
+                <input matInput [type]="showPassword ? 'password' : 'text'" formControlName="password">
+                <button mat-icon-button type="button" matSuffix (click)="showPassword = !showPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
+                  <mat-icon>{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+                @if (register.get('password')?.hasError('required')) {
+                    <mat-error>Password is <strong>required</strong></mat-error>
+                }
+              </mat-form-field>
 
             @if (this.showForm == this.selectedRol.professional) {
             <!-- mp -->
@@ -43,6 +54,7 @@
             </mat-form-field>
             }
 
+            <!-- patient -->
             @if (this.showForm == this.selectedRol.patient) {
             <!-- cellphone -->
             <mat-form-field appearance="outline" class="w-100">
@@ -53,6 +65,15 @@
                 <mat-error>Cellphone is <strong>required</strong></mat-error>
                 }
             </mat-form-field>
+
+            <!-- photo -->
+
+            <!-- hasWork -->
+
+            <!-- socialWork -->
+
+
+
             }
 
             <button mat-raised-button type="submit" color='primary' [ngClass]="showTouched ? 

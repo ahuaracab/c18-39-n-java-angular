@@ -11,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 
 enum Rol {
   professional = 'professional',
@@ -25,6 +26,7 @@ enum Rol {
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatIconModule,
     ReactiveFormsModule,
     MatButtonModule,
   ],
@@ -58,26 +60,26 @@ export class RegisterComponent implements OnInit {
       name: new FormControl('', Validators.required),
     });
 
-    if (this.showForm == this.selectedRol.professional) {
-      this.register.addControl('mp', new FormControl('', Validators.required));
-      this.register.addControl(
-        'especialidad',
-        new FormControl('', Validators.required)
-      );
-    } else if (this.showForm == this.selectedRol.professional) {
-      this.register.addControl(
-        'cellphone',
-        new FormControl('', Validators.required)
-      );
-      this.register.addControl(
-        'photo',
-        new FormControl('', Validators.required)
-      );
-      this.register.addControl(
-        'socialWork',
-        new FormControl('', Validators.required)
-      );
-    }
+    // if (this.showForm == this.selectedRol.professional) {
+    //   this.register.addControl('mp', new FormControl('', Validators.required));
+    //   this.register.addControl(
+    //     'especialidad',
+    //     new FormControl('', Validators.required)
+    //   );
+    // } else if (this.showForm == this.selectedRol.professional) {
+    //   this.register.addControl(
+    //     'cellphone',
+    //     new FormControl('', Validators.required)
+    //   );
+    //   this.register.addControl(
+    //     'photo',
+    //     new FormControl('', Validators.required)
+    //   );
+    //   this.register.addControl(
+    //     'socialWork',
+    //     new FormControl('', Validators.required)
+    //   );
+    // }
   }
 
   public selectPacient(): void {
@@ -114,12 +116,14 @@ export class RegisterComponent implements OnInit {
   private removeControlsPatient(formG:FormGroup): void {
     formG.removeControl('cellphone');
     formG.removeControl('photo');
+    formG.removeControl('hasSocialWork');
     formG.removeControl('socialWork');
   }
 
   private addControlsPatient(formG:FormGroup): void {
     formG.addControl('cellphone',new FormControl('', Validators.required));
     formG.addControl('photo',new FormControl('', Validators.required));
+    formG.addControl('hasWork',new FormControl(false, Validators.required));
     formG.addControl('socialWork',new FormControl('', Validators.required));
   }
 
