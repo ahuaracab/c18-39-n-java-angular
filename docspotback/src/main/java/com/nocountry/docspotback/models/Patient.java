@@ -9,6 +9,8 @@ import lombok.Setter;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -40,4 +42,8 @@ public class Patient extends Auditable {
 
     @OneToOne
     private User user;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "patient")
+    private List<Reservation> reservations;
 }
