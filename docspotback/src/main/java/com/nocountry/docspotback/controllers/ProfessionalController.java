@@ -31,7 +31,7 @@ public class ProfessionalController {
     @Autowired
     private ModelMapper mapper;
 
-    @GetMapping("/admin")
+    @GetMapping("/")
     public ResponseEntity<List<ProfessionalDTO>> findAll(){
         List<ProfessionalDTO> list = service.findAll().stream().map(p->mapper.map(p,ProfessionalDTO.class)).collect(Collectors.toList());
         return new ResponseEntity<>(list, HttpStatus.OK);
@@ -86,5 +86,12 @@ public class ProfessionalController {
         resource.add(link1.withRel("professional-info1"));
         resource.add(link2.withRel("professional-info2"));
         return resource;
+    }
+
+    @GetMapping(params = {"page","size","sortDir","sort"})
+    public ResponseEntity<List<ProfessionalDTO>> getOrganizedProfessionals (@RequestParam("page")int page,@RequestParam("size")int size,@RequestParam("sortDir")String sortDir,@RequestParam("sort")String sort){
+        List<ProfessionalDTO> list = service.getAllOrder(page,size,sortDir,sort).stream().map(p->mapper.map(p,ProfessionalDTO.class)).collect(Collectors.toList());
+
+        return new ResponseEntity<List<ProfessionalDTO>>(list, HttpStatus.OK);
     }
 }

@@ -5,6 +5,8 @@ import com.nocountry.docspotback.repositories.IGenericRepo;
 import com.nocountry.docspotback.repositories.NotDeleted;
 import com.nocountry.docspotback.services.ICRUDService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -41,6 +43,11 @@ public abstract class CRUDImpl<T, ID> implements ICRUDService<T, ID> {
     @Override
     public void delete(ID id) {
         getRepo().deleteById(id);
+    }
+    @Override
+    public List<T> getAllOrder(int page, int size, String sortDir, String sort){
+        PageRequest pageReq = PageRequest.of(page, size, Sort.Direction.fromString(sortDir));
+        return getRepo().findAll(pageReq).getContent();
     }
 
    /* @Override
