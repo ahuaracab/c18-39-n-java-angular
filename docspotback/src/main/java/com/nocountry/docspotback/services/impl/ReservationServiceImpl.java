@@ -2,6 +2,7 @@ package com.nocountry.docspotback.services.impl;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nocountry.docspotback.dto.ReservationResponseDto;
 import com.nocountry.docspotback.models.Reservation;
 import com.nocountry.docspotback.repositories.IGenericRepo;
 import com.nocountry.docspotback.repositories.IReservationRepo;
@@ -10,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationServiceImpl extends CRUDImpl<Reservation, UUID> implements IReservationService {
@@ -29,16 +32,22 @@ public class ReservationServiceImpl extends CRUDImpl<Reservation, UUID> implemen
 
     @Override
     @Transactional(readOnly = true)
-    public List<Reservation> findReservationsByProfessionalId(UUID professionalId) {
-        List<Reservation> reservations = repo.findByProfessional(professionalId);
+    public List<ReservationResponseDto> findReservationsByProfessionalId(UUID professionalId) {
+        List<Object[]> reservations = repo.findByProfessional(professionalId);
+         List<ReservationResponseDto> reservationResponse = reservations.stream().map((reservationQueryResp) -> {
+           ReservationResponseDto reservationresponse = new ReservationResponseDto();
+           reservationresponse.setId((UUID) reservationQueryResp[0]);
+           reservationresponse.setAppointmentDate((Instant) reservationQueryResp[1]);
+           reservationresponse.setQueryIntent((String) reservationQueryResp[2]);
+           reservationresponse.setPatientId((UUID) reservationQueryResp[3]);
+           reservationresponse.setPatientName((String) reservationQueryResp[4]);
+           reservationresponse.setPatientImage((String) reservationQueryResp[5]);
+           reservationresponse.setPatientPhone((String) reservationQueryResp[6]);
+ 
+           return reservationresponse;
 
-        try {
-            String reservationJson = objectMapper.writeValueAsString(reservations.get(0));
-            System.out.println("RESERVATION: " + reservationJson);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        }).collect(Collectors.toList());
 
-        return reservations;
+        return reservationResponse;
     }
 }
