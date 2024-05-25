@@ -35,7 +35,7 @@ public class PatientController {
     @Autowired
     private ModelMapper mapper;
 
-    @GetMapping("/admin")
+    @GetMapping("/")
     public ResponseEntity<List<PatientDTO>> findAll(){
         List<PatientDTO> list = service.findAll().stream().map(p->mapper.map(p,PatientDTO.class)).collect(Collectors.toList());
         return new ResponseEntity<>(list, HttpStatus.OK);
@@ -92,7 +92,7 @@ public class PatientController {
         return resource;
     }
 
-    @GetMapping("/all-reservations/{id}")
+    @GetMapping("/all-reservations/byPatient/{id}")
     public ResponseEntity<List<ReservationDTO>> findAllReservation(@PathVariable("id")UUID id){
         List<Reservation> list = service.getAllReservationByPatientId(id);
         List<ReservationDTO>listDto=mapper.map(list,new TypeToken<List<ReservationDTO>>(){}.getType());
