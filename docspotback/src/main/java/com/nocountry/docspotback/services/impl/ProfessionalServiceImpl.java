@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class ProfesionalServiceImpl extends CRUDImpl<Professional, UUID> implements IProfessionalService {
+public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implements IProfessionalService {
 
     @Autowired
     private IProfessionalRepo repo;
