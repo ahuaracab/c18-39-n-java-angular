@@ -1,13 +1,12 @@
 package com.nocountry.docspotback.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -16,26 +15,29 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "shifts")
-public class Shift extends Auditable{
+public class Shift extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_shift")
-    private UUID idShift=UUID.randomUUID();
+    private UUID id = UUID.randomUUID();
 
-    @Column(name = "date_shift",nullable = false)
-    @JsonFormat(pattern="dd-MM-yyyy")
-    private Date dateShift;
+    @Enumerated(EnumType.STRING)
+    private WeekDay day;
 
-    @Column(name = "state_shift",nullable = false)
-    private Boolean sateShift;
+    @Column(name = "start_time", nullable = false, length = 5)
+    private String startTime;
 
-    @Column(name = "repeat_shift",nullable = false)
+    @Column(name = "end_time", nullable = false, length = 5)
+    private String endTime;
+
+    @Column(name = "state_shift", nullable = false)
+    private Boolean stateShift;
+
+    @Column(name = "repeat_shift", nullable = false)
     private Boolean repeatShift;
 
 
-    @OneToOne
-    private Reservation reservation;
-
+    @OneToMany(mappedBy = "shift")
+    private Set<Reservation> reservations;
 
 }

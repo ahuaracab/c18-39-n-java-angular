@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -14,19 +15,23 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "reservations")
-public class Reservation extends Auditable{
+public class Reservation extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_reservation")
-    private UUID idReservation=UUID.randomUUID();
+    @Column(name = "id")
+    private UUID id = UUID.randomUUID();
 
-    @Column(name = "query_intent",nullable = false)
+    @Column(name = "appointment_date", nullable = false)
+    private Instant appointmentDate;
+
+    @Column(name = "query_intent", nullable = false)
     private String queryIntent;
 
     @ManyToOne
     private Patient patient;
 
-    @OneToOne
+    @ManyToOne
+    @JoinColumn(name = "shift_id", nullable = false)
     private Shift shift;
 }
