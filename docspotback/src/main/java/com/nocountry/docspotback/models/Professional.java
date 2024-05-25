@@ -37,11 +37,6 @@ public class Professional extends Auditable{
    @ManyToOne
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "professional_specialties",
-            joinColumns = @JoinColumn(name = "id_professional", referencedColumnName = "id_professional"),
-            inverseJoinColumns = @JoinColumn(name = "id_specialty", referencedColumnName = "id_specialty"))
-    private List<Specialty> specialties;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "professionals_shifts",

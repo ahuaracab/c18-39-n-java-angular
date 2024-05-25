@@ -11,9 +11,12 @@ C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\s
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\dto\ShiftDTO.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\repositories\Deleted.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\services\impl\CRUDImpl.java
+C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\services\impl\ProfessionalSpecialtyServiceImpl.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\config\MapperConfig.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\controllers\PatientController.java
+C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\dto\ProfessionalSpecialtyDTO.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\services\impl\ProfessionalServiceImpl.java
+C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\services\IProfessionalSpecialtyService.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\services\IPatientService.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\models\User.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\dto\ClinicalStoryDTO.java
@@ -35,8 +38,10 @@ C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\s
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\models\Role.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\dto\ReservationResponseDto.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\dto\AuditableDTO.java
+C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\repositories\IProfessionalSpecialtyRepo.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\controllers\ReservationController.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\models\Shift.java
+C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\controllers\ProfessionalSpecialtyController.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\repositories\IShiftRepo.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\util\CORS.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\repositories\IProfessionalRepo.java
@@ -53,7 +58,10 @@ C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\s
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\dto\ReservationDTO.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\repositories\IReservationRepo.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\dto\PatientDTO.java
+C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\dto\ProfessionalListSpecialtyDTO.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\controllers\ProfessionalController.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\controllers\SpecialtyController.java
+C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\models\ProfessionalSpecialtyPK.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\dto\UserDTO.java
 C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\models\StoryDetail.java
+C:\Users\Roahn\Documents\proyectos\noCountry\c18-39-n-java-angular\docspotback\src\main\java\com\nocountry\docspotback\models\ProfessionalSpecialty.java

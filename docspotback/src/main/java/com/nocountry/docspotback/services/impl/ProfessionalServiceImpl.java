@@ -1,12 +1,15 @@
 package com.nocountry.docspotback.services.impl;
 
 import com.nocountry.docspotback.models.Professional;
+import com.nocountry.docspotback.models.Specialty;
 import com.nocountry.docspotback.repositories.IGenericRepo;
 import com.nocountry.docspotback.repositories.IProfessionalRepo;
+import com.nocountry.docspotback.repositories.IProfessionalSpecialtyRepo;
 import com.nocountry.docspotback.services.IProfessionalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -15,8 +18,18 @@ public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implem
     @Autowired
     private IProfessionalRepo repo;
 
+    @Autowired
+    private IProfessionalSpecialtyRepo psRepo;
+
     @Override
     protected IGenericRepo<Professional, UUID> getRepo() {
         return repo;
+    }
+
+    @Override
+    public Professional saveTransactional(Professional professional, List<Specialty> specialties) {
+        repo.save(professional);
+        specialties.forEach(specialty ->psRepo.saveSpecialty(professional.getIdProfessional(), specialty.getIdSpecialty()));
+        return professional;
     }
 }

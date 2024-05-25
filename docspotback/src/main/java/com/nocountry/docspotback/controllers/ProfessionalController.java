@@ -1,10 +1,12 @@
 package com.nocountry.docspotback.controllers;
 
 import com.nocountry.docspotback.dto.ProfessionalDTO;
+import com.nocountry.docspotback.dto.ProfessionalListSpecialtyDTO;
 import com.nocountry.docspotback.dto.ReservationDTO;
 import com.nocountry.docspotback.exception.ModelNotFoundException;
 import com.nocountry.docspotback.models.Professional;
 import com.nocountry.docspotback.models.Reservation;
+import com.nocountry.docspotback.models.Specialty;
 import com.nocountry.docspotback.services.impl.ProfessionalServiceImpl;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
@@ -58,9 +60,13 @@ public class ProfessionalController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> save(@RequestBody ProfessionalDTO dto){
-        Professional obj = service.save(mapper.map(dto, Professional.class));
-        //localhost:8000/professionals/5
+    public ResponseEntity<Void> save(@RequestBody ProfessionalListSpecialtyDTO dto) {
+        Professional professional = mapper.map(dto.getConsult(), Professional.class);
+        List<Specialty> specialties = mapper.map(dto.getListSpecialty(), new TypeToken<List<Specialty>>() {
+        }.getType());
+
+        Professional obj = service.saveTransactional(professional, specialties);
+        //localhost:8080/consults/5
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdProfessional()).toUri();
         return ResponseEntity.created(location).build();
     }
