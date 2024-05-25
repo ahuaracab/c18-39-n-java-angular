@@ -22,8 +22,8 @@ public class Reservation extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id")
-    private UUID id = UUID.randomUUID();
+    @Column(name = "id_reservation")
+    private UUID idReservation = UUID.randomUUID();
 
     @Column(name = "appointment_date", nullable = false)
     private Instant appointmentDate;
@@ -37,6 +37,6 @@ public class Reservation extends Auditable {
 
     @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "shift_id", nullable = false)
+    @JoinColumn(name = "id_shift", nullable = false)
     private Shift shift;
 }

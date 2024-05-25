@@ -19,7 +19,8 @@ public class Shift extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id = UUID.randomUUID();
+    @Column(name = "id_shift")
+    private UUID idShift = UUID.randomUUID();
 
     @Enumerated(EnumType.STRING)
     private WeekDay day;

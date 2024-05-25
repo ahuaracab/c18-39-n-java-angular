@@ -20,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class Patient extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id = UUID.randomUUID();
+    @Column(name = "id_patient")
+    private UUID idPatient = UUID.randomUUID();
 
     @Column(name = "name_patient", length = 150, nullable = false)
     private String namePatient;
@@ -31,7 +32,7 @@ public class Patient extends Auditable {
     @Column(name = "photo_patient")
     private String photoPatient;
 
-    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, optional = false)
     private ClinicalStory clinicalStory;
 
     @Column(name = "has_social_work", nullable = false)
