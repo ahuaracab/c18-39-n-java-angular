@@ -55,7 +55,7 @@ public class PatientController {
     public ResponseEntity<Void> save(@RequestBody PatientDTO dto){
         Patient obj = service.save(mapper.map(dto, Patient.class));
         //localhost:8000/patients/5
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdPatient()).toUri();
         return ResponseEntity.created(location).build();
     }
 
