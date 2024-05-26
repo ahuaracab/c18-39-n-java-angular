@@ -2,9 +2,11 @@ package com.nocountry.docspotback.controllers;
 
 import com.nocountry.docspotback.dto.ProfessionalDTO;
 import com.nocountry.docspotback.dto.ProfessionalListSpecialtyDTO;
+import com.nocountry.docspotback.dto.ProfessionalSpecialtyDTO;
 import com.nocountry.docspotback.dto.ReservationDTO;
 import com.nocountry.docspotback.exception.ModelNotFoundException;
 import com.nocountry.docspotback.models.Professional;
+import com.nocountry.docspotback.models.ProfessionalSpecialty;
 import com.nocountry.docspotback.models.Reservation;
 import com.nocountry.docspotback.models.Specialty;
 import com.nocountry.docspotback.services.impl.ProfessionalServiceImpl;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -104,20 +107,22 @@ public class ProfessionalController {
         return resource;
     }
 
-    @GetMapping("/professional-order")
-    public ResponseEntity<List<ProfessionalDTO>> getOrganizedProfessionals(
-            @RequestParam("page") @Min(0) int page,
-            @RequestParam("size") @Min(1) int size,
-            @RequestParam("sortDir") @Pattern(regexp = "ASC|DESC") String sortDir,
-            @RequestParam("sort") String sort) {
 
+    @GetMapping("/search/{nameProfessional}")
+    public ResponseEntity<List<ProfessionalDTO>> getAllByNameSpecialty(
+            @PathVariable("nameProfessional") String nameProfessional,
+            @RequestParam("numberPage") Integer numberPage,
+            @RequestParam("pageSize") Integer sizePage,
+            @RequestParam("orderBy") String orderBy,
+            @RequestParam("sort") String sort) {
         try {
-            List<Professional> list = service.getAllOrder(page, size, sortDir, sort);
-            List<ProfessionalDTO> listDto = mapper.map(list,new TypeToken<List<ProfessionalDTO>>(){}.getType());
+            List<Professional> lst = service.getAllProfessionalsBySpecialityName(nameProfessional, numberPage, sizePage, orderBy, sort);
+            List<ProfessionalDTO> listDto = new ArrayList<>();
+            for (Professional ps : lst) {
+                listDto.add(mapper.map(ps, ProfessionalDTO.class));
+            }
             return new ResponseEntity<>(listDto, HttpStatus.OK);
         } catch (Exception e) {
-            // Log the error and return a suitable error response
-            log.error("Error getting organized professionals", e);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

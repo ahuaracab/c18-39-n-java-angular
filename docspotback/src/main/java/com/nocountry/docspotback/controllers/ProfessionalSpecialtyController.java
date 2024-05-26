@@ -7,6 +7,7 @@ import com.nocountry.docspotback.models.ProfessionalSpecialty;
 import com.nocountry.docspotback.services.IProfessionalSpecialtyService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
+import jakarta.websocket.server.PathParam;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -41,17 +43,6 @@ public class ProfessionalSpecialtyController {
         return new ResponseEntity<>(lstDTO, HttpStatus.OK);
     }
 
-    @GetMapping("/search/{nameProfessional}")
-    public ResponseEntity<List<ProfessionalSpecialtyDTO>> getAllByNameSpecialty(
-            @PageableDefault(size = 10) Pageable pageable,
-            @PathVariable("nameProfessional") String nameProfessional) {
-        try {
-            List<ProfessionalSpecialty> lst = service.getAllProfessionalsBySpecialityName(nameProfessional, pageable);
-            List<ProfessionalSpecialtyDTO> listDto = Collections.singletonList(mapper.map(lst, ProfessionalSpecialtyDTO.class));
-            return new ResponseEntity<>(listDto, HttpStatus.OK);
-        } catch (DataAccessException e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+
 }
 

@@ -52,7 +52,6 @@ com\nocountry\docspotback\dto\AuditableDTO.class
 com\nocountry\docspotback\controllers\ProfessionalController.class
 com\nocountry\docspotback\services\ISpecialtyService.class
 com\nocountry\docspotback\services\impl\StoryDetailServiceImpl.class
-com\nocountry\docspotback\controllers\ProfessionalController$2.class
 com\nocountry\docspotback\repositories\ISpecialtyRepo.class
 com\nocountry\docspotback\services\ICRUDService.class
 com\nocountry\docspotback\config\MvCConfig.class

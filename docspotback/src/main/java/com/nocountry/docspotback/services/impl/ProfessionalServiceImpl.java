@@ -1,12 +1,16 @@
 package com.nocountry.docspotback.services.impl;
 
 import com.nocountry.docspotback.models.Professional;
+import com.nocountry.docspotback.models.ProfessionalSpecialty;
 import com.nocountry.docspotback.models.Specialty;
 import com.nocountry.docspotback.repositories.IGenericRepo;
 import com.nocountry.docspotback.repositories.IProfessionalRepo;
 import com.nocountry.docspotback.repositories.IProfessionalSpecialtyRepo;
 import com.nocountry.docspotback.services.IProfessionalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,5 +35,25 @@ public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implem
         repo.save(professional);
         specialties.forEach(specialty ->psRepo.saveSpecialty(professional.getIdProfessional(), specialty.getIdSpecialty()));
         return professional;
+    }
+
+    @Override
+    public List<Professional> getAllProfessionalsBySpecialityName(String nameSpecialty, int numPage, int pageSize, String orderBy, String sort) {
+        Sort.Direction direction;
+        try {
+            direction = Sort.Direction.fromString(sort);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid sort direction. Must be ASC or DESC", e);
+        }
+        if (nameSpecialty == null || nameSpecialty.isEmpty()) {
+            throw new IllegalArgumentException("Specialty name must not be null or empty");
+        }
+
+        Pageable pageable = PageRequest.of(numPage, pageSize, direction, orderBy);
+        if (pageable.getPageNumber() < 0 || pageable.getPageSize() < 0) {
+            throw new IllegalArgumentException("Page and size must be non-negative");
+        }
+
+        return repo.getAllProfessionalsBySpecialityName(nameSpecialty, pageable);
     }
 }
