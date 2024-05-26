@@ -1,6 +1,7 @@
 package com.nocountry.docspotback.controllers;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,8 +11,8 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 
 import javax.crypto.spec.SecretKeySpec;
 import java.security.Key;
@@ -22,6 +23,7 @@ import java.util.Map;
  * Controlador de inicio de sesión que maneja las solicitudes de inicio de sesión y devuelve un token de autenticación.
  */
 @RestController
+@RequestMapping("/auth")
 public class LoginController {
 
     private final AuthenticationManager authenticationManager;
@@ -59,7 +61,7 @@ public class LoginController {
             // Generar un token de autenticación con la información del usuario autenticado
             String token = Jwts.builder()
                     .setSubject(authentication.getName())
-                    .signWith(getSecretKey())
+                    .signWith(SignatureAlgorithm.HS256, getSecretKey())
                     .compact();
 
             // Devolver la respuesta con el token de autenticación
@@ -81,4 +83,5 @@ public class LoginController {
         String secretKeyString = "swd52PGI$el6/w2qw(q6256wq2q6dqw-wwq65q46qw6rg#44#%$ff9sr=r3";
         return new SecretKeySpec(secretKeyString.getBytes(), "HmacSHA256");
     }
+
 }

@@ -1,25 +1,41 @@
 version: '3'
 
 services:
-  api:
+  app:
     build: .
     ports:
-      - "8000:8000"
-    environment:
-      - SPRING_PROFILES_ACTIVE=dev
+      - "8080:8080"
     depends_on:
+      - keycloak
       - db
-    restart: always
+    environment:
+      - SPRING_DATASOURCE_URL=${DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - KEYCLOAK_REALM=myrealm
+      - KEYCLOAK_AUTH_SERVER_URL=http://keycloak:8080/auth
+      - KEYCLOAK_RESOURCE=myresource
+      - KEYCLOAK_CREDENTIALS_SECRET=mysecret
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:19.0.1
+    ports:
+      - "8080:8080"
+    environment:
+      - KEYCLOAK_USER=admin
+      - KEYCLOAK_PASSWORD=admin
+      - KEYCLOAK_REALM=myrealm
+    volumes:
+      - ./keycloak-realm.json:/opt/keycloak/data/import/realm-config.json
 
   db:
-    image: postgres
+    image: postgres:14.2
     environment:
-      - POSTGRES_URL=jdbc:postgresql://dpg-cp4mmegcmk4c73emahkg-a.oregon-postgres.render.com/docspot
-      - POSTGRES_USER=c18_39_n_java_angular
-      - POSTGRES_PASSWORD=Ej0Nm4ltamnFJVL9do7UDlKZdivvvpce
+      - POSTGRES_USER=${DATASOURCE_URL}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=docspot
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
 
 volumes:
-  db-data:
+  pgdata:
