@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+    depends_on:
+      - db
+    restart: always
+
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_URL=jdbc:postgresql://dpg-cp4mmegcmk4c73emahkg-a.oregon-postgres.render.com/docspot
+      - POSTGRES_USER=c18_39_n_java_angular
+      - POSTGRES_PASSWORD=Ej0Nm4ltamnFJVL9do7UDlKZdivvvpce
+      - POSTGRES_DB=docspot
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
