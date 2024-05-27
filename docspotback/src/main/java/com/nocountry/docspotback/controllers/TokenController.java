@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/tokens")
+@RequestMapping("/register")
 public class TokenController {
 
 
@@ -20,7 +20,7 @@ public class TokenController {
 
 
     // KeyCloak
-    @PostMapping(value = "/user/add")
+    @PostMapping()
     public ResponseEntity<Boolean> createUser(@RequestBody User user) throws Exception {
         boolean rpta = keycloakService.addUser(user);
         return new ResponseEntity<>(rpta, HttpStatus.OK);
