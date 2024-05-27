@@ -9,6 +9,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,6 +27,7 @@ enum Rol {
     FormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatCheckboxModule,
     MatIconModule,
     ReactiveFormsModule,
     MatButtonModule,
@@ -46,6 +48,8 @@ export class RegisterComponent implements OnInit {
   public showForm: string = '';
   public showTouched: boolean = false;
 
+  public hasWorkAdded: boolean = false;
+
   constructor(private fb: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
@@ -59,27 +63,6 @@ export class RegisterComponent implements OnInit {
       rol: new FormControl('', Validators.required),
       name: new FormControl('', Validators.required),
     });
-
-    // if (this.showForm == this.selectedRol.professional) {
-    //   this.register.addControl('mp', new FormControl('', Validators.required));
-    //   this.register.addControl(
-    //     'especialidad',
-    //     new FormControl('', Validators.required)
-    //   );
-    // } else if (this.showForm == this.selectedRol.professional) {
-    //   this.register.addControl(
-    //     'cellphone',
-    //     new FormControl('', Validators.required)
-    //   );
-    //   this.register.addControl(
-    //     'photo',
-    //     new FormControl('', Validators.required)
-    //   );
-    //   this.register.addControl(
-    //     'socialWork',
-    //     new FormControl('', Validators.required)
-    //   );
-    // }
   }
 
   public selectPacient(): void {
@@ -105,7 +88,21 @@ export class RegisterComponent implements OnInit {
     } else if (role == this.selectedRol.patient) {
       this.addControlsPatient(this.register);
       this.removeControlsProfessional(this.register);
+      this.listenCheckBox(this.register);
     }
+  }
+
+  // Escuchar cambios en el checkbox
+  private listenCheckBox(formG:FormGroup): void {
+    formG.get('hasWork')?.valueChanges.subscribe(hasSocialWork => {
+      if (hasSocialWork) {
+        formG.get('socialWork')?.enable();
+      } else {
+        formG.get('socialWork')?.disable();
+        formG.get('socialWork')?.setValue('');
+        formG.get('socialWork')?.markAsUntouched();
+      }
+    });
   }
 
   private addControlsProfessional(formG:FormGroup): void {
@@ -114,17 +111,19 @@ export class RegisterComponent implements OnInit {
   }
 
   private removeControlsPatient(formG:FormGroup): void {
+    this.hasWorkAdded = false;
     formG.removeControl('cellphone');
     formG.removeControl('photo');
-    formG.removeControl('hasSocialWork');
+    formG.removeControl('hasWork');
     formG.removeControl('socialWork');
   }
 
   private addControlsPatient(formG:FormGroup): void {
     formG.addControl('cellphone',new FormControl('', Validators.required));
     formG.addControl('photo',new FormControl('', Validators.required));
-    formG.addControl('hasWork',new FormControl(false, Validators.required));
-    formG.addControl('socialWork',new FormControl('', Validators.required));
+    formG.addControl('hasWork',new FormControl({ value: false, disabled: false }, Validators.required));
+    formG.addControl('socialWork',new FormControl({ value: '', disabled: true }, Validators.required));
+    this.hasWorkAdded = true;
   }
 
   private removeControlsProfessional(formG:FormGroup): void {
@@ -134,11 +133,18 @@ export class RegisterComponent implements OnInit {
 
   public send(): void {
     console.log('Form:', this.register.value);
-
     if (this.showForm == this.selectedRol.patient) {
-
+      // pasar data a un objeto para crear paciente
+      // llamar a la API
+      // controlar respuesta
+      //  -- exitoso -> volver a login
+      //  -- falla -> mostrar modal
     } else if (this.showForm == this.selectedRol.professional) {
-
+      // pasar data a un objeto para crear professional
+      // llamar a la API
+      // controlar respuesta
+      //  -- exitoso -> volver a login
+      //  -- falla -> mostrar modal
     }
 
     console.log('Enviar formulario');

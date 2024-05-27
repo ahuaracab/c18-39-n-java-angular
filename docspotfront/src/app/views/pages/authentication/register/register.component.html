@@ -21,7 +21,7 @@
             <!-- email -->
             <mat-form-field appearance="outline" class="">
                 <mat-label>Email</mat-label>
-                <input type="number" matInput formControlName="email" placeholder="Ex. pat@example.com">
+                <input type="text" matInput formControlName="email" placeholder="Ex. pat@example.com">
                 <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
                 @if (register.get('email')?.hasError('email') && !register.get('email')?.hasError('required')) {
                 <mat-error>Please enter a valid email address</mat-error>
@@ -31,7 +31,7 @@
                 }
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
+            <mat-form-field appearance="outline" class="">
                 <mat-label>Password</mat-label>
                 <input matInput [type]="showPassword ? 'password' : 'text'" formControlName="password">
                 <button mat-icon-button type="button" matSuffix (click)="showPassword = !showPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
@@ -52,27 +52,37 @@
                 <mat-error>Mp is <strong>required</strong></mat-error>
                 }
             </mat-form-field>
+
+            <!-- especialidades [] -->
             }
 
             <!-- patient -->
             @if (this.showForm == this.selectedRol.patient) {
-            <!-- cellphone -->
-            <mat-form-field appearance="outline" class="w-100">
-                <mat-label>cellphone</mat-label>
-                <input type="text" matInput formControlName="cellphone" placeholder="Ex. 937445581">
-                <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
-                @if (register.get('cellphone')?.hasError('required')) {
-                <mat-error>Cellphone is <strong>required</strong></mat-error>
+                <!-- cellphone -->
+                <mat-form-field appearance="outline" class="">
+                    <mat-label>cellphone</mat-label>
+                    <input type="text" matInput formControlName="cellphone" placeholder="Ex. 937445581">
+                    <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
+                    @if (register.get('cellphone')?.hasError('required')) {
+                    <mat-error>Cellphone is <strong>required</strong></mat-error>
+                    }
+                </mat-form-field>
+
+                <!-- photo -->
+
+                @if (this.hasWorkAdded) {
+                    <!-- hasWork -->
+                    <mat-checkbox formControlName="hasWork">¿Tiene trabajo?</mat-checkbox>
+   
+                    <!-- socialWork -->
+                    <mat-form-field appearance="outline" class="">
+                        <mat-label>Social work</mat-label>
+                        <input matInput formControlName="socialWork" placeholder="Trabajo Social" [disabled]="!register.get('hasWork')?.value">
+                        @if (register.get('socialWork')?.hasError('required') && register.get('hasWork')?.value) {
+                            <mat-error>Social Work is <strong>required</strong></mat-error>
+                        }
+                    </mat-form-field>
                 }
-            </mat-form-field>
-
-            <!-- photo -->
-
-            <!-- hasWork -->
-
-            <!-- socialWork -->
-
-
 
             }
 
