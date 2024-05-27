@@ -86,7 +86,6 @@ public class LoginController {
         UsersResource usersResource = KeyCloakConfig.getInstance(username).realm(KeyCloakConfig.realm).users();
         UserRepresentation user = usersResource.search(username, true).get(0);
         usersResource.get(user.getId()).logout();
-
     }
 
 }
