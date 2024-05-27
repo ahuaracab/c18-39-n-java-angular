@@ -86,9 +86,6 @@ public class LoginController {
         UsersResource usersResource = KeyCloakConfig.getInstance(username).realm(KeyCloakConfig.realm).users();
         UserRepresentation user = usersResource.search(username, true).get(0);
         usersResource.get(user.getId()).logout();
-
-        //Cerrar sesion al iniciar y luego poder iniciar, con eso limito a 1 sesion activa, es decir mato a todos para permitir al nuevo
-        //RealmResource realmResource = KeyCloakConfig.getInstance("").realm(KeyCloakConfig.realm).clients().get("mediapp-backend").getUserSessions(firstResult, maxResults)
     }
 
 }
