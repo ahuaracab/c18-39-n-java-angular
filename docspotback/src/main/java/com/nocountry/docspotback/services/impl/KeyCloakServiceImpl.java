@@ -43,7 +43,7 @@ public class KeyCloakServiceImpl implements IKeyCloakService {
             //Se busca nuevamente al usuario creado para obtener su ID
             lista = usersResource.search(user.getEmail(), true);
             String idUser = lista.get(0).getId();
-            RoleRepresentation rr = realmResource.roles().get("PATIENT").toRepresentation();
+            RoleRepresentation rr = realmResource.roles().get(user.getRol()).toRepresentation();
             usersResource.get(idUser).roles().realmLevel().add(Arrays.asList(rr));
         }
 

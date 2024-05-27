@@ -12,6 +12,7 @@ com\nocountry\docspotback\services\IReservationService.class
 com\nocountry\docspotback\dto\RoleDTO.class
 com\nocountry\docspotback\repositories\ILoginRepo.class
 com\nocountry\docspotback\dto\ClinicalStoryDTO.class
+com\nocountry\docspotback\services\impl\UserServiceImpl.class
 com\nocountry\docspotback\repositories\IResetTokenRepo.class
 com\nocountry\docspotback\models\Reservation.class
 com\nocountry\docspotback\services\impl\SpecialtyServiceImpl.class
