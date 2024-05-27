@@ -28,6 +28,12 @@ public class UserDTO {
     private String password;
 
     @NotNull
+    private String name;
+
+    @NotNull
+    private String lastname;
+
+    @NotNull
     private Boolean active;
 
     @JsonManagedReference

@@ -17,5 +17,4 @@ public class ProfessionalSpecialtyPK implements Serializable {
     @ManyToOne
     @JoinColumn(name = "id_specialty")
     private Specialty specialty;
-
 }

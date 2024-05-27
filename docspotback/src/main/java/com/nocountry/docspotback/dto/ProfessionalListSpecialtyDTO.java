@@ -18,4 +18,20 @@ public class ProfessionalListSpecialtyDTO {
 
     @NotNull
     private List<SpecialtyDTO> listSpecialty;
+
+    public ProfessionalDTO getConsult() {
+        return consult;
+    }
+
+    public void setConsult(ProfessionalDTO consult) {
+        this.consult = consult;
+    }
+
+    public List<SpecialtyDTO> getListSpecialty() {
+        return listSpecialty;
+    }
+
+    public void setListSpecialty(List<SpecialtyDTO> listSpecialty) {
+        this.listSpecialty = listSpecialty;
+    }
 }

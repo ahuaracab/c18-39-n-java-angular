@@ -19,4 +19,20 @@ public class ProfessionalSpecialty {
     @ManyToOne
     @JoinColumn(name = "id_specialty")
     private Specialty specialty;
+
+    public Professional getProfessional() {
+        return professional;
+    }
+
+    public void setProfessional(Professional professional) {
+        this.professional = professional;
+    }
+
+    public Specialty getSpecialty() {
+        return specialty;
+    }
+
+    public void setSpecialty(Specialty specialty) {
+        this.specialty = specialty;
+    }
 }

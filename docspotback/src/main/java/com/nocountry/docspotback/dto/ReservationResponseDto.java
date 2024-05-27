@@ -34,4 +34,60 @@ public class ReservationResponseDto {
 
     @NotNull
     private String patientPhone;
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getQueryIntent() {
+        return queryIntent;
+    }
+
+    public void setQueryIntent(String queryIntent) {
+        this.queryIntent = queryIntent;
+    }
+
+    public Instant getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public void setAppointmentDate(Instant appointmentDate) {
+        this.appointmentDate = appointmentDate;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
+    }
+
+    public UUID getPatientId() {
+        return patientId;
+    }
+
+    public void setPatientId(UUID patientId) {
+        this.patientId = patientId;
+    }
+
+    public String getPatientImage() {
+        return patientImage;
+    }
+
+    public void setPatientImage(String patientImage) {
+        this.patientImage = patientImage;
+    }
+
+    public String getPatientPhone() {
+        return patientPhone;
+    }
+
+    public void setPatientPhone(String patientPhone) {
+        this.patientPhone = patientPhone;
+    }
 }

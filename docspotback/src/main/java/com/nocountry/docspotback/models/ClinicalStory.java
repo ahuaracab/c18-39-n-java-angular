@@ -29,4 +29,28 @@ public class ClinicalStory extends Auditable{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "clinicalStory", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<StoryDetail> details;
+
+    public UUID getIdClinicalStory() {
+        return idClinicalStory;
+    }
+
+    public void setIdClinicalStory(UUID idClinicalStory) {
+        this.idClinicalStory = idClinicalStory;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public List<StoryDetail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<StoryDetail> details) {
+        this.details = details;
+    }
 }

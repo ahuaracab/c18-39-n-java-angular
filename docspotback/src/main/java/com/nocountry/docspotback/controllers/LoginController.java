@@ -1,87 +1,94 @@
 package com.nocountry.docspotback.controllers;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.nocountry.docspotback.models.ResetToken;
+import com.nocountry.docspotback.security.KeyCloakConfig;
+import com.nocountry.docspotback.services.ILoginService;
+import com.nocountry.docspotback.services.IResetTokenService;
+
+import com.nocountry.docspotback.util.EmailUtil;
+import org.keycloak.admin.client.resource.UsersResource;
+import org.keycloak.representations.idm.UserRepresentation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.security.Key;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.*;
 
-/**
- * Controlador de inicio de sesión que maneja las solicitudes de inicio de sesión y devuelve un token de autenticación.
- */
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/auth/login")
 public class LoginController {
 
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private ILoginService service;
 
-    /**
-     * Constructor que inyecta el administrador de autenticación.
-     *
-     * @param authenticationManager administrador de autenticación
-     */
-    public LoginController(AuthenticationManager authenticationManager) {
-        this.authenticationManager = authenticationManager;
+    @Autowired
+    private IResetTokenService tokenService;
+
+    @Autowired
+    private EmailUtil emailUtil;
+
+
+
+    //KeyCloak
+    @PostMapping(value = "/sendMail", consumes = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<Integer> sendMailKeycloak(@RequestBody String username) throws Exception {
+        UsersResource usersResource = KeyCloakConfig.getInstance(username).realm(KeyCloakConfig.realm).users();
+        List<UserRepresentation> lista = usersResource.search(username, true);
+        boolean rpta = lista.isEmpty();
+
+        if (!rpta) {
+            //Si lista no vacia, significa que usuario existe, entonces enviar correo
+            UserRepresentation user = lista.get(0);
+            usersResource.get(user.getId()).executeActionsEmail(Arrays.asList("UPDATE_PASSWORD")); //.resetPasswordEmail();
+            return new ResponseEntity<>(1, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(0, HttpStatus.OK);
     }
 
-    /**
-     * Método que maneja la solicitud de inicio de sesión y devuelve un token de autenticación.
-     *
-     * @param credentials credenciales de inicio de sesión (nombre de usuario y contraseña)
-     * @return respuesta con el token de autenticación o un estado de error
-     */
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> login(@RequestBody Map<String, String> credentials) {
-        String username = credentials.get("username");
-        String password = credentials.get("password");
-
-        // Verificar si las credenciales están vacías
-        if (username == null || password == null) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
+    @GetMapping(value = "/reset/check/{token}")
+    public ResponseEntity<Integer> checkToken(@PathVariable("token") String token) {
+        int rpta = 0;
         try {
-            // Autenticar las credenciales con el administrador de autenticación
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
-            // Generar un token de autenticación con la información del usuario autenticado
-            String token = Jwts.builder()
-                    .setSubject(authentication.getName())
-                    .signWith(SignatureAlgorithm.HS256, getSecretKey())
-                    .compact();
-
-            // Devolver la respuesta con el token de autenticación
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (AuthenticationException e) {
-            // Devolver un estado de error si la autenticación falla
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            if (token != null && !token.isEmpty()) {
+                ResetToken rt = tokenService.findByToken(token);
+                if (rt != null && rt.getId().equals(UUID.randomUUID())) {
+                    if (!rt.isExpired()) {
+                        rpta = 1;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(rpta, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+        return new ResponseEntity<>(rpta, HttpStatus.OK);
     }
 
-    /**
-     * Método que devuelve la clave secreta utilizada para firmar el token de autenticación.
-     *
-     * @return clave secreta
-     */
-    private Key getSecretKey() {
-        String secretKeyString = "swd52PGI$el6/w2qw(q6256wq2q6dqw-wwq65q46qw6rg#44#%$ff9sr=r3";
-        return new SecretKeySpec(secretKeyString.getBytes(), "HmacSHA256");
+    @PostMapping(value = "/reset/{token}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> resetPassword(@PathVariable("token") String token, @RequestBody String password) {
+        try {
+            ResetToken rt = tokenService.findByToken(token);
+            service.changePassword(password, rt.getUser().getEmail());
+            tokenService.delete(rt);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    // KeyCloak
+    @PostMapping("/logout")
+    public void logout(@RequestBody String username) {
+        UsersResource usersResource = KeyCloakConfig.getInstance(username).realm(KeyCloakConfig.realm).users();
+        UserRepresentation user = usersResource.search(username, true).get(0);
+        usersResource.get(user.getId()).logout();
+
+        //Cerrar sesion al iniciar y luego poder iniciar, con eso limito a 1 sesion activa, es decir mato a todos para permitir al nuevo
+        //RealmResource realmResource = KeyCloakConfig.getInstance("").realm(KeyCloakConfig.realm).clients().get("mediapp-backend").getUserSessions(firstResult, maxResults)
     }
 
 }
