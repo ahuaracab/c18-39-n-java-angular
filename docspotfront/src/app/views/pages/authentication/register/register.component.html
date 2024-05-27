@@ -31,6 +31,7 @@
                 }
             </mat-form-field>
 
+            <!-- password -->
             <mat-form-field appearance="outline" class="">
                 <mat-label>Password</mat-label>
                 <input matInput [type]="showPassword ? 'password' : 'text'" formControlName="password">
@@ -40,20 +41,45 @@
                 @if (register.get('password')?.hasError('required')) {
                     <mat-error>Password is <strong>required</strong></mat-error>
                 }
-              </mat-form-field>
-
-            @if (this.showForm == this.selectedRol.professional) {
-            <!-- mp -->
-            <mat-form-field appearance="outline" class="">
-                <mat-label>MP</mat-label>
-                <input type="text" matInput formControlName="mp" placeholder="Ex. mp">
-                <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
-                @if (register.get('mp')?.hasError('required')) {
-                <mat-error>Mp is <strong>required</strong></mat-error>
-                }
             </mat-form-field>
 
-            <!-- especialidades [] -->
+            <!-- professional -->
+            @if (this.showForm == this.selectedRol.professional) {
+                <!-- mp -->
+                <mat-form-field appearance="outline" class="">
+                    <mat-label>MP</mat-label>
+                    <input type="text" matInput formControlName="mp" placeholder="Ex. mp">
+                    <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
+                    @if (register.get('mp')?.hasError('required')) {
+                    <mat-error>Mp is <strong>required</strong></mat-error>
+                    }
+                </mat-form-field>
+
+                <!-- especialidades [] -->
+                <mat-form-field>
+                    <mat-label>Seleccione una especialidad</mat-label>
+                    <mat-select (selectionChange)="addSpecialty($event.value)">
+                        @for (spec of this.specAvailable; track $index) {
+                            <mat-option [value]="spec">
+                                {{ spec }}
+                            </mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+
+                @if (this.specSelect.length > 0) {
+                    <p>Especialidades seleccionadas:</p>
+                    <mat-chip-set>
+                        @for (spec of this.specSelect; track $index) {
+            
+                            <mat-chip [removable]="true" (removed)="DeleteSpecialty(spec)">
+                                {{ spec }}
+                                <mat-icon matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                        }
+                    </mat-chip-set>
+                }
+
             }
 
             <!-- patient -->

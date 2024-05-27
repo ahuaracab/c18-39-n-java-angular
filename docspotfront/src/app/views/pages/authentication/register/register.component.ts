@@ -13,7 +13,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
 enum Rol {
   professional = 'professional',
   patient = 'patient',
@@ -31,12 +33,28 @@ enum Rol {
     MatIconModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatChipsModule
   ],
   providers: [],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent implements OnInit {
+  specDefault: string[] = [
+    'Pediatría',
+    'Cardiología',
+    'Dermatología',
+    'Oftalmología',
+    'Oncología',
+    'Neurología',
+    'Ginecología',
+    'Urología',
+    'Otorrinolaringología',
+    'Endocrinología',
+  ];
+
   public selectedRol = Rol;
 
   public rol: string = '';
@@ -49,11 +67,32 @@ export class RegisterComponent implements OnInit {
   public showTouched: boolean = false;
 
   public hasWorkAdded: boolean = false;
+  public specAvailable: string[] = [];
+  public specSelect: string[] = [];
 
   constructor(private fb: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
+    this.getEspecialidades();
     this.initializedForm();
+  }
+
+  private getEspecialidades(): void {
+    // llamar a la api en busca de especialidades
+    // cargar los objetos
+    // fallo cargar de forma manual
+    this.specAvailable = [
+      'Pediatría',
+      'Cardiología',
+      'Dermatología',
+      'Oftalmología',
+      'Oncología',
+      'Neurología',
+      'Ginecología',
+      'Urología',
+      'Otorrinolaringología',
+      'Endocrinología',
+    ];
   }
 
   private initializedForm(): void {
@@ -79,6 +118,7 @@ export class RegisterComponent implements OnInit {
     this.register.get('rol')?.patchValue(this.selectedRol.professional);
   }
 
+  /* intercambio de formulario por button */
   public toggleExtraControls(role: string): void {
     // this.initializedForm();
 
@@ -92,9 +132,9 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  // Escuchar cambios en el checkbox
-  private listenCheckBox(formG:FormGroup): void {
-    formG.get('hasWork')?.valueChanges.subscribe(hasSocialWork => {
+  /* Escuchar cambios en el checkbox */
+  private listenCheckBox(formG: FormGroup): void {
+    formG.get('hasWork')?.valueChanges.subscribe((hasSocialWork) => {
       if (hasSocialWork) {
         formG.get('socialWork')?.enable();
       } else {
@@ -105,31 +145,71 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  private addControlsProfessional(formG:FormGroup): void {
+  /* Cambio de formulario Profesional */
+  private addControlsProfessional(formG: FormGroup): void {
     formG.addControl('mp', new FormControl('', Validators.required));
-    formG.addControl('especialidad',new FormControl('', Validators.required));
+    formG.addControl('especialidad', new FormControl(this.specSelect, Validators.required));
   }
 
-  private removeControlsPatient(formG:FormGroup): void {
+  private removeControlsPatient(formG: FormGroup): void {
     this.hasWorkAdded = false;
     formG.removeControl('cellphone');
     formG.removeControl('photo');
     formG.removeControl('hasWork');
     formG.removeControl('socialWork');
   }
+  /* FIN - Cambio de formulario Profesional */
 
-  private addControlsPatient(formG:FormGroup): void {
-    formG.addControl('cellphone',new FormControl('', Validators.required));
-    formG.addControl('photo',new FormControl('', Validators.required));
-    formG.addControl('hasWork',new FormControl({ value: false, disabled: false }, Validators.required));
-    formG.addControl('socialWork',new FormControl({ value: '', disabled: true }, Validators.required));
+
+  /* Cambio de formulario Paciente */
+  private addControlsPatient(formG: FormGroup): void {
+    formG.addControl('cellphone', new FormControl('', Validators.required));
+    formG.addControl('photo', new FormControl('', Validators.required));
+    formG.addControl(
+      'hasWork',
+      new FormControl({ value: false, disabled: false }, Validators.required)
+    );
+    formG.addControl(
+      'socialWork',
+      new FormControl({ value: '', disabled: true }, Validators.required)
+    );
     this.hasWorkAdded = true;
   }
 
-  private removeControlsProfessional(formG:FormGroup): void {
+  private removeControlsProfessional(formG: FormGroup): void {
     formG.removeControl('mp');
     formG.removeControl('especialidad');
   }
+  /* FIN - Cambio de formulario Paciente */
+
+
+  public addSpecialty(especialidad: string): void {
+    if (especialidad && !this.specSelect.includes(especialidad)) {
+      this.specSelect.push(especialidad);
+      this.DeleteSpecialtyAvailable(especialidad);
+    }
+  }
+
+  public DeleteSpecialty(especialidad: string): void {
+    const index = this.specSelect.indexOf(especialidad);
+    if (index !== -1) {
+      this.specSelect.splice(index, 1);
+      this.addSpecialtyAvailable(especialidad);
+    }
+  }
+
+  public DeleteSpecialtyAvailable(especialidad: string): void {
+    const index = this.specAvailable.indexOf(especialidad);
+    if (index !== -1) {
+      this.specAvailable.splice(index, 1);
+    }
+  }
+
+  public addSpecialtyAvailable(especialidad: string): void {
+    this.specAvailable.push(especialidad);
+  }
+  
+
 
   public send(): void {
     console.log('Form:', this.register.value);
