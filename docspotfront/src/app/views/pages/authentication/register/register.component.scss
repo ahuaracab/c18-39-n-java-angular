@@ -55,6 +55,35 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+
+            // funciona
+            // ::ng-deep .mat-mdc-chip.mdc-evolution-chip--with-trailing-action .mat-mdc-chip-action-label {
+            //     color: black;
+            // }
+
+            // funciona
+            // ::ng-deep .mat-mdc-chip.mdc-evolution-chip--with-trailing-action .mat-mdc-chip-action-label:hover {
+            //     font-weight: 700;
+            // }
+
+            #chipElement {
+                background-color: #c2c8f577;
+            }
+
+            #chipElement:hover {
+                color:black;
+                background-color: #dbdfff;
+
+                ::ng-deep .mat-mdc-chip.mdc-evolution-chip--with-trailing-action .mat-mdc-chip-action-label {
+                    font-weight: 700;
+                }
+            }
+            
+            // ::ng-deep .mdc-evolution-chip__text-label mat-mdc-chip-action-label:hover {
+            //     color: black;
+            //     font-weight: 500;
+            // }
+
         }
     }
 }

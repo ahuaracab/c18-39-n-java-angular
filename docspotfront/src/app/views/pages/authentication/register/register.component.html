@@ -18,6 +18,16 @@
         </section>
         @if (this.showTouched && this.register) {
         <form [formGroup]="register" (ngSubmit)="send()">
+
+            <!-- name -->
+            <mat-form-field appearance="outline" class="">
+                <mat-label>Name</mat-label>
+                <input matInput type="text" formControlName="name">
+                @if (register.get('name')?.hasError('required')) {
+                    <mat-error>Name is <strong>required</strong></mat-error>
+                }
+            </mat-form-field>
+
             <!-- email -->
             <mat-form-field appearance="outline" class="">
                 <mat-label>Email</mat-label>
@@ -36,7 +46,7 @@
                 <mat-label>Password</mat-label>
                 <input matInput [type]="showPassword ? 'password' : 'text'" formControlName="password">
                 <button mat-icon-button type="button" matSuffix (click)="showPassword = !showPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
-                  <mat-icon>{{showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  <mat-icon>{{!showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
                 @if (register.get('password')?.hasError('required')) {
                     <mat-error>Password is <strong>required</strong></mat-error>
@@ -56,7 +66,7 @@
                 </mat-form-field>
 
                 <!-- especialidades [] -->
-                <mat-form-field>
+                <mat-form-field appearance="outline" class="">
                     <mat-label>Seleccione una especialidad</mat-label>
                     <mat-select (selectionChange)="addSpecialty($event.value)">
                         @for (spec of this.specAvailable; track $index) {
@@ -66,13 +76,22 @@
                         }
                     </mat-select>
                 </mat-form-field>
+                <!-- <mat-form-field appearance="outline" class="">
+                    <mat-label>Especialidades</mat-label>
+                    <input type="text" matInput [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                      @for (spec of this.specAvailable;track $index) {
+                        <mat-option [value]="spec">{{spec}}</mat-option>
+                      }
+                    </mat-autocomplete>
+                  </mat-form-field> -->
 
                 @if (this.specSelect.length > 0) {
                     <p>Especialidades seleccionadas:</p>
                     <mat-chip-set>
                         @for (spec of this.specSelect; track $index) {
             
-                            <mat-chip [removable]="true" (removed)="DeleteSpecialty(spec)">
+                            <mat-chip [removable]="true" id="chipElement" (removed)="DeleteSpecialty(spec)">
                                 {{ spec }}
                                 <mat-icon matChipRemove>cancel</mat-icon>
                             </mat-chip>
@@ -87,7 +106,7 @@
                 <!-- cellphone -->
                 <mat-form-field appearance="outline" class="">
                     <mat-label>cellphone</mat-label>
-                    <input type="text" matInput formControlName="cellphone" placeholder="Ex. 937445581">
+                    <input type="tel" matInput formControlName="cellphone" placeholder="Ex. 937445581">
                     <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
                     @if (register.get('cellphone')?.hasError('required')) {
                     <mat-error>Cellphone is <strong>required</strong></mat-error>
@@ -96,9 +115,10 @@
 
                 <!-- photo -->
 
+
                 @if (this.hasWorkAdded) {
                     <!-- hasWork -->
-                    <mat-checkbox formControlName="hasWork">¿Tiene trabajo?</mat-checkbox>
+                    <mat-checkbox formControlName="hasWork" color="primary">¿Tiene trabajo social?</mat-checkbox>
    
                     <!-- socialWork -->
                     <mat-form-field appearance="outline" class="">

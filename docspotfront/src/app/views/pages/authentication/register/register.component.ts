@@ -16,6 +16,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+
 enum Rol {
   professional = 'professional',
   patient = 'patient',
@@ -35,6 +37,7 @@ enum Rol {
     MatButtonModule,
     MatSelectModule,
     MatOptionModule,
+    MatAutocompleteModule,
     MatChipsModule
   ],
   providers: [],
@@ -59,7 +62,7 @@ export class RegisterComponent implements OnInit {
 
   public rol: string = '';
   public register!: FormGroup;
-  public showPassword: boolean = false;
+  public showPassword: boolean = true;
   public loading: boolean = false;
   public errorMessage: string = '';
 
@@ -164,7 +167,7 @@ export class RegisterComponent implements OnInit {
   /* Cambio de formulario Paciente */
   private addControlsPatient(formG: FormGroup): void {
     formG.addControl('cellphone', new FormControl('', Validators.required));
-    formG.addControl('photo', new FormControl('', Validators.required));
+    formG.addControl('photo', new FormControl('photo1.jpg', Validators.required));
     formG.addControl(
       'hasWork',
       new FormControl({ value: false, disabled: false }, Validators.required)
@@ -213,6 +216,10 @@ export class RegisterComponent implements OnInit {
 
   public send(): void {
     console.log('Form:', this.register.value);
+    if (this.register.invalid) {
+      console.log("formulario invalido");
+      return;
+    }
     if (this.showForm == this.selectedRol.patient) {
       // pasar data a un objeto para crear paciente
       // llamar a la API
