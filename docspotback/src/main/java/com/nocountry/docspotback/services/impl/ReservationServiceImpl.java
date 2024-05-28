@@ -1,7 +1,5 @@
 package com.nocountry.docspotback.services.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nocountry.docspotback.dto.ReservationResponseDto;
 import com.nocountry.docspotback.models.Reservation;
 import com.nocountry.docspotback.repositories.IGenericRepo;
@@ -21,9 +19,6 @@ public class ReservationServiceImpl extends CRUDImpl<Reservation, UUID> implemen
 
     @Autowired
     private IReservationRepo repo;
-
-    @Autowired
-    private ObjectMapper objectMapper;
 
     @Override
     protected IGenericRepo<Reservation, UUID> getRepo() {
