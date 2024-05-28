@@ -186,6 +186,7 @@ export class RegisterComponent implements OnInit {
   /* FIN - Cambio de formulario Paciente */
 
 
+  /* Control especialidad */
   public addSpecialty(especialidad: string): void {
     if (especialidad && !this.specSelect.includes(especialidad)) {
       this.specSelect.push(especialidad);
@@ -211,7 +212,7 @@ export class RegisterComponent implements OnInit {
   public addSpecialtyAvailable(especialidad: string): void {
     this.specAvailable.push(especialidad);
   }
-  
+  /* FIN - Control especialidad */
 
 
   public send(): void {
