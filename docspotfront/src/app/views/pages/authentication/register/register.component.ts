@@ -17,6 +17,8 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { Storage as StorageFire, ref, uploadBytes } from '@angular/fire/storage';
+import { UploadImageComponent } from "src/app/views/common/upload-image/upload-image.component";
 
 enum Rol {
   professional = 'professional',
@@ -24,25 +26,26 @@ enum Rol {
 }
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatIconModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatOptionModule,
-    MatAutocompleteModule,
-    MatChipsModule
-  ],
-  providers: [],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
+    selector: 'app-register',
+    standalone: true,
+    providers: [],
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.scss',
+    imports: [
+        CommonModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCheckboxModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatSelectModule,
+        MatOptionModule,
+        MatAutocompleteModule,
+        MatChipsModule,
+        UploadImageComponent
+    ]
 })
 export class RegisterComponent implements OnInit {
   specDefault: string[] = [
@@ -73,7 +76,11 @@ export class RegisterComponent implements OnInit {
   public specAvailable: string[] = [];
   public specSelect: string[] = [];
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private storageFire:StorageFire
+  ) {}
 
   ngOnInit(): void {
     this.getEspecialidades();
@@ -214,6 +221,16 @@ export class RegisterComponent implements OnInit {
   }
   /* FIN - Control especialidad */
 
+
+  public uploadImage($event:any): void {
+    const file = $event.target.files[0];
+    console.log("archivo: ", file);
+
+    const imgRef = ref(this.storageFire, `images/${file.name}`);
+    uploadBytes(imgRef, file)
+    .then(response => console.log(response))
+    .catch(error => console.log(error))
+  }
 
   public send(): void {
     console.log('Form:', this.register.value);

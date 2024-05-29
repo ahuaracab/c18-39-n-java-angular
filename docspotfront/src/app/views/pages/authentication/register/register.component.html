@@ -103,33 +103,41 @@
 
             <!-- patient -->
             @if (this.showForm == this.selectedRol.patient) {
-                <!-- cellphone -->
-                <mat-form-field appearance="outline" class="">
-                    <mat-label>cellphone</mat-label>
-                    <input type="tel" matInput formControlName="cellphone" placeholder="Ex. 937445581">
-                    <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
-                    @if (register.get('cellphone')?.hasError('required')) {
-                    <mat-error>Cellphone is <strong>required</strong></mat-error>
-                    }
-                </mat-form-field>
-
-                <!-- photo -->
-
-
-                @if (this.hasWorkAdded) {
-                    <!-- hasWork -->
-                    <mat-checkbox formControlName="hasWork" color="primary">¿Tiene trabajo social?</mat-checkbox>
-   
-                    <!-- socialWork -->
-                    <mat-form-field appearance="outline" class="">
-                        <mat-label>Social work</mat-label>
-                        <input matInput formControlName="socialWork" placeholder="Trabajo Social" [disabled]="!register.get('hasWork')?.value">
-                        @if (register.get('socialWork')?.hasError('required') && register.get('hasWork')?.value) {
-                            <mat-error>Social Work is <strong>required</strong></mat-error>
+                <div class="form-patient">
+                    <div class="form-patient__content1">
+                        <!-- cellphone -->
+                        <mat-form-field appearance="outline" class="">
+                            <mat-label>cellphone</mat-label>
+                            <input type="tel" matInput formControlName="cellphone" placeholder="Ex. 937445581">
+                            <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
+                            @if (register.get('cellphone')?.hasError('required')) {
+                                <mat-error>Cellphone is <strong>required</strong></mat-error>
+                            }
+                        </mat-form-field>
+                        
+                        @if (this.hasWorkAdded) {
+                            <div class="form-patient__content1__work">
+                                <!-- hasWork -->
+                                <mat-checkbox formControlName="hasWork" color="primary">¿Tiene trabajo social?</mat-checkbox>
+                                
+                                <!-- socialWork -->
+                                <mat-form-field appearance="outline" class="field">
+                                    <mat-label>Social work</mat-label>
+                                    <input matInput formControlName="socialWork" placeholder="Trabajo Social" [disabled]="!register.get('hasWork')?.value">
+                                    @if (register.get('socialWork')?.hasError('required') && register.get('hasWork')?.value) {
+                                        <mat-error>Social Work is <strong>required</strong></mat-error>
+                                    }
+                                </mat-form-field>
+                            </div>
                         }
-                    </mat-form-field>
-                }
+                    </div>
 
+                    <div class="form-patient__content2">
+                        <!-- photo -->
+                        <app-upload-image></app-upload-image>
+                    </div>
+                </div>
+                    
             }
 
             <button mat-raised-button type="submit" color='primary' [ngClass]="showTouched ? 
