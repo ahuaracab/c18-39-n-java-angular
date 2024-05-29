@@ -134,7 +134,7 @@
 
                     <div class="form-patient__content2">
                         <!-- photo -->
-                        <app-upload-image></app-upload-image>
+                        <app-upload-image (fileOut)="onFileReceived($event)"></app-upload-image>
                     </div>
                 </div>
                     

@@ -76,6 +76,8 @@ export class RegisterComponent implements OnInit {
   public specAvailable: string[] = [];
   public specSelect: string[] = [];
 
+  public receivedFile: File | null = null;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -222,7 +224,14 @@ export class RegisterComponent implements OnInit {
   /* FIN - Control especialidad */
 
 
-  public uploadImage($event:any): void {
+  /* Recibir imagen del componente */
+  public onFileReceived(file: File | null) {
+    console.log('File received in parent component:', file);
+    this.receivedFile = file;
+  }
+  /* Din - Recibir imagen del componente */
+
+  private uploadImage($event:any): void {
     const file = $event.target.files[0];
     console.log("archivo: ", file);
 
@@ -231,6 +240,7 @@ export class RegisterComponent implements OnInit {
     .then(response => console.log(response))
     .catch(error => console.log(error))
   }
+
 
   public send(): void {
     console.log('Form:', this.register.value);
