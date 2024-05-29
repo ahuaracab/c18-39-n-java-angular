@@ -19,7 +19,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Storage as StorageFire, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 import { UploadImageComponent } from "src/app/views/common/upload-image/upload-image.component";
-import { PacientRegister } from 'src/app/models/authentication-models/register.models';
+import { PacientRegister, Specialty } from 'src/app/models/authentication-models/register.models';
 
 enum Rol {
   professional = 'professional',
@@ -49,17 +49,30 @@ enum Rol {
     ]
 })
 export class RegisterComponent implements OnInit {
-  specDefault: string[] = [
-    'Pediatría',
-    'Cardiología',
-    'Dermatología',
-    'Oftalmología',
-    'Oncología',
-    'Neurología',
-    'Ginecología',
-    'Urología',
-    'Otorrinolaringología',
-    'Endocrinología',
+  // specDefault: string[] = [
+  //   'Pediatría',
+  //   'Cardiología',
+  //   'Dermatología',
+  //   'Oftalmología',
+  //   'Oncología',
+  //   'Neurología',
+  //   'Ginecología',
+  //   'Urología',
+  //   'Otorrinolaringología',
+  //   'Endocrinología',
+  // ];
+
+  public specDefault: Specialty[] = [
+    { idSpecialty: "1", nameSpecialty: 'Pediatría', descriptionSpecialty: 'Descripción para Pediatría' },
+    { idSpecialty: "2", nameSpecialty: 'Cardiología', descriptionSpecialty: 'Descripción para Cardiología' },
+    { idSpecialty: "3", nameSpecialty: 'Dermatología', descriptionSpecialty: 'Descripción para Dermatología' },
+    { idSpecialty: "4", nameSpecialty: 'Oftalmología', descriptionSpecialty: 'Descripción para Oftalmología' },
+    { idSpecialty: "5", nameSpecialty: 'Oncología', descriptionSpecialty: 'Descripción para Oncología' },
+    { idSpecialty: "6", nameSpecialty: 'Neurología', descriptionSpecialty: 'Descripción para Neurología' },
+    { idSpecialty: "7", nameSpecialty: 'Ginecología', descriptionSpecialty: 'Descripción para Ginecología' },
+    { idSpecialty: "8", nameSpecialty: 'Urología', descriptionSpecialty: 'Descripción para Urología' },
+    { idSpecialty: "9", nameSpecialty: 'Otorrinolaringología', descriptionSpecialty: 'Descripción para Otorrinolaringología' },
+    { idSpecialty: "10", nameSpecialty: 'Endocrinología', descriptionSpecialty: 'Descripción para Endocrinología' }
   ];
 
   public selectedRol = Rol;
@@ -74,8 +87,8 @@ export class RegisterComponent implements OnInit {
   public showTouched: boolean = false;
 
   public hasWorkAdded: boolean = false;
-  public specAvailable: string[] = [];
-  public specSelect: string[] = [];
+  public specAvailable: Specialty[] = [];
+  public specSelect: Specialty[] = [];
 
   public receivedFile: File | null = null;
 
@@ -94,18 +107,7 @@ export class RegisterComponent implements OnInit {
     // llamar a la api en busca de especialidades
     // cargar los objetos
     // fallo cargar de forma manual
-    this.specAvailable = [
-      'Pediatría',
-      'Cardiología',
-      'Dermatología',
-      'Oftalmología',
-      'Oncología',
-      'Neurología',
-      'Ginecología',
-      'Urología',
-      'Otorrinolaringología',
-      'Endocrinología',
-    ];
+    this.specAvailable = this.specDefault;
   }
 
   private initializedForm(): void {
@@ -161,7 +163,7 @@ export class RegisterComponent implements OnInit {
   /* Cambio de formulario Profesional */
   private addControlsProfessional(formG: FormGroup): void {
     formG.addControl('mp', new FormControl('', Validators.required));
-    formG.addControl('especialidad', new FormControl(this.specSelect, Validators.required));
+    formG.addControl('specialties', new FormControl(this.specSelect, Validators.required));
   }
 
   private removeControlsPatient(formG: FormGroup): void {
@@ -191,36 +193,36 @@ export class RegisterComponent implements OnInit {
 
   private removeControlsProfessional(formG: FormGroup): void {
     formG.removeControl('mp');
-    formG.removeControl('especialidad');
+    formG.removeControl('specialties');
   }
   /* FIN - Cambio de formulario Paciente */
 
 
   /* Control especialidad */
-  public addSpecialty(especialidad: string): void {
-    if (especialidad && !this.specSelect.includes(especialidad)) {
-      this.specSelect.push(especialidad);
-      this.DeleteSpecialtyAvailable(especialidad);
+  public addSpecialty(specialty: Specialty): void {
+    if (specialty && !this.specSelect.includes(specialty)) {
+      this.specSelect.push(specialty);
+      this.DeleteSpecialtyAvailable(specialty);
     }
   }
 
-  public DeleteSpecialty(especialidad: string): void {
-    const index = this.specSelect.indexOf(especialidad);
+  public DeleteSpecialty(specialty: Specialty): void {
+    const index = this.specSelect.indexOf(specialty);
     if (index !== -1) {
       this.specSelect.splice(index, 1);
-      this.addSpecialtyAvailable(especialidad);
+      this.addSpecialtyAvailable(specialty);
     }
   }
 
-  public DeleteSpecialtyAvailable(especialidad: string): void {
-    const index = this.specAvailable.indexOf(especialidad);
+  public DeleteSpecialtyAvailable(specialty: Specialty): void {
+    const index = this.specAvailable.indexOf(specialty);
     if (index !== -1) {
       this.specAvailable.splice(index, 1);
     }
   }
 
-  public addSpecialtyAvailable(especialidad: string): void {
-    this.specAvailable.push(especialidad);
+  public addSpecialtyAvailable(specialty: Specialty): void {
+    this.specAvailable.push(specialty);
   }
   /* FIN - Control especialidad */
 
@@ -268,6 +270,10 @@ export class RegisterComponent implements OnInit {
 
   public async send(): Promise<void> {
     console.log('Form:', this.register.value);
+    // cambio de array especialty for id,
+    this.register.get("specialties")?.setValue(this.specSelect.map((spec)=>spec.idSpecialty));
+    console.log('Form format:', this.register.value);
+
     if (this.register.invalid) {
       console.log("formulario invalido");
       return;

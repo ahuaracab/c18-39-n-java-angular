@@ -71,7 +71,7 @@
                     <mat-select (selectionChange)="addSpecialty($event.value)">
                         @for (spec of this.specAvailable; track $index) {
                             <mat-option [value]="spec">
-                                {{ spec }}
+                                {{ spec.nameSpecialty }}
                             </mat-option>
                         }
                     </mat-select>
@@ -90,9 +90,8 @@
                     <p>Especialidades seleccionadas:</p>
                     <mat-chip-set>
                         @for (spec of this.specSelect; track $index) {
-            
                             <mat-chip [removable]="true" id="chipElement" (removed)="DeleteSpecialty(spec)">
-                                {{ spec }}
+                                {{ spec.nameSpecialty }}
                                 <mat-icon matChipRemove>cancel</mat-icon>
                             </mat-chip>
                         }
