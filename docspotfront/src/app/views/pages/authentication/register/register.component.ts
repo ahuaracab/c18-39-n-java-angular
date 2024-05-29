@@ -17,8 +17,9 @@ import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { Storage as StorageFire, ref, uploadBytes } from '@angular/fire/storage';
+import { Storage as StorageFire, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 import { UploadImageComponent } from "src/app/views/common/upload-image/upload-image.component";
+import { PacientRegister } from 'src/app/models/authentication-models/register.models';
 
 enum Rol {
   professional = 'professional',
@@ -231,25 +232,56 @@ export class RegisterComponent implements OnInit {
   }
   /* Din - Recibir imagen del componente */
 
-  private uploadImage($event:any): void {
-    const file = $event.target.files[0];
-    console.log("archivo: ", file);
+  /* Carga de imagen a firebase y retorno de urlDownload */
+  private uploadImage(file: File | null) : Promise<any>{
+    return new Promise((resolve, reject) => {
 
-    const imgRef = ref(this.storageFire, `images/${file.name}`);
-    uploadBytes(imgRef, file)
-    .then(response => console.log(response))
-    .catch(error => console.log(error))
+      if (!file) {
+        reject("");
+        return;
+      }
+
+      const fileToUp = file;
+      console.log("archivo para subir: ", fileToUp);
+      
+      const imgRef = ref(this.storageFire, `images/${fileToUp.name}`);
+      
+      uploadBytes(imgRef, fileToUp)
+      .then(response => {
+          console.log("Respuesta: ",response);
+
+          return getDownloadURL(imgRef);
+        }
+      )
+      .then((downLoadURL:string) => {
+        resolve(downLoadURL);
+      })
+      .catch(error => {
+          console.log("Error: ",error);
+          reject("");
+        }
+      )
+    });
   }
+  /* Fin - Carga de imagen a firebase y retorno de urlDownload */
 
 
-  public send(): void {
+  public async send(): Promise<void> {
     console.log('Form:', this.register.value);
     if (this.register.invalid) {
       console.log("formulario invalido");
       return;
     }
     if (this.showForm == this.selectedRol.patient) {
+      if(!this.receivedFile) return;
+      // subir imagen y esperar string para agregar al formulario
+      let pathImage = await this.uploadImage(this.receivedFile);
+      if(!pathImage) return;
+      this.register.get('photo')?.setValue(pathImage);
       // pasar data a un objeto para crear paciente
+      let patientDto:PacientRegister = {} as PacientRegister;
+      this.loadDataFormPatient(patientDto, this.register);
+      console.log("envio backend: ", patientDto);
       // llamar a la API
       // controlar respuesta
       //  -- exitoso -> volver a login
@@ -263,5 +295,18 @@ export class RegisterComponent implements OnInit {
     }
 
     console.log('Enviar formulario');
+  }
+
+   private loadDataFormPatient(patientData:PacientRegister, FormG:FormGroup) {
+    patientData.email = FormG.get('email')?.value;
+    patientData.password = FormG.get('password')?.value;
+    patientData.namePatient = FormG.get('name')?.value;
+    patientData.rol = FormG.get('rol')?.value;
+
+    patientData.cellphonePatient = FormG.get('cellphone')?.value;
+    patientData.hasSocialWork = FormG.get('hasWork')?.value;
+    patientData.socialWork = FormG.get('socialWork')?.value;
+
+    patientData.photoPatient = FormG.get('photo')?.value;
   }
 }

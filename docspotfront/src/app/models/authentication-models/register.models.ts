@@ -11,11 +11,38 @@ export interface UserDTO {
   patients: Array<any>
 }
 
-export interface PacientRegister {
+export interface Pacient {
   namePatient: string;
   cellphonePatient: string;
   photoPatient: string;
   hasSocialWork: boolean;
   socialWork: string;
   user: UserDTO;
+}
+
+export interface PacientRegister {
+  rol: string;
+  email: string;
+  password: string;
+  namePatient: string;
+  cellphonePatient: string;
+  photoPatient: string;
+  hasSocialWork: boolean;
+  socialWork: string;
+}
+
+export interface ProfessionalRegister {
+  rol: string;
+  email: string;
+  password: string;
+  nameProfessional: string;
+  mp: string;
+  // specialties: Specialty[];
+  specialties: string[];
+}
+
+export interface Specialty {
+  idSpecialty: string;
+  nameSpecialty: string;
+  descriptionSpecialty: string;
 }
