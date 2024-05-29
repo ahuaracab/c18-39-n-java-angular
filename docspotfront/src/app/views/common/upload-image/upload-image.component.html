@@ -10,11 +10,20 @@
     (change)="onFileSelected($event)"
     accept="image/*"
     style="display: none;"
+    [disabled]="selectedImage ? true:false"
   />
   <ng-container *ngIf="!selectedImage; else imagePreview">
-    <p>Drag & drop an image here or click to select</p>
+    <div class="content-text">
+      <p>Drag & drop an image here or click to select</p>
+      @if (!oneFile) {
+        <p style="color: red">Solo seleccionar un archivo</p>
+      }
+    </div>
   </ng-container>
   <ng-template #imagePreview>
+    <div class="content-image">
     <img [src]="selectedImage" alt="Selected Image" class="uploaded-image" />
+    <mat-icon class="iconCancel" (click)="cancelImageSelection($event, fileInput)">cancel</mat-icon>
+    </div>
   </ng-template>
 </div>
