@@ -1,0 +1,20 @@
+<div
+  class="upload-container"
+  (drop)="onDrop($event)"
+  (dragover)="onDragOver($event)"
+  (click)="fileInput.click()"
+>
+  <input
+    type="file"
+    #fileInput
+    (change)="onFileSelected($event)"
+    accept="image/*"
+    style="display: none;"
+  />
+  <ng-container *ngIf="!selectedImage; else imagePreview">
+    <p>Drag & drop an image here or click to select</p>
+  </ng-container>
+  <ng-template #imagePreview>
+    <img [src]="selectedImage" alt="Selected Image" class="uploaded-image" />
+  </ng-template>
+</div>
