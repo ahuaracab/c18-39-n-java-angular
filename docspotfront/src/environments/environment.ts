@@ -1,3 +1,5 @@
 export const environment = {
-    url_api: "http://<domain>:<port>/<version>/<path>"
+    /* LOCAL */
+    url_api: "http://localhost:8000",
+    url_keylock: "http://localhost:8080"
 }
