@@ -277,8 +277,10 @@ export class RegisterComponent implements OnInit {
 
       const fileToUp = file;
       console.log("archivo para subir: ", fileToUp);
-      
-      const imgRef = ref(this.storageFire, `images/${fileToUp.name}`);
+      let name = this.register.get('name')?.value;
+      let email = this.register.get('email')?.value;
+      // const imgRef = ref(this.storageFire, `images/${fileToUp.name}`);
+      const imgRef = ref(this.storageFire, `images/${name}-${email}`);
       
       uploadBytes(imgRef, fileToUp)
       .then(response => {
