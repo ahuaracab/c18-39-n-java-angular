@@ -152,7 +152,7 @@ export class RegisterComponent implements OnInit {
   /* Cambio de formulario Profesional */
   private addControlsProfessional(formG: FormGroup): void {
     formG.addControl('mp', new FormControl('', Validators.required));
-    formG.addControl('specialties', new FormControl(this.specSelect, ArrayEmpty));
+    formG.addControl('specialties', new FormControl(this.specSelect));
   }
 
   private removeControlsPatient(formG: FormGroup): void {
@@ -283,6 +283,7 @@ export class RegisterComponent implements OnInit {
       //  -- exitoso -> volver a login
       //  -- falla -> mostrar modal
     } else if (this.showForm == this.selectedRol.professional) {
+      if(this.specSelect.length === 0) return;
       // pasar data a un objeto para crear professional
       let professionalDto:ProfessionalRegister = {} as ProfessionalRegister;
       this.loadDataFormProfessional(professionalDto,this.register);
@@ -316,6 +317,6 @@ export class RegisterComponent implements OnInit {
     professionalData.rol = FormG.get('rol')?.value;
 
     professionalData.mp = FormG.get('mp')?.value;
-    professionalData.specialties = FormG.get('specialties')?.value.map((spec:Specialty)=>spec.nameSpecialty);
+    professionalData.specialties = FormG.get('specialties')?.value.map((spec:Specialty)=>spec.idSpecialty);
   }
 }
