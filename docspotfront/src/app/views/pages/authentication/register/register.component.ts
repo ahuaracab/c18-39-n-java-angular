@@ -229,9 +229,12 @@ export class RegisterComponent implements OnInit {
   }
 
   public DeleteSpecialtyAvailable(specialty: Specialty): void {
+    let arrayRef = [];
     const index = this.specAvailable.indexOf(specialty);
     if (index !== -1) {
       this.specAvailable.splice(index, 1);
+      arrayRef = [...this.specAvailable];
+      this.specAvailable = [...arrayRef];
     }
   }
 
@@ -241,13 +244,17 @@ export class RegisterComponent implements OnInit {
   /* FIN - Control especialidad */
 
   /* NEW control especialidad */
-  selected(event: MatAutocompleteSelectedEvent):void {
+  public selected(event: MatAutocompleteSelectedEvent):void {
     const specialty = event.option.value;
     if (event && !this.specSelect.includes(specialty)) {
       this.specSelect.push(specialty);
       this.DeleteSpecialtyAvailable(specialty);
       this.register.get('specialtyAuto')?.setValue('');
     }
+  }
+
+  public displaySpecialty(spec: Specialty): string {
+    return spec ? spec.nameSpecialty : '';
   }
   /* FIN - new control especialidad */
 

@@ -79,8 +79,11 @@
                 
                 <mat-form-field appearance="outline" class="">
                     <mat-label>Especialidades</mat-label>
-                    <input type="text" matInput [matAutocomplete]="auto" formControlName="specialtyAuto">
-                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    <input #inputSpec type="text" matInput [matAutocomplete]="auto" formControlName="specialtyAuto">
+                    <mat-autocomplete #auto="matAutocomplete"
+                     [displayWith]="displaySpecialty"
+                     [hideSingleSelectionIndicator]=true
+                     (optionSelected)="selected($event)">
                       @for (spec of this.specFiltered | async; track $index) {
                         <mat-option [value]="spec">{{spec.nameSpecialty}}</mat-option>
                       }
