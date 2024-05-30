@@ -37,8 +37,7 @@ export interface ProfessionalRegister {
   password: string;
   nameProfessional: string;
   mp: string;
-  // specialties: Specialty[];
-  specialties: string[];
+  specialties: Specialty[];
 }
 
 export interface Specialty {
