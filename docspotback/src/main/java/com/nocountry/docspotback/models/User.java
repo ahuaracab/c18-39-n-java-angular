@@ -43,4 +43,9 @@ public class User extends Auditable{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Professional> professionals;
+
+    public boolean isEnabled() {
+        return active;
+    }
+
 }

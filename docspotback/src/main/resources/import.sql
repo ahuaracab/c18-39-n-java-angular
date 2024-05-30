@@ -19,6 +19,13 @@ INSERT INTO public.users (active, is_deleted, created_at, updated_at, id_user, e
 INSERT INTO public.users (active, is_deleted, created_at, updated_at, id_user, email, "password") VALUES(true, false, '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', 'b0dcaba0-743a-4942-a1b1-0a1135d3b96f', 'doctor2@mail.com', '$2a$10$7fdnIfqecA6VJoY0UgUWFeefElnV9JrQH720d67YNYLvBEiNBVmNS');
 INSERT INTO public.users (active, is_deleted, created_at, updated_at, id_user, email, "password") VALUES(true, false, '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', 'ea0c2538-9576-46ee-bc80-05f9e15493e2', 'admin@mail.com', '$2a$10$7fdnIfqecA6VJoY0UgUWFeefElnV9JrQH720d67YNYLvBEiNBVmNS');
 
+-- user_role
+INSERT INTO public.user_role (id_user, id_role) VALUES ('153bd265-0281-44a9-946a-803977a18260', '1cf97381-3bb1-4e37-9140-8b9039f14cff')
+INSERT INTO public.user_role (id_user, id_role) VALUES ('1df9a905-9600-429a-8d4c-7fdf027f95a4', '1cf97381-3bb1-4e37-9140-8b9039f14cff')
+INSERT INTO public.user_role (id_user, id_role) VALUES ('265df1ac-5b3a-47ff-9156-7db7f8c7efae', '1cf97381-3bb1-4e37-9140-8b9039f14cff')
+INSERT INTO public.user_role (id_user, id_role) VALUES ('fb611434-d557-478a-946f-de08850ee6aa', '1cf97381-3bb1-4e37-9140-8b9039f14cff')
+INSERT INTO public.user_role (id_user, id_role) VALUES ('73b5362f-ed92-424c-8568-43b082ecdf30', '03c1a1de-30b8-437d-8743-a70179d0adc3')
+
 -- professionals
 INSERT INTO public.professionals (is_deleted, reputation, value_query, created_at, updated_at, mp, id_professional, user_id_user, name_professional) VALUES(false, 0, 50, '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', 'abc', 'b307a64e-0eeb-4da2-b9dd-43dad45865c9', '73b5362f-ed92-424c-8568-43b082ecdf30', 'abc');
 INSERT INTO public.professionals (is_deleted, reputation, value_query, created_at, updated_at, mp, id_professional, user_id_user, name_professional) VALUES(false, 0, 80, '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', 'abc2', '8edec619-5f77-4a21-88b8-5ded6b18eef5', 'b0dcaba0-743a-4942-a1b1-0a1135d3b96f', 'abc2');
