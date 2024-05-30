@@ -19,7 +19,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { Storage as StorageFire, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 import { UploadImageComponent } from "src/app/views/common/upload-image/upload-image.component";
-import { PacientRegister, Specialty } from 'src/app/models/authentication-models/register.models';
+import { PacientRegister, ProfessionalRegister, Specialty } from 'src/app/models/authentication-models/register.models';
+import { ArrayEmpty } from './validators/arrayNotEmpty';
 
 enum Rol {
   professional = 'professional',
@@ -49,18 +50,6 @@ enum Rol {
     ]
 })
 export class RegisterComponent implements OnInit {
-  // specDefault: string[] = [
-  //   'Pediatría',
-  //   'Cardiología',
-  //   'Dermatología',
-  //   'Oftalmología',
-  //   'Oncología',
-  //   'Neurología',
-  //   'Ginecología',
-  //   'Urología',
-  //   'Otorrinolaringología',
-  //   'Endocrinología',
-  // ];
 
   public specDefault: Specialty[] = [
     { idSpecialty: "1", nameSpecialty: 'Pediatría', descriptionSpecialty: 'Descripción para Pediatría' },
@@ -95,7 +84,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private storageFire:StorageFire
+    private storageFire:StorageFire,
   ) {}
 
   ngOnInit(): void {
@@ -163,7 +152,7 @@ export class RegisterComponent implements OnInit {
   /* Cambio de formulario Profesional */
   private addControlsProfessional(formG: FormGroup): void {
     formG.addControl('mp', new FormControl('', Validators.required));
-    formG.addControl('specialties', new FormControl(this.specSelect, Validators.required));
+    formG.addControl('specialties', new FormControl(this.specSelect, ArrayEmpty));
   }
 
   private removeControlsPatient(formG: FormGroup): void {
@@ -271,10 +260,11 @@ export class RegisterComponent implements OnInit {
   public async send(): Promise<void> {
     console.log('Form:', this.register.value);
     // cambio de array especialty for id,
-    this.register.get("specialties")?.setValue(this.specSelect.map((spec)=>spec.idSpecialty));
+    // this.register.get("specialties")?.setValue(this.specSelect.map((spec)=>spec.idSpecialty));
     console.log('Form format:', this.register.value);
-
+    
     if (this.register.invalid) {
+      console.log('Form invalid:', this.register);
       console.log("formulario invalido");
       return;
     }
@@ -294,6 +284,9 @@ export class RegisterComponent implements OnInit {
       //  -- falla -> mostrar modal
     } else if (this.showForm == this.selectedRol.professional) {
       // pasar data a un objeto para crear professional
+      let professionalDto:ProfessionalRegister = {} as ProfessionalRegister;
+      this.loadDataFormProfessional(professionalDto,this.register);
+      console.log('backend:', professionalDto);
       // llamar a la API
       // controlar respuesta
       //  -- exitoso -> volver a login
@@ -314,5 +307,15 @@ export class RegisterComponent implements OnInit {
     patientData.socialWork = FormG.get('socialWork')?.value;
 
     patientData.photoPatient = FormG.get('photo')?.value;
+  }
+
+  private loadDataFormProfessional(professionalData:ProfessionalRegister, FormG:FormGroup) {
+    professionalData.email = FormG.get('email')?.value;
+    professionalData.password = FormG.get('password')?.value;
+    professionalData.nameProfessional = FormG.get('name')?.value;
+    professionalData.rol = FormG.get('rol')?.value;
+
+    professionalData.mp = FormG.get('mp')?.value;
+    professionalData.specialties = FormG.get('specialties')?.value.map((spec:Specialty)=>spec.nameSpecialty);
   }
 }
