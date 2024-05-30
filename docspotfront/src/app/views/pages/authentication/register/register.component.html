@@ -21,35 +21,35 @@
 
             <!-- name -->
             <mat-form-field appearance="outline" class="">
-                <mat-label>Name</mat-label>
+                <mat-label>Nombre</mat-label>
                 <input matInput type="text" formControlName="name">
                 @if (register.get('name')?.hasError('required')) {
-                    <mat-error>Name is <strong>required</strong></mat-error>
+                    <mat-error>Nombre es <strong>requerido</strong></mat-error>
                 }
             </mat-form-field>
 
             <!-- email -->
             <mat-form-field appearance="outline" class="">
-                <mat-label>Email</mat-label>
+                <mat-label>Correo electrónico</mat-label>
                 <input type="text" matInput formControlName="email" placeholder="Ex. pat@example.com">
                 <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
                 @if (register.get('email')?.hasError('email') && !register.get('email')?.hasError('required')) {
-                <mat-error>Please enter a valid email address</mat-error>
+                <mat-error>Por favor ingresa una dirección de correo electrónico valido</mat-error>
                 }
                 @if (register.get('email')?.hasError('required')) {
-                <mat-error>Email is <strong>required</strong></mat-error>
+                <mat-error>Correo electrónico es <strong>requerido</strong></mat-error>
                 }
             </mat-form-field>
 
             <!-- password -->
             <mat-form-field appearance="outline" class="">
-                <mat-label>Password</mat-label>
+                <mat-label>Contraseña</mat-label>
                 <input matInput [type]="showPassword ? 'password' : 'text'" formControlName="password">
                 <button mat-icon-button type="button" matSuffix (click)="showPassword = !showPassword" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="showPassword">
                   <mat-icon>{{!showPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
                 </button>
                 @if (register.get('password')?.hasError('required')) {
-                    <mat-error>Password is <strong>required</strong></mat-error>
+                    <mat-error>Contraseña es <strong>requerida</strong></mat-error>
                 }
             </mat-form-field>
 
@@ -57,11 +57,11 @@
             @if (this.showForm == this.selectedRol.professional) {
                 <!-- mp -->
                 <mat-form-field appearance="outline" class="">
-                    <mat-label>MP</mat-label>
+                    <mat-label>Número Professional</mat-label>
                     <input type="text" matInput formControlName="mp" placeholder="Ex. mp">
                     <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
                     @if (register.get('mp')?.hasError('required')) {
-                    <mat-error>Mp is <strong>required</strong></mat-error>
+                    <mat-error>Número Professional es <strong>requerido</strong></mat-error>
                     }
                 </mat-form-field>
 
@@ -146,9 +146,6 @@
             <button mat-raised-button type="submit" color='primary' [ngClass]="showTouched ? 
                             'btn-select':'btn-unselect'">Enviar</button>
         </form>
-
         }
     </div>
-
-
 </div>

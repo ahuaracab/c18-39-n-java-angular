@@ -66,12 +66,20 @@
 
       </div>
 
-      <button mat-raised-button color="primary" type="submit" class="btn btn-primary btn-login">
-        @if (loading){
-          <mat-progress-spinner diameter="24"  mode="indeterminate" class="spinner"></mat-progress-spinner>
-        }
-        <span [ngClass]="!loading ? 'text1':'text2'">Iniciar sesión</span>
-      </button>
+      <div class="form-buttons">
+
+        <button mat-raised-button color="primary" type="submit" class="btn btn-primary btn-login">
+          @if (loading){
+            <mat-progress-spinner diameter="24"  mode="indeterminate" class="spinner"></mat-progress-spinner>
+          }
+          <span [ngClass]="!loading ? 'text1':'text2'">Iniciar sesión</span>
+        </button>
+
+        <button mat-raised-button color="primary" type="submit" class="btn btn-primary btn-login">
+          <span>Registrarse</span>
+        </button>
+      </div>
+        
     </form>
   </div>
 </div>
