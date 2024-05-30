@@ -16,11 +16,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatChipsModule } from '@angular/material/chips';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatAutocompleteModule, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { Storage as StorageFire, getDownloadURL, ref, uploadBytes } from '@angular/fire/storage';
 import { UploadImageComponent } from "src/app/views/common/upload-image/upload-image.component";
 import { PacientRegister, ProfessionalRegister, Specialty } from 'src/app/models/authentication-models/register.models';
-import { ArrayEmpty } from './validators/arrayNotEmpty';
+import { Observable, map, startWith } from 'rxjs';
 
 enum Rol {
   professional = 'professional',
@@ -68,6 +68,7 @@ export class RegisterComponent implements OnInit {
 
   public rol: string = '';
   public register!: FormGroup;
+  public specialtyAuto!: FormControl;
   public showPassword: boolean = true;
   public loading: boolean = false;
   public errorMessage: string = '';
@@ -78,6 +79,7 @@ export class RegisterComponent implements OnInit {
   public hasWorkAdded: boolean = false;
   public specAvailable: Specialty[] = [];
   public specSelect: Specialty[] = [];
+  public specFiltered!: Observable<Specialty[]>;
 
   public receivedFile: File | null = null;
 
@@ -92,11 +94,31 @@ export class RegisterComponent implements OnInit {
     this.initializedForm();
   }
 
+  private suscribeAutocomplete(formG: FormGroup):void {
+    const specInput = formG.get('specialtyAuto') as FormControl;
+    if(specInput) {
+      this.specFiltered = specInput.valueChanges.pipe(
+        startWith(''),
+        map((specialties:string | Specialty) =>
+          typeof specialties === 'string' ? 
+          this._filter(this.specAvailable, specialties) : 
+          this._filter(this.specAvailable, specialties.nameSpecialty)
+        )
+      );
+    }
+  }
+
   private getEspecialidades(): void {
     // llamar a la api en busca de especialidades
     // cargar los objetos
     // fallo cargar de forma manual
     this.specAvailable = this.specDefault;
+  }
+
+  private _filter(specialties:Specialty[], search?:string):Specialty[] {
+    if(!search) return specialties; 
+    const filtered = specialties.filter((specialty)=>specialty.nameSpecialty.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+    return filtered;
   }
 
   private initializedForm(): void {
@@ -129,6 +151,7 @@ export class RegisterComponent implements OnInit {
     if (role == this.selectedRol.professional) {
       this.addControlsProfessional(this.register);
       this.removeControlsPatient(this.register);
+      this.suscribeAutocomplete(this.register);
     } else if (role == this.selectedRol.patient) {
       this.addControlsPatient(this.register);
       this.removeControlsProfessional(this.register);
@@ -153,6 +176,7 @@ export class RegisterComponent implements OnInit {
   private addControlsProfessional(formG: FormGroup): void {
     formG.addControl('mp', new FormControl('', Validators.required));
     formG.addControl('specialties', new FormControl(this.specSelect));
+    formG.addControl('specialtyAuto', new FormControl(''));
   }
 
   private removeControlsPatient(formG: FormGroup): void {
@@ -183,6 +207,7 @@ export class RegisterComponent implements OnInit {
   private removeControlsProfessional(formG: FormGroup): void {
     formG.removeControl('mp');
     formG.removeControl('specialties');
+    formG.removeControl('specialtyAuto');
   }
   /* FIN - Cambio de formulario Paciente */
 
@@ -214,6 +239,17 @@ export class RegisterComponent implements OnInit {
     this.specAvailable.push(specialty);
   }
   /* FIN - Control especialidad */
+
+  /* NEW control especialidad */
+  selected(event: MatAutocompleteSelectedEvent):void {
+    const specialty = event.option.value;
+    if (event && !this.specSelect.includes(specialty)) {
+      this.specSelect.push(specialty);
+      this.DeleteSpecialtyAvailable(specialty);
+      this.register.get('specialtyAuto')?.setValue('');
+    }
+  }
+  /* FIN - new control especialidad */
 
 
   /* Recibir imagen del componente */

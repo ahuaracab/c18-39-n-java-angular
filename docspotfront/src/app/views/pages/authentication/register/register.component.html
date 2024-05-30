@@ -66,7 +66,7 @@
                 </mat-form-field>
 
                 <!-- especialidades [] -->
-                <mat-form-field appearance="outline" class="">
+                <!-- <mat-form-field appearance="outline" class="">
                     <mat-label>Seleccione una especialidad</mat-label>
                     <mat-select (selectionChange)="addSpecialty($event.value)">
                         @for (spec of this.specAvailable; track $index) {
@@ -75,16 +75,17 @@
                             </mat-option>
                         }
                     </mat-select>
-                </mat-form-field>
-                <!-- <mat-form-field appearance="outline" class="">
+                </mat-form-field> -->
+                
+                <mat-form-field appearance="outline" class="">
                     <mat-label>Especialidades</mat-label>
-                    <input type="text" matInput [matAutocomplete]="auto">
-                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                      @for (spec of this.specAvailable;track $index) {
-                        <mat-option [value]="spec">{{spec}}</mat-option>
+                    <input type="text" matInput [matAutocomplete]="auto" formControlName="specialtyAuto">
+                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                      @for (spec of this.specFiltered | async; track $index) {
+                        <mat-option [value]="spec">{{spec.nameSpecialty}}</mat-option>
                       }
                     </mat-autocomplete>
-                  </mat-form-field> -->
+                  </mat-form-field>
 
                 @if (this.specSelect.length > 0) {
                     <p>Especialidades seleccionadas:</p>
