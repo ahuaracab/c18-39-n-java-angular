@@ -31,5 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+/pgdata/
+/target/
+*.jar
 
 .env
