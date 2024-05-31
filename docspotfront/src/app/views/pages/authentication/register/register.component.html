@@ -38,7 +38,7 @@
                 <input type="text" matInput formControlName="email" placeholder="Ex. pat@example.com">
                 <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
                 @if (register.get('email')?.hasError('email') && !register.get('email')?.hasError('required')) {
-                <mat-error>Por favor ingresa una dirección de correo electrónico valido</mat-error>
+                <mat-error>Por favor ingresa un correo electrónico <strong>valido</strong></mat-error>
                 }
                 @if (register.get('email')?.hasError('required')) {
                 <mat-error>Correo electrónico es <strong>requerido</strong></mat-error>
@@ -95,8 +95,8 @@
                   </mat-form-field>
 
                 @if (this.specSelect.length > 0) {
-                    <p>Especialidades seleccionadas:</p>
-                    <mat-chip-set>
+                    <p class="m-0">Especialidades seleccionadas:</p>
+                    <mat-chip-set class="chip-section">
                         @for (spec of this.specSelect; track $index) {
                             <mat-chip [removable]="true" id="chipElement" (removed)="DeleteSpecialty(spec)">
                                 {{ spec.nameSpecialty }}

@@ -69,15 +69,9 @@
             flex-direction: column;
             gap: 12px;
 
-            // funciona
-            // ::ng-deep .mat-mdc-chip.mdc-evolution-chip--with-trailing-action .mat-mdc-chip-action-label {
-            //     color: black;
-            // }
-
-            // funciona
-            // ::ng-deep .mat-mdc-chip.mdc-evolution-chip--with-trailing-action .mat-mdc-chip-action-label:hover {
-            //     font-weight: 700;
-            // }
+            .chip-section {
+                margin-bottom: 12px;
+            }
 
             #chipElement {
                 background-color: #c2c8f577;
@@ -91,22 +85,16 @@
                     font-weight: 700;
                 }
             }
-            
-            // ::ng-deep .mdc-evolution-chip__text-label mat-mdc-chip-action-label:hover {
-            //     color: black;
-            //     font-weight: 500;
-            // }
 
             .form-patient {
                 display: flex;
                 flex-direction: column;
-                // flex-wrap: wrap;
-                gap: 32px;
+                gap: 8px;
 
                 &__content1{
                     display: flex;
                     flex-direction: column;
-                    gap: 16px;
+                    gap: 8px;
                     flex: 1;
 
                     &__work {
@@ -127,6 +115,7 @@
                     flex-direction: row;
                     justify-content: center;
                     width: 100%;
+                    margin: 8px 0px;
 
                     > * {
                         flex: 1;
@@ -138,3 +127,28 @@
         }
     }
 }
+
+// ::ng-deep .mdc-text-field--outlined .mat-mdc-form-field-infix {
+//     min-height: 32px;
+//     padding-top: 12px;
+//     padding-bottom: 12px;
+// }
+
+// ::ng-deep .mat-mdc-text-field-wrapper .mat-mdc-form-field-flex .mat-mdc-floating-label {
+//     top: 16px;
+// }
+
+// funciona
+// ::ng-deep .mat-mdc-chip.mdc-evolution-chip--with-trailing-action .mat-mdc-chip-action-label {
+//     color: black;
+// }
+
+// funciona
+// ::ng-deep .mat-mdc-chip.mdc-evolution-chip--with-trailing-action .mat-mdc-chip-action-label:hover {
+//     font-weight: 700;
+// }
+
+// ::ng-deep .mdc-evolution-chip__text-label mat-mdc-chip-action-label:hover {
+//     color: black;
+//     font-weight: 500;
+// }
