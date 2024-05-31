@@ -2,11 +2,14 @@ package com.nocountry.docspotback.repositories;
 
 import com.nocountry.docspotback.models.User;
 import jakarta.transaction.Transactional;
+
+import java.util.UUID;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-public interface ILoginRepo extends IGenericRepo<User, Integer>{
+public interface ILoginRepo extends IGenericRepo<User, UUID>{
 
     @Query("FROM User us where us.email =:username")
     User checkUsername(@Param("username") String username);

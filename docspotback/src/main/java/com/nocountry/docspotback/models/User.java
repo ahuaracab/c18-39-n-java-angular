@@ -15,35 +15,24 @@ import java.util.UUID;
 @ToString
 @Entity
 @Table(name = "users")
-public class User extends Auditable{
+public class User extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_user")
-    private UUID idUser=UUID.randomUUID();
+    private UUID idUser = UUID.randomUUID();
 
-    @Column(name = "email",length = 120,unique = true,nullable = false)
+    @Column(name = "email", length = 120, unique = true, nullable = false)
     private String email;
 
-    @Column(name = "password",nullable = false)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(length = 50, nullable = false)
-    private String name;
-
-    @Column(length = 50, nullable = false)
-    private String lastname;
-
-    @Column(name = "active",nullable = false)
+    @Column(name = "active", nullable = false)
     private Boolean active;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id_user"),
-            inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id_role"))
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "id_user", referencedColumnName = "id_user"), inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id_role"))
     private List<Role> roles;
-
-    @Column(nullable = false)
-    private String rol;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -52,5 +41,9 @@ public class User extends Auditable{
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private Professional professional;
+
+    public boolean isEnabled() {
+        return active;
+    }
 
 }

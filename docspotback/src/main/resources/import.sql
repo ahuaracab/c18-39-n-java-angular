@@ -19,6 +19,13 @@ INSERT INTO public.users (active, is_deleted, created_at, updated_at, id_user, e
 INSERT INTO public.users (active, is_deleted, created_at, updated_at, id_user, email, "password") VALUES(true, false, '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', 'b0dcaba0-743a-4942-a1b1-0a1135d3b96f', 'doctor2@mail.com', '$2a$10$7fdnIfqecA6VJoY0UgUWFeefElnV9JrQH720d67YNYLvBEiNBVmNS');
 INSERT INTO public.users (active, is_deleted, created_at, updated_at, id_user, email, "password") VALUES(true, false, '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', 'ea0c2538-9576-46ee-bc80-05f9e15493e2', 'admin@mail.com', '$2a$10$7fdnIfqecA6VJoY0UgUWFeefElnV9JrQH720d67YNYLvBEiNBVmNS');
 
+-- user_role
+INSERT INTO public.user_role (id_user, id_role) VALUES ('153bd265-0281-44a9-946a-803977a18260', '1cf97381-3bb1-4e37-9140-8b9039f14cff')
+INSERT INTO public.user_role (id_user, id_role) VALUES ('1df9a905-9600-429a-8d4c-7fdf027f95a4', '1cf97381-3bb1-4e37-9140-8b9039f14cff')
+INSERT INTO public.user_role (id_user, id_role) VALUES ('265df1ac-5b3a-47ff-9156-7db7f8c7efae', '1cf97381-3bb1-4e37-9140-8b9039f14cff')
+INSERT INTO public.user_role (id_user, id_role) VALUES ('fb611434-d557-478a-946f-de08850ee6aa', '1cf97381-3bb1-4e37-9140-8b9039f14cff')
+INSERT INTO public.user_role (id_user, id_role) VALUES ('73b5362f-ed92-424c-8568-43b082ecdf30', '03c1a1de-30b8-437d-8743-a70179d0adc3')
+
 -- professionals
 INSERT INTO public.professionals (is_deleted, reputation, value_query, created_at, updated_at, mp, id_professional, user_id_user, name_professional) VALUES(false, 0, 50, '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', 'abc', 'b307a64e-0eeb-4da2-b9dd-43dad45865c9', '73b5362f-ed92-424c-8568-43b082ecdf30', 'abc');
 INSERT INTO public.professionals (is_deleted, reputation, value_query, created_at, updated_at, mp, id_professional, user_id_user, name_professional) VALUES(false, 0, 80, '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', 'abc2', '8edec619-5f77-4a21-88b8-5ded6b18eef5', 'b0dcaba0-743a-4942-a1b1-0a1135d3b96f', 'abc2');
@@ -64,10 +71,4 @@ INSERT INTO public.shifts (is_deleted, repeat_shift, state_shift, end_time, star
 INSERT INTO public.shifts (is_deleted, repeat_shift, state_shift, end_time, start_time, created_at, updated_at, id_shift, "day") VALUES(false, false, true, '15:00', '14:00', '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', '5e5c4610-fcd7-433d-a9dd-cf1cdda35bb8',  'MONDAY');
 INSERT INTO public.shifts (is_deleted, repeat_shift, state_shift, end_time, start_time, created_at, updated_at, id_shift, "day") VALUES(false, false, true, '16:00', '15:00', '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', 'abfb5bae-e940-4882-a193-5971b58295fc',  'MONDAY');
 INSERT INTO public.shifts (is_deleted, repeat_shift, state_shift, end_time, start_time, created_at, updated_at, id_shift, "day") VALUES(false, false, true, '11:00', '10:00', '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', '491fa123-a7b5-447c-b31d-d2f7557cc5ae',  'MONDAY');
-
--- reservations
-INSERT INTO public.reservations (is_deleted, created_at, updated_at, id_reservation, patient_id_patient, id_shift, query_intent, appointment_date) VALUES(false, '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', '7a0612f2-122b-459c-b487-d3551db54969', '04f9c587-6fe8-4326-9b1a-3368b9e2e78d', '71000038-b304-441f-b7aa-d50e7c86acc0', 'cita medica 123', '2024-09-09 14:00:00.679985+02');
-INSERT INTO public.reservations (is_deleted, created_at, updated_at, id_reservation, patient_id_patient, id_shift, query_intent, appointment_date) VALUES(false, '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', 'b3b41411-d236-4b67-b9b5-42a336dd7a1a', 'b06692df-f731-4b35-b0be-27ec12edceb7', 'abfb5bae-e940-4882-a193-5971b58295fc', 'cita medica 34345', '2024-09-09 15:00:00.679985+02');
-INSERT INTO public.reservations (is_deleted, created_at, updated_at, id_reservation, patient_id_patient, id_shift, query_intent, appointment_date) VALUES(false, '2021-09-27 15:22:53.679985+02', '2021-09-27 15:22:53.679985+02', 'bede9a0b-6513-4345-b528-13bf0ee012a8', 'bd6da376-037a-458a-97bb-bb7ff5f62c07', '491fa123-a7b5-447c-b31d-d2f7557cc5ae', 'cita medica absdd', '2024-09-09 10:00:00.679985+02');
-
 

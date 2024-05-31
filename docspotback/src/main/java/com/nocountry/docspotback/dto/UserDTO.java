@@ -2,7 +2,6 @@ package com.nocountry.docspotback.dto;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nocountry.docspotback.models.Patient;
-import com.nocountry.docspotback.models.Role;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,12 +27,6 @@ public class UserDTO {
     private String password;
 
     @NotNull
-    private String name;
-
-    @NotNull
-    private String lastname;
-
-    @NotNull
     private Boolean active;
 
     @JsonManagedReference
@@ -41,6 +34,8 @@ public class UserDTO {
     private List<RoleDTO> roles;
 
     @JsonManagedReference
-    @NotNull
-    private List<Patient> patients;
+    private PatientDTO patients;
+
+    @JsonManagedReference
+    private ProfessionalDTO professional;
 }

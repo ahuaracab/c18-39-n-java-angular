@@ -19,6 +19,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -34,6 +35,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@CrossOrigin(originPatterns = "*")
 @RestController
 @RequestMapping("/api/professional")
 public class ProfessionalController {
@@ -46,12 +48,12 @@ public class ProfessionalController {
     @Autowired
     private ModelMapper mapper;
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<List<ProfessionalDTO>> findAll(){
         List<ProfessionalDTO> list = service.findAll().stream().map(p->mapper.map(p,ProfessionalDTO.class)).collect(Collectors.toList());
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-
+    
     @GetMapping("/{id}")
     public ResponseEntity<ProfessionalDTO>findById(@PathVariable("id") UUID id){
         Professional obj = service.findById(id);
