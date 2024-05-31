@@ -12,6 +12,7 @@ import {
   HttpErrorResponse,
   HttpResponse,
 } from '@angular/common/http';
+import { eventListeners } from '@popperjs/core';
 
 @Component({
   selector: 'app-login',
@@ -49,12 +50,17 @@ export class LoginComponent implements OnInit {
   }
 
   // Método para alternar el valor de showPassword
-  togglePasswordVisibility(): void {
+  public togglePasswordVisibility(): void {
     console.log(this.showPassword);
     this.showPassword = !this.showPassword;
   }
 
-  login(): void {
+  public navRegister(): void {
+    event?.preventDefault();
+    this.router.navigate(['/auth/register']);
+  }
+
+  public login(): void {
     console.log('Ruta absoluta:', this.router.url);
     if (this.loginForm.invalid) {
       this.errorMessage = 'Por favor, complete el formulario correctamente.';
