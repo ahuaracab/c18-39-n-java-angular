@@ -9,6 +9,10 @@ export const routes: Routes = [
         import('./views/pages/authentication/auth.routes')
           .then((m) => m.AUTH_ROUTES),
     },
+    {
+    path: 'doctors',
+    loadChildren: () => import('./views/pages/search-profesional/search-professional.routes').then((c) => c.SEARCH_PROFESSIONAL_ROUTES)
+    },
     // ,
     // {
     //   path: "",
