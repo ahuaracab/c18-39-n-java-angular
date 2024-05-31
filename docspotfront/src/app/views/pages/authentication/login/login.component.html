@@ -6,7 +6,7 @@
   <div class="container">
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       @if (errorMessage) {
-        <div class="alert alert-danger">
+        <div class="alert alert-danger ">
           {{ errorMessage }}
         </div>
       }
@@ -33,9 +33,9 @@
         loginForm.controls['email'].touched ) {
         <div class="text-danger">
           @if (loginForm.controls['email'].errors?.['required']) {
-          <div>El correo electrónico es obligatorio.</div>
+          <div class="errors">El correo electrónico es <strong>obligatorio</strong>.</div>
           } @else if (loginForm.controls['email'].errors?.['email']) {
-          <div>Ingrese un correo electrónico válido.</div>
+          <div class="errors">Ingrese un correo electrónico <strong>válido</strong>.</div>
           }
         </div>
         }
@@ -67,11 +67,11 @@
         ) {
           <div class="text-danger">
             @if (loginForm.controls['password'].errors?.['required']) {
-              <div>
-                La contraseña es obligatoria.
+              <div class="errors">
+                La contraseña es <strong>obligatoria</strong> .
               </div>
             } @else if (loginForm.controls['password'].errors?.['minlength']) {
-              <div>
+              <div class="errors">
                 La contraseña debe tener al menos 6 caracteres.
               </div>
             }
