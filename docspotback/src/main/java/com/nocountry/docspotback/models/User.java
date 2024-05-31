@@ -2,6 +2,7 @@ package com.nocountry.docspotback.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 import java.util.List;
@@ -26,6 +27,12 @@ public class User extends Auditable{
     @Column(name = "password",nullable = false)
     private String password;
 
+    @Column(length = 50, nullable = false)
+    private String name;
+
+    @Column(length = 50, nullable = false)
+    private String lastname;
+
     @Column(name = "active",nullable = false)
     private Boolean active;
 
@@ -35,12 +42,15 @@ public class User extends Auditable{
             inverseJoinColumns = @JoinColumn(name = "id_role", referencedColumnName = "id_role"))
     private List<Role> roles;
 
+    @Column(nullable = false)
+    private String rol;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Patient> patients;
+    private Patient patient;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
-    private List<Professional> professionals;
+    private Professional professional;
+
 }

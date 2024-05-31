@@ -8,6 +8,7 @@ public interface ICRUDService <T,ID>{
     List<T> findAll();
     T findById(ID id);
     void delete(ID id);
-   /* List<T> findAllDeleted();
-    List<T> findAllNotDeleted();*/
+    List<T> getAllOrder(int page, int size, String sortDir, String sort);
+    // List<T> findAllDeleted();
+    // List<T> findAllNotDeleted();
 }

@@ -1,15 +1,29 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getStorage, provideStorage } from '@angular/fire/storage';
+import { provideClientHydration } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
+    provideRouter(routes, withViewTransitions()),
     provideClientHydration(),
-    provideAnimations()
-  ]
+    provideAnimations(),
+    provideFirebaseApp(() =>
+      initializeApp({
+        projectId: 'no-country-medical-services',
+        appId: '1:227994471282:web:3ba2d091c346af0c5e6beb',
+        storageBucket: 'no-country-medical-services.appspot.com',
+        // locationId: 'us-central',
+        apiKey: 'AIzaSyBgEaTM5MRKNTikD_E_DxBVOXusPeB8Hjk',
+        authDomain: 'no-country-medical-services.firebaseapp.com',
+        messagingSenderId: '227994471282',
+      })
+    ),
+    provideStorage(() => getStorage()),
+  ],
 };
 

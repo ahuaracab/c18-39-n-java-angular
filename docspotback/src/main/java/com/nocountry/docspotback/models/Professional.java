@@ -37,14 +37,66 @@ public class Professional extends Auditable{
    @ManyToOne
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "professional_specialties",
-            joinColumns = @JoinColumn(name = "id_professional", referencedColumnName = "id_professional"),
-            inverseJoinColumns = @JoinColumn(name = "id_specialty", referencedColumnName = "id_specialty"))
-    private List<Specialty> specialties;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "professional", cascade = CascadeType.ALL)
-    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "professionals_shifts",
+    joinColumns = @JoinColumn(name = "id_professional",referencedColumnName = "id_professional"),
+    inverseJoinColumns = @JoinColumn(name = "id_shift",referencedColumnName = "id_shift"))
     private List<Shift> shifts;
 
+    public UUID getIdProfessional() {
+        return idProfessional;
+    }
+
+    public void setIdProfessional(UUID idProfessional) {
+        this.idProfessional = idProfessional;
+    }
+
+    public String getNameProfessional() {
+        return nameProfessional;
+    }
+
+    public void setNameProfessional(String nameProfessional) {
+        this.nameProfessional = nameProfessional;
+    }
+
+    public Double getReputation() {
+        return reputation;
+    }
+
+    public void setReputation(Double reputation) {
+        this.reputation = reputation;
+    }
+
+    public Double getValueQuery() {
+        return valueQuery;
+    }
+
+    public void setValueQuery(Double valueQuery) {
+        this.valueQuery = valueQuery;
+    }
+
+    public String getMp() {
+        return mp;
+    }
+
+    public void setMp(String mp) {
+        this.mp = mp;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Shift> getShifts() {
+        return shifts;
+    }
+
+    public void setShifts(List<Shift> shifts) {
+        this.shifts = shifts;
+    }
 }

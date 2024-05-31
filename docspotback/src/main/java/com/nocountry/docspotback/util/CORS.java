@@ -40,10 +40,9 @@ public class CORS implements Filter {
 
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            chain.doFilter(req, res);
         }
-        // chain.doFilter(req, res);
+
+        chain.doFilter(req, res); // Llamar siempre a la cadena de filtros
     }
 
     @Override
