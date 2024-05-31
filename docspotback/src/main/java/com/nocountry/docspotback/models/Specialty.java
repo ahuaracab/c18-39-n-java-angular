@@ -26,4 +26,27 @@ public class Specialty extends Auditable{
     @Column(name = "description_specialty")
     private String descriptionSpecialty;
 
+    public UUID getIdSpecialty() {
+        return idSpecialty;
+    }
+
+    public void setIdSpecialty(UUID idSpecialty) {
+        this.idSpecialty = idSpecialty;
+    }
+
+    public String getNameSpecialty() {
+        return nameSpecialty;
+    }
+
+    public void setNameSpecialty(String nameSpecialty) {
+        this.nameSpecialty = nameSpecialty;
+    }
+
+    public String getDescriptionSpecialty() {
+        return descriptionSpecialty;
+    }
+
+    public void setDescriptionSpecialty(String descriptionSpecialty) {
+        this.descriptionSpecialty = descriptionSpecialty;
+    }
 }

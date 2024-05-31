@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0.4
+    ports:
+      - "8080:8080"
+    container_name: keycloak
+    command: ["start-dev"]
+    environment:
+      KEYCLOAK_ADMIN: docspot.nocountry@gmail.com
+      KEYCLOAK_ADMIN_PASSWORD: admin
+      KC_HTTP_PORT: 8080
+    volumes:
+      - ./keycloak-realm.json:/opt/keycloak/data/import/realm-config.json
+
+  db:
+    image: postgres:14.2-alpine
+    environment:
+      - POSTGRES_USER=c18_39_n_java_angular
+      - POSTGRES_PASSWORD=Ej0Nm4ltamnFJVL9do7UDlKZdivvvpce
+      - POSTGRES_DB=docspot
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      keycloak:
+        condition: service_started
+      db:
+        condition: service_started
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dpg-cp4mmegcmk4c73emahkg-a.oregon-postgres.render.com/docspot
+      - SPRING_DATASOURCE_USERNAME=c18_39_n_java_angular
+      - SPRING_DATASOURCE_PASSWORD=Ej0Nm4ltamnFJVL9do7UDlKZdivvvpce
+      - KEYCLOAK_REALM=docspot
+      - KEYCLOAK_AUTH_SERVER_URL=http://localhost:8080
+
+volumes:
+  pgdata:

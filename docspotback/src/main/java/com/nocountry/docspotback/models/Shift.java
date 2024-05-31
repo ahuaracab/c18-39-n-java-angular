@@ -19,7 +19,8 @@ public class Shift extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id = UUID.randomUUID();
+    @Column(name = "id_shift")
+    private UUID idShift = UUID.randomUUID();
 
     @Enumerated(EnumType.STRING)
     private WeekDay day;
@@ -36,8 +37,6 @@ public class Shift extends Auditable {
     @Column(name = "repeat_shift", nullable = false)
     private Boolean repeatShift;
 
-    @ManyToOne
-    private Professional professional;
 
     @OneToMany(mappedBy = "shift")
     private Set<Reservation> reservations;

@@ -45,10 +45,12 @@ public class SpringSecurityConfig {
         return http
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/professional").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
+     
                         .anyRequest().authenticated())
                 .addFilter(jwtAuthorizationFilter())
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
