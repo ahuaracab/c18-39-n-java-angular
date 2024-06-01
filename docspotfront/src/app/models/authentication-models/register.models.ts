@@ -11,7 +11,8 @@ export interface UserDTO {
   patients: Array<any>
 }
 
-export interface Pacient {
+export interface Patient {
+  idPatient?:string;
   namePatient: string;
   cellphonePatient: string;
   photoPatient: string;
