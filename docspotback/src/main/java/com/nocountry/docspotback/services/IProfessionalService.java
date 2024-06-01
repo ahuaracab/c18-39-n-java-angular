@@ -12,4 +12,5 @@ public interface IProfessionalService extends ICRUDService<Professional, UUID>{
     Professional saveTransactional(Professional professional, List<Specialty> specialties);
     List<Professional> getAllProfessionalsBySpecialityName(@Param("nameSpecialty") String nameSpecialty, int numPage, int pageSize, String orderBy, String sort);
 
+
 }

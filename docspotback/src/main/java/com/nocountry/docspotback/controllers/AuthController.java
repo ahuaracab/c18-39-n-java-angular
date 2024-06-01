@@ -13,6 +13,7 @@ import com.nocountry.docspotback.services.impl.ProfessionalServiceImpl;
 import com.nocountry.docspotback.services.impl.UserServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -43,6 +44,8 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody UserDTO userDto) {
+        Map<String, String> body = new HashMap<>();
+
         String roleName="";
         try {
             User user = new User();
@@ -56,9 +59,6 @@ public class AuthController {
             for (RoleDTO roleDto : userDto.getRoles()) {
                 Role role = new Role();
                 role.setIdRole(roleDto.getIdRole());
-                role.setNameRole(roleDto.getNameRole());
-                roleName=role.getNameRole();
-                role.setDescriptionRole(roleDto.getDescriptionRole());
                 roles.add(role);
             }
             user.setIdUser(UUID.randomUUID());
@@ -76,6 +76,8 @@ public class AuthController {
                 user.setPatient(patient);
                 service.save(user);
                 patientlService.save(patient);
+                body.put("message", "User registered successfully!");
+                return ResponseEntity.ok(body);
             }else if(roleName.equals("PROFESSIONAL")){
                 Professional professional = new Professional();
                 professional.setIdProfessional(UUID.randomUUID());
@@ -87,16 +89,19 @@ public class AuthController {
                 user.setProfessional(professional);
                 service.save(user);
                 professionalService.save(professional);
-
+                body.put("message", "User registered successfully!");
+                return ResponseEntity.ok(body);
             }
-
-
-
-            Map<String, String> body = new HashMap<>();
+            service.save(user);
             body.put("message", "User registered successfully!");
             return ResponseEntity.ok(body);
+        } catch (NoSuchElementException e) {
+            body.put("message", "Error: Element not found!");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+        } catch (DataIntegrityViolationException e) {
+            body.put("message", "Error: Data integrity violation!");
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
         } catch (Exception e) {
-            Map<String, String> body = new HashMap<>();
             body.put("message", "Error registering user!");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
         }
@@ -108,8 +113,12 @@ public class AuthController {
         if(response.isPresent()) {
             User user = response.get();
             Patient patient = service.getPatientByUserId(user.getIdUser());
-            user.setPatient(patient);
-            //user.setProfessional(professionalService.findById(user.getProfessional().getIdProfessional()));
+            Professional professional = service.getProfessionalByUserId(user.getIdUser());
+            if(patient!=null) {
+                user.setPatient(patient);
+            }else if(professional!=null) {
+            	user.setProfessional(professional);
+            }
             UserDTO userDTO = mapper.map(user, UserDTO.class);
             return new ResponseEntity<>(userDTO, HttpStatus.OK);
         } else {

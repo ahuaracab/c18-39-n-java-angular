@@ -1,0 +1,9 @@
+version: '3'
+services:
+  app:
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://dpg-cpbs7de3e1ms739b8r2g-a.oregon-postgres.render.com/docspot_qt5d
+      - SPRING_DATASOURCE_USERNAME=c18_39_n_java_angular
+      - SPRING_DATASOURCE_PASSWORD=ZRDwOE9h766fw3ePUCLzdlIeBeJvl2qG
