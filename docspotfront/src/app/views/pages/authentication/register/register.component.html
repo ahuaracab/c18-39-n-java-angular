@@ -157,12 +157,14 @@
             <button mat-raised-button type="submit" color='primary' [ngClass]="showTouched ? 
                             'btn-select':'btn-unselect'">Enviar</button>
         </form>
-        <span class="mt-5">
-            ¿Ya tienes una cuenta?
-        </span>
-        <span class="mb-5">
-            <a (click)="navLogin()">Inicia sesión aqui</a>
-        </span>
+        <div class="d-flex flex-column gap-3">
+            <span class="mt-5">
+                ¿Ya tienes una cuenta?
+            </span>
+            <span class="mb-5">
+                <a (click)="navLogin()">Inicia sesión aqui</a>
+            </span>
+        </div>
         }
     </div>
 </div>
