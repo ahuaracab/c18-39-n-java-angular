@@ -18,7 +18,7 @@
       </div>
 
       @if (errorMessage) {
-        <div class="alert alert-danger" style="max-width: 250px; margin: auto;">
+        <div class="alert alert-danger" style="max-width: 500px; width: 70%; margin-left: auto; margin-right: auto;">
           {{ errorMessage }}
         </div>
       }
@@ -89,7 +89,8 @@
       <!-- buttons section -->
       <div class="form-buttons">
 
-        <button mat-raised-button color="primary" type="submit" class="btn btn-primary btn-login">
+        <!-- class="btn btn-primary btn-login" -->
+        <button mat-raised-button color="primary" type="submit" >
           @if (loading){
             <mat-progress-spinner diameter="24"  mode="indeterminate" class="spinner"></mat-progress-spinner>
           }

@@ -12,6 +12,9 @@ import {
   HttpErrorResponse,
   HttpResponse,
 } from '@angular/common/http';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-login',
@@ -20,8 +23,11 @@ import {
     CommonModule,
     ReactiveFormsModule,
     MatIconModule,
+    MatButtonModule,
     MatProgressSpinnerModule,
     HttpClientModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',

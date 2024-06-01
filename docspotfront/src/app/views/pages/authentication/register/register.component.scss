@@ -150,14 +150,19 @@
     }
 }
 
-span{
-    text-align: center;
+.RegisterContainer {
+    .container {
 
-    a {
-        font-weight: 500;
-        cursor: pointer;
-        text-decoration: underline;
-        color:blue;
+        span{
+            text-align: center;
+        
+            a {
+                font-weight: 500;
+                cursor: pointer;
+                text-decoration: underline;
+                color:blue;
+            }
+        }
     }
 }
 
