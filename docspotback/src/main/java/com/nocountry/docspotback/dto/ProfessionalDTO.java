@@ -1,8 +1,6 @@
 package com.nocountry.docspotback.dto;
 
-import com.nocountry.docspotback.models.Shift;
-import com.nocountry.docspotback.models.Specialty;
-import com.nocountry.docspotback.models.User;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

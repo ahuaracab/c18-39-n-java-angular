@@ -9,6 +9,8 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,6 +29,7 @@ public class PatientDTO {
     private Boolean hasSocialWork;
 
     private String socialWork;
-
+    
+    @JsonIgnore
     private UserDTO user;
 }
