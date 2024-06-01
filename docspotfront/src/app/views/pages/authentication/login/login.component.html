@@ -6,11 +6,7 @@
   <div class="container"
   [style.view-transition-name]="'transition-form'">
     <form [formGroup]="loginForm" (ngSubmit)="login()">
-      @if (errorMessage) {
-        <div class="alert alert-danger ">
-          {{ errorMessage }}
-        </div>
-      }
+      
       <!-- title -->
       <div class="form-title">
         <h1>Bienvenido a DocSpot</h1>
@@ -20,6 +16,14 @@
           <p>a tu alcance.</p>
         </div>
       </div>
+
+      @if (errorMessage) {
+        <div class="alert alert-danger" style="max-width: 250px; margin: auto;">
+          {{ errorMessage }}
+        </div>
+      }
+    
+      
 
       <!-- input email -->
       <div class="form-group">

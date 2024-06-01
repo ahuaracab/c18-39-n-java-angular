@@ -12,7 +12,6 @@ import {
   HttpErrorResponse,
   HttpResponse,
 } from '@angular/common/http';
-import { eventListeners } from '@popperjs/core';
 
 @Component({
   selector: 'app-login',

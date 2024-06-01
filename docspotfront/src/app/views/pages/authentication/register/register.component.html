@@ -4,21 +4,28 @@
     </div>
     <div class="container"
     [style.view-transition-name]="'transition-form'">
-        <section class="selectRol">
-            <p>Desea registrarse como:</p>
-            <div class="seccionBtn">
+        <section class="selectRol" [ngClass]="{'btn-clicked': !showTouched}">
+            <h1>Registro DocSpot</h1>
+            <p>Seleccione su tipo de usuario:</p>
+            <div class="seccionBtn " [ngClass]="{'btn-column': !showTouched}">
                 <button mat-raised-button [ngClass]="{
                     'btn-select': showForm === selectedRol.patient,
                     'btn-unselect': showForm !== selectedRol.patient
                   }" [ngStyle]="{ opacity: showForm === selectedRol.professional ? 0.5 : 1 }"
                     (click)="selectPacient()">Paciente</button>
-                <p>ó</p>
+                <!-- <p>ó</p> -->
                 <button mat-raised-button [ngClass]="{
                     'btn-select': showForm === selectedRol.professional,
                     'btn-unselect': showForm !== selectedRol.professional
                   }" [ngStyle]="{ opacity: showForm === selectedRol.patient ? 0.5 : 1 }"
                     (click)="selectProfessional()">Professional</button>
             </div>
+            <span class="mt-5" [ngClass]="{'d-none': showTouched}">
+                ¿Ya tienes una cuenta?
+            </span>
+            <span class="mb-0" [ngClass]="{'d-none': showTouched}">
+                <a (click)="navLogin()">Inicia sesión aqui</a>
+            </span>
         </section>
         @if (this.showTouched && this.register) {
         <form [formGroup]="register" (ngSubmit)="send()">
@@ -149,6 +156,13 @@
 
             <button mat-raised-button type="submit" color='primary' [ngClass]="showTouched ? 
                             'btn-select':'btn-unselect'">Enviar</button>
+            
+            <span class="mt-5">
+                ¿Ya tienes una cuenta?
+            </span>
+            <span class="mb-5">
+                <a (click)="navLogin()">Inicia sesión aqui</a>
+            </span>
         </form>
         }
     </div>

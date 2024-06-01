@@ -364,4 +364,9 @@ export class RegisterComponent implements OnInit {
     professionalData.mp = FormG.get('mp')?.value;
     professionalData.specialties = FormG.get('specialties')?.value.map((spec:Specialty)=>spec.idSpecialty);
   }
+
+  public navLogin(): void {
+    event?.preventDefault();
+    this.router.navigate(['/auth/login']);
+  }
 }
