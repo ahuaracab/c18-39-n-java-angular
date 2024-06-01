@@ -2,21 +2,20 @@ package com.nocountry.docspotback.controllers;
 
 import java.util.*;
 
-
-import com.nocountry.docspotback.dto.ReservationResponseDto;
 import com.nocountry.docspotback.dto.RoleDTO;
 import com.nocountry.docspotback.dto.UserDTO;
 import com.nocountry.docspotback.models.Patient;
 import com.nocountry.docspotback.models.Professional;
 import com.nocountry.docspotback.models.Role;
 import com.nocountry.docspotback.models.User;
+import com.nocountry.docspotback.services.impl.PatientServiceImpl;
+import com.nocountry.docspotback.services.impl.ProfessionalServiceImpl;
 import com.nocountry.docspotback.services.impl.UserServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +29,12 @@ public class AuthController {
     @Autowired
     private UserServiceImpl service;
 
+    @Autowired
+    private ProfessionalServiceImpl professionalService;
+    
+    @Autowired
+    private PatientServiceImpl patientlService;
+    
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -62,13 +67,15 @@ public class AuthController {
             if (roleName.equals("PATIENT")){
                 Patient patient = new Patient();
                 patient.setIdPatient(UUID.randomUUID());
-                patient.setNamePatient(userDto.getPatients().getNamePatient());
-                patient.setPhotoPatient(userDto.getPatients().getPhotoPatient());
-                patient.setCellphonePatient(userDto.getPatients().getCellphonePatient());
-                patient.setHasSocialWork(userDto.getPatients().getHasSocialWork());
-                patient.setSocialWork(userDto.getPatients().getSocialWork());
+                patient.setNamePatient(userDto.getPatient().getNamePatient());
+                patient.setPhotoPatient(userDto.getPatient().getPhotoPatient());
+                patient.setCellphonePatient(userDto.getPatient().getCellphonePatient());
+                patient.setHasSocialWork(userDto.getPatient().getHasSocialWork());
+                patient.setSocialWork(userDto.getPatient().getSocialWork());
                 patient.setUser(user);
                 user.setPatient(patient);
+                service.save(user);
+                patientlService.save(patient);
             }else if(roleName.equals("PROFESSIONAL")){
                 Professional professional = new Professional();
                 professional.setIdProfessional(UUID.randomUUID());
@@ -78,9 +85,12 @@ public class AuthController {
                 professional.setValueQuery(userDto.getProfessional().getValueQuery());
                 professional.setUser(user);
                 user.setProfessional(professional);
+                service.save(user);
+                professionalService.save(professional);
+
             }
 
-            service.save(user);
+
 
             Map<String, String> body = new HashMap<>();
             body.put("message", "User registered successfully!");
@@ -93,8 +103,17 @@ public class AuthController {
     }
 
     @GetMapping("/user/{email}")
-    public ResponseEntity<Optional<User>> listReservationsByProfessional(@PathVariable("email") String email) {
+    public ResponseEntity<UserDTO> userByEmail(@PathVariable("email") String email) {
         Optional<User> response = service.findByEmail(email);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        if(response.isPresent()) {
+            User user = response.get();
+            Patient patient = service.getPatientByUserId(user.getIdUser());
+            user.setPatient(patient);
+            //user.setProfessional(professionalService.findById(user.getProfessional().getIdProfessional()));
+            UserDTO userDTO = mapper.map(user, UserDTO.class);
+            return new ResponseEntity<>(userDTO, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
