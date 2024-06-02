@@ -34,7 +34,8 @@ public class Professional extends Auditable{
     @Column(length = 12,nullable = false,unique = true)
     private String mp;
 
-   @ManyToOne
+   @OneToOne
+   @JsonIgnore
     private User user;
 
 

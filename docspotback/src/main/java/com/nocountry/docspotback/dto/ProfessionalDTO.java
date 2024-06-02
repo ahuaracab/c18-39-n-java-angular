@@ -10,6 +10,8 @@ import lombok.Setter;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -31,6 +33,7 @@ public class ProfessionalDTO {
     private String mp;
 
     @NotNull
+    @JsonIgnore
     private UserDTO user;
 
     @NotNull

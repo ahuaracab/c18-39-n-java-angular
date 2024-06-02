@@ -8,8 +8,10 @@ import com.nocountry.docspotback.models.Patient;
 import com.nocountry.docspotback.models.Professional;
 import com.nocountry.docspotback.models.Role;
 import com.nocountry.docspotback.models.User;
+import com.nocountry.docspotback.services.IRoleService;
 import com.nocountry.docspotback.services.impl.PatientServiceImpl;
 import com.nocountry.docspotback.services.impl.ProfessionalServiceImpl;
+import com.nocountry.docspotback.services.impl.RoleServiceImpl;
 import com.nocountry.docspotback.services.impl.UserServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,16 +39,18 @@ public class AuthController {
     private PatientServiceImpl patientlService;
     
     @Autowired
+    private RoleServiceImpl roleService;
+    
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ModelMapper mapper;
 
-    @PostMapping("/register")
+    @PostMapping(value = "/register",produces = "application/json")
     public ResponseEntity<Map<String, String>> register(@RequestBody UserDTO userDto) {
         Map<String, String> body = new HashMap<>();
 
-        String roleName="";
         try {
             User user = new User();
             user.setEmail(userDto.getEmail());
@@ -56,44 +60,52 @@ public class AuthController {
             user.setActive(true);
 
             List<Role> roles = new ArrayList<>();
-            for (RoleDTO roleDto : userDto.getRoles()) {
-                Role role = new Role();
-                role.setIdRole(roleDto.getIdRole());
-                roles.add(role);
+            System.out.println(userDto.getRoles().get(0).getNameRole());
+            System.out.println(mapper.map(roleService.findRoleByroleName(userDto.getRoles().get(0).getNameRole()),Role.class));
+            Role role1 = new Role();
+            for (int i=0;i<userDto.getRoles().size();i++) {
+                 role1 =mapper.map(roleService.findRoleByroleName(userDto.getRoles().get(i).getNameRole()),Role.class);
+                roles.add(role1);
+           
             }
             user.setIdUser(UUID.randomUUID());
             user.setRoles(roles);
-
-            if (roleName.equals("PATIENT")){
-                Patient patient = new Patient();
-                patient.setIdPatient(UUID.randomUUID());
-                patient.setNamePatient(userDto.getPatient().getNamePatient());
-                patient.setPhotoPatient(userDto.getPatient().getPhotoPatient());
-                patient.setCellphonePatient(userDto.getPatient().getCellphonePatient());
-                patient.setHasSocialWork(userDto.getPatient().getHasSocialWork());
-                patient.setSocialWork(userDto.getPatient().getSocialWork());
-                patient.setUser(user);
-                user.setPatient(patient);
-                service.save(user);
-                patientlService.save(patient);
-                body.put("message", "User registered successfully!");
-                return ResponseEntity.ok(body);
-            }else if(roleName.equals("PROFESSIONAL")){
-                Professional professional = new Professional();
-                professional.setIdProfessional(UUID.randomUUID());
-                professional.setNameProfessional(userDto.getProfessional().getNameProfessional());
-                professional.setMp(userDto.getProfessional().getMp());
-                professional.setReputation(0.0);
-                professional.setValueQuery(userDto.getProfessional().getValueQuery());
-                professional.setUser(user);
-                user.setProfessional(professional);
-                service.save(user);
-                professionalService.save(professional);
-                body.put("message", "User registered successfully!");
-                return ResponseEntity.ok(body);
+            String roleName="";
+            for (int i=0;i<1;i++) {
+                 roleName = roles.get(i).getNameRole();
+                System.out.println(roleName);
+                if (roleName.equals("ROLE_PATIENT")){
+                    Patient patient = new Patient();
+                    patient.setIdPatient(UUID.randomUUID());
+                    patient.setNamePatient(userDto.getPatient().getNamePatient());
+                    patient.setPhotoPatient(userDto.getPatient().getPhotoPatient());
+                    patient.setCellphonePatient(userDto.getPatient().getCellphonePatient());
+                    patient.setHasSocialWork(userDto.getPatient().getHasSocialWork());
+                    patient.setSocialWork(userDto.getPatient().getSocialWork());
+                    patient.setUser(user);
+                    user.setPatient(patient);
+                    service.save(user);
+                    patientlService.save(patient);
+                    body.put("message", "Patient registered successfully!");
+                    return ResponseEntity.ok(body);
+                } else if(roleName.equals("ROLE_PROFESSIONAL")){
+                    Professional professional = new Professional();
+                    professional.setIdProfessional(UUID.randomUUID());
+                    professional.setNameProfessional(userDto.getProfessional().getNameProfessional());
+                    professional.setMp(userDto.getProfessional().getMp());
+                    professional.setReputation(0.0);
+                    professional.setValueQuery(userDto.getProfessional().getValueQuery());
+                    professional.setUser(user);
+                    user.setProfessional(professional);
+                    service.save(user);
+                    professionalService.save(professional);
+                    body.put("message", "Professional registered successfully!");
+                    return ResponseEntity.ok(body);
+                }
+           
             }
             service.save(user);
-            body.put("message", "User registered successfully!");
+            body.put("message", "Admin registered successfully!");
             return ResponseEntity.ok(body);
         } catch (NoSuchElementException e) {
             body.put("message", "Error: Element not found!");
