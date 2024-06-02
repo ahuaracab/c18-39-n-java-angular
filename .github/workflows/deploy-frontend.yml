@@ -21,7 +21,7 @@ jobs:
         run: npm install --prefix docspotfront
 
       - name: Construir proyecto Angular
-        run: npm run build --prefix docspotfront -- --prod --output-path dist
+        run: npm run build --prefix docspotfront -- -c production --output-path dist
 
       - name: Desplegar en GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
