@@ -1,0 +1,29 @@
+name: Despliegue de Frontend en GitHub Pages
+
+on:
+  push:
+    branches:
+      - front/exp/deploy
+
+jobs:
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Instalar dependencias de Angular
+        run: npm install --prefix docspotfront
+
+      - name: Construir proyecto Angular
+        run: npm run build --prefix docspotfront -- --prod --output-path dist
+
+      - name: Desplegar en GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./docspotfront/dist
