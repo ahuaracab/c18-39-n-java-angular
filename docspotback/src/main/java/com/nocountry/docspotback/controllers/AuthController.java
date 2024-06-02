@@ -23,9 +23,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "Autentificación y Registro", description = "Registro de usuario según roles y Autentificación")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -47,7 +53,15 @@ public class AuthController {
     @Autowired
     private ModelMapper mapper;
 
-    @PostMapping(value = "/register",produces = "application/json")
+    @Operation(
+    	      summary = "Registra al Usuario según rol(ROLE_ADMIN,ROLE_PATIENT,ROLE_PROFESSIONAL)",
+    	      description = "User necesita que se envie email,password,Lista de roles(roles),patient o professional",
+    	      tags = { })
+    	  @ApiResponses({
+    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation = User.class),mediaType = "x-www-form-urlencoded")}),
+    	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+    	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
+    @PostMapping(value = "/register")
     public ResponseEntity<Map<String, String>> register(@RequestBody UserDTO userDto) {
         Map<String, String> body = new HashMap<>();
 
