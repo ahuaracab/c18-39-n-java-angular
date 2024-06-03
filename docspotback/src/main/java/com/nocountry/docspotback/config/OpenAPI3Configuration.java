@@ -17,7 +17,7 @@ import io.swagger.v3.oas.models.servers.Server;
 @Configuration
 public class OpenAPI3Configuration {
 	
-    Contact contact = new Contact().name("c18-39-n-java-angular").email("docspot@gmail.com") ;
+    Contact contact = new Contact().name("c18-39-n-java-angular").email("docspot@gmail.com") .url("https://github.com/ahuaracab/c18-39-n-java-angular/tree/main/docspotback");
     
     License mitLicense = new License().name("MIT License").url("https://choosealicense.com/licenses/mit/");
     

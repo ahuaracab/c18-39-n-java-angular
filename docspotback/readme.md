@@ -11,7 +11,9 @@ Run the following command and answer the questions:
 ```shell
 $ mvn spring-boot:run
 ```
-
+```shell
+$ docker pull anderson20/docspot:0.0.2
+```
 ## Features
 The generator-springboot generates a Spring Boot application with the following features configured:
 
