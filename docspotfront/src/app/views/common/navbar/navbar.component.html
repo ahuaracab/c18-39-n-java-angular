@@ -1,0 +1,40 @@
+<header
+  class="d-flex align-items-center position-fixed top-0 w-100 justify-content-between bg-white z-1"
+  style="padding: 1rem 2.5rem;"
+>
+  <div>
+    <p class="text-start" style="font-size: 2rem; line-height: 1.25; font-weight: 600;">Logo</p>
+  </div>
+  <nav>
+    <ul
+      class="d-flex justify-content-center"
+      style="height: 1.5rem; list-style-type: none; gap: 3rem; padding: 0.5rem; font-weight: 500;"
+    >
+      @for (item of menuItems; track $index) {
+        <li>
+          <a style="text-decoration: none; color: #000;" [routerLink]="[item.path]">
+            {{ item.label }}
+          </a>
+        </li>
+      }
+      <span class="d-flex" style="gap: 0.5rem;">
+        <li style="font-weight: 500;">
+          <a
+            style="border: 1px solid #19b2dd; color: #19b2dd; padding: 0.5rem 0.75rem; text-decoration: none; border-radius: 8px"
+            [routerLink]="['/auth/login']"
+          >
+            Iniciar Sesión
+          </a>
+        </li>
+        <li style="font-weight: 500;">
+          <a
+            style="border: 1px solid #19b2dd; background-color: #19b2dd; padding: 0.5rem 0.75rem; text-decoration: none; border-radius: 8px; color: #fff;"
+            [routerLink]="['/auth/register']"
+          >
+            Registro
+          </a>
+        </li>
+      </span>
+    </ul>
+  </nav>
+</header>

@@ -17,6 +17,10 @@ export const routes: Routes = [
         './views/pages/search-profesional/search-professional.routes'
       ).then((c) => c.SEARCH_PROFESSIONAL_ROUTES),
   },
+  {
+    path: 'home',
+    loadChildren: () => import('./views/pages/home/home.routes').then((c) => c.HOME_ROUTES),
+  },
   // ,
   // {
   //   path: "",
