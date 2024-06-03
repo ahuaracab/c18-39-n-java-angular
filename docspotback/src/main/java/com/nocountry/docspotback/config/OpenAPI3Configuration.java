@@ -30,7 +30,7 @@ public class OpenAPI3Configuration {
     description("Server URL in Production environment");
     
     Info info = new Info()
-            .title("Tutorial Management API")
+            .title("Doc Spot API")
             .version("1.0")
             .contact(contact)
             .description("Esta API contiene endpoints para la generación del aplicativo web DocSpot.").termsOfService("https://www.bezkoder.com/terms")
@@ -47,6 +47,6 @@ public class OpenAPI3Configuration {
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
                                 .bearerFormat("JWT")
-                              )).info(info).servers(List.of(devServer,prodServer));
+                              )).info(info).servers(List.of(prodServer,devServer));
     }
 }

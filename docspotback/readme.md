@@ -9,10 +9,10 @@ API to generate medical appointments with health professionals who serve indepen
 Run the following command and answer the questions:
 
 ```shell
-$ mvn spring-boot:run
+ mvn spring-boot:run
 ```
 ```shell
-$ docker pull anderson20/docspot:0.0.2
+ docker pull anderson20/docspot:0.0.2
 ```
 ## Features
 The generator-springboot generates a Spring Boot application with the following features configured:
@@ -26,8 +26,6 @@ The generator-springboot generates a Spring Boot application with the following 
 
 ### Link to the Doc Spot API swagger on local server
  * http://localhost:8000/swagger-ui/index.html
- * User: admin
- * Password: java-angular
 
 ### Link to the Doc Spot API swagger on Render Server
- * 
+ * https://docspotback.onrender.com/swagger-ui/index.html
