@@ -10,6 +10,8 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -24,5 +26,6 @@ public class ReservationDTO {
     private PatientDTO patient;
 
     @NotNull
+    @JsonIgnore
     private ShiftDTO shift;
 }

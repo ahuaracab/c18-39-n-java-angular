@@ -1,6 +1,7 @@
 package com.nocountry.docspotback.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nocountry.docspotback.models.Professional;
 import com.nocountry.docspotback.models.Reservation;
 
@@ -30,6 +31,7 @@ public class ShiftDTO {
     private Boolean repeatShift;
 
     @NotNull
+    @JsonIgnore
     private ProfessionalDTO professional;
 
     @NotNull

@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -130,8 +131,16 @@ public class AuthController {
         }
     }
     
+    @Operation(
+  	      summary = "Obtine datos de un usuario por email como parámetro",
+  	      description = "User necesita que se envie atributo email",
+  	      tags = { })
+  	  @ApiResponses({
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation = UserDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+  	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/user/{email}")
-    public ResponseEntity<UserDTO> userByEmail(@PathVariable("email") String email) {
+    public ResponseEntity<UserDTO> userByEmail(@PathVariable("email")@Parameter(name = "email", description = "Email del User", example = "luiscordova@gmail.com") String email ) {
         Optional<User> response = service.findByEmail(email);
         if(response.isPresent()) {
             User user = response.get();

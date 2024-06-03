@@ -8,12 +8,15 @@ import lombok.Setter;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProfessionalListSpecialtyDTO {
     @NotNull
+    @JsonIgnore
     private ProfessionalDTO consult;
 
     @NotNull
