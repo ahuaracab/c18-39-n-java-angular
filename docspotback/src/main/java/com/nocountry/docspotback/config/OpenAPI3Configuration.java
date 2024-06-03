@@ -46,6 +46,7 @@ public class OpenAPI3Configuration {
                                 .name(securitySchemeName)
                                 .type(SecurityScheme.Type.HTTP)
                                 .scheme("bearer")
-                                .bearerFormat("JWT"))).info(info).servers(List.of(devServer,prodServer));
+                                .bearerFormat("JWT")
+                              )).info(info).servers(List.of(devServer,prodServer));
     }
 }

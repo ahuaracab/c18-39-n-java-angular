@@ -2,6 +2,7 @@ package com.nocountry.docspotback.controllers;
 
 import java.util.*;
 
+import com.nocountry.docspotback.dto.RegisterRequest;
 import com.nocountry.docspotback.dto.RoleDTO;
 import com.nocountry.docspotback.dto.UserDTO;
 import com.nocountry.docspotback.models.Patient;
@@ -58,11 +59,11 @@ public class AuthController {
     	      description = "User necesita que se envie email,password,Lista de roles(roles),patient o professional",
     	      tags = { })
     	  @ApiResponses({
-    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation = User.class),mediaType = "x-www-form-urlencoded")}),
+    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation = UserDTO.class),mediaType = "x-www-form-urlencoded")}),
     	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
     	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    @PostMapping(value = "/register")
-    public ResponseEntity<Map<String, String>> register(@RequestBody UserDTO userDto) {
+    @PostMapping(value = "/register",consumes="application/x-www-form-urlencoded")
+    public ResponseEntity<Map<String, String>> register(@RequestBody RegisterRequest userDto) {
         Map<String, String> body = new HashMap<>();
 
         try {
@@ -74,14 +75,10 @@ public class AuthController {
             user.setActive(true);
 
             List<Role> roles = new ArrayList<>();
-            System.out.println(userDto.getRoles().get(0).getNameRole());
-            System.out.println(mapper.map(roleService.findRoleByroleName(userDto.getRoles().get(0).getNameRole()),Role.class));
             Role role1 = new Role();
-            for (int i=0;i<userDto.getRoles().size();i++) {
-                 role1 =mapper.map(roleService.findRoleByroleName(userDto.getRoles().get(i).getNameRole()),Role.class);
-                roles.add(role1);
+            role1 =mapper.map(roleService.findRoleByroleName(userDto.getNameRole()),Role.class);
+            roles.add(role1);
            
-            }
             user.setIdUser(UUID.randomUUID());
             user.setRoles(roles);
             String roleName="";
@@ -91,11 +88,11 @@ public class AuthController {
                 if (roleName.equals("ROLE_PATIENT")){
                     Patient patient = new Patient();
                     patient.setIdPatient(UUID.randomUUID());
-                    patient.setNamePatient(userDto.getPatient().getNamePatient());
-                    patient.setPhotoPatient(userDto.getPatient().getPhotoPatient());
-                    patient.setCellphonePatient(userDto.getPatient().getCellphonePatient());
-                    patient.setHasSocialWork(userDto.getPatient().getHasSocialWork());
-                    patient.setSocialWork(userDto.getPatient().getSocialWork());
+                    patient.setNamePatient(userDto.getNameUser());
+                    patient.setPhotoPatient(userDto.getPhotoPatient());
+                    patient.setCellphonePatient(userDto.getCellphonePatient());
+                    patient.setHasSocialWork(userDto.getHasSocialWork());
+                    patient.setSocialWork(userDto.getSocialWork());
                     patient.setUser(user);
                     user.setPatient(patient);
                     service.save(user);
@@ -105,10 +102,10 @@ public class AuthController {
                 } else if(roleName.equals("ROLE_PROFESSIONAL")){
                     Professional professional = new Professional();
                     professional.setIdProfessional(UUID.randomUUID());
-                    professional.setNameProfessional(userDto.getProfessional().getNameProfessional());
-                    professional.setMp(userDto.getProfessional().getMp());
+                    professional.setNameProfessional(userDto.getNameUser());
+                    professional.setMp(userDto.getMp());
                     professional.setReputation(0.0);
-                    professional.setValueQuery(userDto.getProfessional().getValueQuery());
+                    professional.setValueQuery(userDto.getValueQuery());
                     professional.setUser(user);
                     user.setProfessional(professional);
                     service.save(user);
@@ -132,7 +129,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
         }
     }
-
+    
     @GetMapping("/user/{email}")
     public ResponseEntity<UserDTO> userByEmail(@PathVariable("email") String email) {
         Optional<User> response = service.findByEmail(email);
