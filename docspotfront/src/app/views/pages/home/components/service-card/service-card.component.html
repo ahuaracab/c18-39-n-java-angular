@@ -1,22 +1,23 @@
 @for (service of services; track $index) {
   <div class="card">
-    <div class="w-100 text-center">
-      <p-avatar
+    <section class="w-100 text-center" style="width: 12.5rem; height: 15.5rem;">
+      <!-- <p-avatar
         label="I"
         styleClass="my-4"
         size="xlarge"
         shape="circle"
-      />
-    </div>
-    <div>
+      /> -->
+      <div class="icon"></div>
+    </section>
+    <section>
       <p class="fw-bold text-center my-5">
         {{ service.title }}
       </p>
-    </div>
-    <div>
+    </section>
+    <section>
       <p class="fw-normal text-center" style="text-wrap: pretty;">
         {{ service.description }}
       </p>
-    </div>
+    </section>
   </div>
 }

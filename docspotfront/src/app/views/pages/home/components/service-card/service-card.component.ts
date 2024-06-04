@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { AvatarModule } from 'primeng/avatar'
 import { CardModule } from 'primeng/card';
+import { Service } from 'src/app/models/home-models/service.model';
 
 @Component({
   selector: 'app-service-card',
@@ -18,7 +19,8 @@ import { CardModule } from 'primeng/card';
 })
 export class ServiceCardComponent {
 
-  public services = [
+  // ! A cada objeto le faltaría la propiedad del icono
+  public services:Service[] = [
     {
       title: 'Consulta Médica Online',
       description: 'Habla con médicos calificados desde la comodidad de tu hogar. Realiza tus consultas sin salir de casa.',

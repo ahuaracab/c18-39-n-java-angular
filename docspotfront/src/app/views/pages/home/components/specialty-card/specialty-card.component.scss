@@ -10,7 +10,7 @@
   max-width: 300px;
   height: 400px;
   float: left;
-  margin: 8rem 1.5rem;
+  margin: 8rem 2.5rem;
 }
 .icon {
   margin: 1.5rem 0;
@@ -27,11 +27,4 @@
   align-items: center;
   justify-content: center;
   background-color: #e5e7eb;
-}
-
-@media (max-width: 1184px) {
-  .card {
-    margin: 1.5rem 2.5rem;
-    float: none;
-  }
 }

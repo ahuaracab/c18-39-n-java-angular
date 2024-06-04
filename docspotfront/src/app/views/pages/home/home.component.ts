@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { NavbarComponent } from '../../common/navbar/navbar.component';
 import { HomeMainSectionComponent } from './components/home-main-section/home-main-section.component';
 import { ServicesSectionComponent } from './components/services-section/services-section.component';
+import { SpecialtiesSectionComponent } from './components/specialties-section/specialties-section.component';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +12,8 @@ import { ServicesSectionComponent } from './components/services-section/services
     CommonModule,
     NavbarComponent,
     HomeMainSectionComponent,
-    ServicesSectionComponent
+    ServicesSectionComponent,
+    SpecialtiesSectionComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
