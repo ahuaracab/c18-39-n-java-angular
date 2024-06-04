@@ -1,4 +1,4 @@
-import { SearchProfessionalService } from './../../../../../../services/service-search-profressional/search-professional.service';
+import { SearchProfessionalService } from '../../../../../services/search-professional/search-professional.service';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from "primeng/button";
@@ -27,7 +27,7 @@ export class DoctorFiltersComponent implements OnInit {
   public descendantPunctuation:boolean = true;
   public descendantPrice:boolean = true;
 
-  public specialtyData: Specialty | null = null;
+  public specialtyData: Specialty[] = [];
 
   constructor(
     private _searchProfessionalService: SearchProfessionalService
@@ -39,9 +39,7 @@ export class DoctorFiltersComponent implements OnInit {
 
   getSpecialties() {
     this._searchProfessionalService.getSpecialties().subscribe({
-      next: (res) => {
-        console.log(res);
-      }
+      next: (res) => this.specialtyData = res
     })
   }
 
