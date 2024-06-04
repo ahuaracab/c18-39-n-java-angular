@@ -26,6 +26,5 @@ public class ReservationDTO {
     private PatientDTO patient;
 
     @NotNull
-    @JsonIgnore
     private ShiftDTO shift;
 }

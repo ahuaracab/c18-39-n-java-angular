@@ -29,11 +29,15 @@ public class ShiftDTO {
 
     @NotNull
     private Boolean repeatShift;
+    
+    @NotNull
+    private Boolean stateShift;
 
     @NotNull
     @JsonIgnore
     private ProfessionalDTO professional;
 
     @NotNull
+    @JsonIgnore
     private ReservationDTO reservation;
 }

@@ -45,5 +45,6 @@ public class ProfessionalDTO {
     private List<SpecialtyDTO> specialties;
 
     @NotNull
+    @JsonIgnore
     private List<ShiftDTO> shifts;
 }

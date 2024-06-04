@@ -1,6 +1,6 @@
 package com.nocountry.docspotback.controllers;
 
-import com.nocountry.docspotback.dto.PatientDTO;
+import com.nocountry.docspotback.dto.ProfessionalDTO;
 import com.nocountry.docspotback.dto.ProfessionalDTO;
 import com.nocountry.docspotback.dto.ProfessionalListSpecialtyDTO;
 
@@ -51,11 +51,11 @@ public class ProfessionalController {
     private ModelMapper mapper;
 
     @Operation(
-  	      summary = "Lista todos los Pacientes",
-  	      description = "Lista todos los pacientes inscritos en la aplicación",
+  	      summary = "Lista todos los Profesionales",
+  	      description = "Lista todos los rofesionales inscritos en la aplicación",
   	      tags = { })
   	  @ApiResponses({
-  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
   	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
   	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping
@@ -65,11 +65,11 @@ public class ProfessionalController {
     }
     
     @Operation(
-    	      summary = "Busca un Paciente por ID",
-    	      description = "Busca un Paciente.Se requiere el parametro ID del paciente",
+    	      summary = "Busca un Profesional por ID",
+    	      description = "Busca un Profesional.Se requiere el parametro ID del rofesional",
     	      tags = { })
 	  @ApiResponses({
-  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
   	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
   	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/{id}")
@@ -83,11 +83,11 @@ public class ProfessionalController {
     }
 
     @Operation(
-  	      summary = "Crea un paciente",
-  	      description = "Crea un Paciente.Se requiere enviar los parametros descritos a continuación",
+  	      summary = "Crea un rofesional",
+  	      description = "Crea un Profesional.Se requiere enviar los parametros descritos a continuación",
   	      tags = { })
   	  @ApiResponses({
-  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
   	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
   	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @PostMapping
@@ -103,11 +103,11 @@ public class ProfessionalController {
     }
 
     @Operation(
-  	      summary = "Actualiza datos de un Paciente por ID",
-  	      description = "Actualiza los datos de un Paciente.Se envia los atributos a actualizar del paciente y el ID del Paciente",
+  	      summary = "Actualiza datos de un Profesional por ID",
+  	      description = "Actualiza los datos de un Profesional.Se envia los atributos a actualizar del rofesional y el ID del Profesional",
   	      tags = { })
   	  @ApiResponses({
-  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
   	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
   	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @PutMapping
@@ -117,11 +117,11 @@ public class ProfessionalController {
     }
 
     @Operation(
-  	      summary = "Elimina un Paciente por ID",
-  	      description = "Elimina un Paciente.Se requiere el parametro ID del paciente",
+  	      summary = "Elimina un Profesional por ID",
+  	      description = "Elimina un Profesional.Se requiere el parametro ID del rofesional",
   	      tags = { })
   	  @ApiResponses({
-  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
   	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
   	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @DeleteMapping("/{id}")
@@ -135,11 +135,11 @@ public class ProfessionalController {
     }
 
     @Operation(
-  	      summary = "Lista dos rutas de un Paciente por ID",
-  	      description = "Lista dos rutas de un  Paciente.Se requiere el parametro ID del paciente",
+  	      summary = "Lista dos rutas de un Profesional por ID",
+  	      description = "Lista dos rutas de un  Profesional.Se requiere el parametro ID del rofesional",
   	      tags = { })
   	  @ApiResponses({
-  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
   	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
   	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/hateoas/{id}")
@@ -163,15 +163,15 @@ public class ProfessionalController {
     	      description = "Paginación de profesionales por nombre de especialidad.Además se puede ordenar por cualquier atributo del profesional()",
     	      tags = { })
     	  @ApiResponses({
-    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
     	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
     	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/pageable/{bySpecialtyName}")
     public ResponseEntity<List<ProfessionalDTO>> getAllByNameSpecialty(
-            @PathVariable("bySpecialtyName") String nameProfessional,
+            @PathVariable("bySpecialtyName")@Parameter(example = "Cardiología") String nameProfessional,
             @RequestParam("numberPage") @Parameter(example = "0") Integer numberPage,
             @RequestParam("pageSize")@Parameter(example = "10") Integer sizePage,
-            @RequestParam("orderBy") @Parameter(example = "valuerQuery") String orderBy,
+            @RequestParam("orderBy") @Parameter(example = "value_query") String orderBy,
             @RequestParam("sort") @Parameter(example = "ASC") String sort) {
         try {
             List<Professional> lst = service.getAllProfessionalsBySpecialityName(nameProfessional, numberPage, sizePage, orderBy, sort);

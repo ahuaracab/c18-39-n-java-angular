@@ -45,7 +45,8 @@ public class SpringSecurityConfig {
         return http
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/professional").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/professional","/api/professional/pageable/**","/api/professional/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/shifts").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/specialty").permitAll()
