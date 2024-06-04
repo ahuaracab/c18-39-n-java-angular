@@ -6,12 +6,14 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getStorage, provideStorage } from '@angular/fire/storage';
 import { provideClientHydration } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes, withViewTransitions()),
     provideClientHydration(),
     provideAnimations(),
+    provideHttpClient(),
     provideFirebaseApp(() =>
       initializeApp({
         projectId: 'no-country-medical-services',
