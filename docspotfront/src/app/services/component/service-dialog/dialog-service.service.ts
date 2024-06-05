@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
-import { DialogParams } from 'src/app/models/components/common/dialog.model';
+import { DialogDataDto, DialogParams } from 'src/app/models/components/common/dialog.model';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { DialogAlertComponent } from 'src/app/views/common/dialogs/dialog-alert/dialog-alert.component';
+import { DialogSuccessComponent } from 'src/app/views/common/dialogs/dialog-success/dialog-success.component';
+import { DialogBaseComponent } from 'src/app/views/common/dialogs/dialog-base/dialog-base.component';
+import { DialogLoadingComponent } from 'src/app/views/common/dialogs/dialog-loading/dialog-loading.component';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +27,46 @@ export class DialogServiceService {
   ) { }
 
   /* componentes */
+  public openAlertDialog(data: DialogDataDto, dialogParams?: DialogParams): Observable<any> {
+    const dialogRef = this.dialog.open(
+      DialogAlertComponent,
+      this.setParams<DialogDataDto>('alertDialog', data, dialogParams)
+    );
+
+    return dialogRef.afterClosed();
+  }
+
+  public openSuccessDialog(data: DialogDataDto, dialogParams?: DialogParams): Observable<any> {
+    const dialogRef = this.dialog.open(
+      DialogSuccessComponent,
+      this.setParams<DialogDataDto>('successDialog', data, dialogParams)
+    );
+
+    return dialogRef.afterClosed();
+  }
+
+  public openBaseDialog(data: DialogDataDto, dialogParams?: DialogParams): Observable<any> {
+    const dialogRef = this.dialog.open(
+      DialogBaseComponent,
+      this.setParams<DialogDataDto>('baseDialog', data, dialogParams)
+    );
+
+    return dialogRef.afterClosed();
+  }
+
+  public openLoadingWindow(content?: string, tittle?: string) {
+    this.dialog.open(DialogLoadingComponent, {
+      id: 'loadingWindow',
+      panelClass: ['loadingDialog'],
+      width: '100%',
+      backdropClass: 'blur-backdrop',
+      disableClose: true,
+      data: {
+        content: (content ?? 'Operación en proceso...'),
+        tittle: tittle,
+      },
+    });
+  }
 
   public closeDialog(id: string = 'loadingWindow') {
     this.dialog.getDialogById(id)?.close();
