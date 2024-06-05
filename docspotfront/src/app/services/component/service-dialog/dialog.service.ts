@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class DialogServiceService {
+export class DialogService {
 
   private standardDialogParams: DialogParams = {
     width: 'auto',
