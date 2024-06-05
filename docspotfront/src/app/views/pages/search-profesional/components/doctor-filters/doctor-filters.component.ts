@@ -37,10 +37,17 @@ export class DoctorFiltersComponent implements OnInit {
     this.getSpecialties();
   }
 
-  getSpecialties() {
+  getSpecialties():void {
     this._searchProfessionalService.getSpecialties().subscribe({
-      next: (res) => this.specialtyData = res
+      next: (res) => {
+        console.log(res);
+        this.specialtyData = res
+      }
     })
+  }
+
+  searchSpecialty() {
+    this._searchProfessionalService
   }
 
   sortPunctuation():void {
