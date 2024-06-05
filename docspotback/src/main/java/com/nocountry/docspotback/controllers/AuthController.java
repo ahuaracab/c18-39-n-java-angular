@@ -1,6 +1,7 @@
 package com.nocountry.docspotback.controllers;
 
 import java.util.*;
+import java.util.zip.DataFormatException;
 
 import com.nocountry.docspotback.dto.RegisterRequest;
 import com.nocountry.docspotback.dto.RoleDTO;
@@ -18,6 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 
@@ -96,6 +98,7 @@ public class AuthController {
                     patient.setSocialWork(userDto.getSocialWork());
                     patient.setUser(user);
                     user.setPatient(patient);
+                    roleName="";
                     service.save(user);
                     patientlService.save(patient);
                     body.put("message", "Patient registered successfully!");
@@ -109,6 +112,7 @@ public class AuthController {
                     professional.setValueQuery(userDto.getValueQuery());
                     professional.setUser(user);
                     user.setProfessional(professional);
+                    roleName="";
                     service.save(user);
                     professionalService.save(professional);
                     body.put("message", "Professional registered successfully!");
@@ -125,9 +129,10 @@ public class AuthController {
         } catch (DataIntegrityViolationException e) {
             body.put("message", "Error: Data integrity violation!");
             return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+
         } catch (Exception e) {
-            body.put("message", "User registered successfully!");
-            return ResponseEntity.ok(body);
+            body.put("message", "Error registering user!");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
         }
     }
     
