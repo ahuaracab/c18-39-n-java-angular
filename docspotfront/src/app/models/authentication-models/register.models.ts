@@ -21,16 +21,16 @@ export interface Patient {
   user: UserDTO;
 }
 
-export interface PacientRegister {
-  rol: string;
-  email: string;
-  password: string;
-  namePatient: string;
-  cellphonePatient: string;
-  photoPatient: string;
-  hasSocialWork: boolean;
-  socialWork: string;
-}
+// export interface PacientRegister {
+//   rol: string;
+//   email: string;
+//   password: string;
+//   namePatient: string;
+//   cellphonePatient: string;
+//   photoPatient: string;
+//   hasSocialWork: boolean;
+//   socialWork: string;
+// }
 
 export interface ProfessionalRegister {
   rol: string;
@@ -47,21 +47,13 @@ export interface Specialty {
   descriptionSpecialty: string;
 }
 
-/*
-{
-  "roles": [{
-    "idRole":"1cf97381-3bb1-4e37-9140-8b9039f14cff",
-    "nameRole":"PATIENT",
-    "descriptionRole":"nobody",
-    }],
-  "email": "testPatient@yahoo.com",
-  "password": "testPWD",
-  "patient": {
-    "namePatient": "patient_1",
-    "cellphonePatient": "456456456",
-    "photoPatient": "test_photo",
-    "hasSocialWork": false,
-    "socialWork": ""
-  }
+export interface registerPatient {
+  email:string;
+  password:string;
+  nameRole:string;
+  nameUser:string;
+  cellphonePatient:string;
+  photoPatient:string;
+  hasSocialWork:boolean;
+  socialWork:string;
 }
-*/
