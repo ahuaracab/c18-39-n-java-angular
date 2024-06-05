@@ -32,7 +32,7 @@ import {
   Specialty,
   registerPatient,
 } from 'src/app/models/authentication-models/register.models';
-import { Observable, map, startWith } from 'rxjs';
+import { Observable, finalize, map, startWith } from 'rxjs';
 import { SpecialtyService } from 'src/app/services/service-specialty/specialty.service';
 import {
   HttpClientModule,
@@ -40,6 +40,7 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { RegisterService } from 'src/app/services/service-register/register.service';
+import { DialogService } from 'src/app/services/component/service-dialog/dialog.service';
 
 enum Rol {
   professional = 'ROLE_PROFESSIONAL',
@@ -49,7 +50,7 @@ enum Rol {
 @Component({
   selector: 'app-register',
   standalone: true,
-  providers: [SpecialtyService, RegisterService],
+  providers: [SpecialtyService, RegisterService, DialogService],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   imports: [
@@ -95,6 +96,7 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private dialogService: DialogService,
     private storageFire: StorageFire,
     private specialtyService: SpecialtyService,
     private registerService: RegisterService
@@ -335,6 +337,7 @@ export class RegisterComponent implements OnInit {
     console.log('Form format:', this.register.value);
 
     if (this.register.invalid) {
+      this.dialogService.openLoadingWindow();
       console.log('Form invalid:', this.register);
       console.log('formulario invalido');
       return;
@@ -351,7 +354,10 @@ export class RegisterComponent implements OnInit {
       console.log('envio backend: ', patientDto);
 
       // loading=true;
-      this.registerService.registerPatient(patientDto).subscribe({
+      this.dialogService.openLoadingWindow();
+      this.registerService.registerPatient(patientDto).pipe(
+        finalize(() => this.dialogService.closeDialog())
+      ).subscribe({
         next: (res: HttpResponse<any>) => {
           // loading=false;
           console.log('response: ', res);
