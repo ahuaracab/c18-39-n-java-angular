@@ -22,17 +22,22 @@ export class ServiceCardComponent {
   // ! A cada objeto le faltaría la propiedad del icono
   public services:Service[] = [
     {
+      icon:'assets/images/medical-appointment.png',
+      alt: 'Consulta Médica Online',
       title: 'Consulta Médica Online',
       description: 'Habla con médicos calificados desde la comodidad de tu hogar. Realiza tus consultas sin salir de casa.',
     },
     {
+      icon:'assets/images/medical-record.png',
+      alt: '',
       title: 'Historial Clínico Digital',
       description: 'Accede a tu historial médico, recetas y resultados de laboratorio en un solo lugar.'
     },
     {
+      icon:'assets/images/reserve-medical-appointment.png',
+      alt: 'Reservar cita médica',
       title: 'Reserva Fácil y Rápida',
       description: 'Encuentra especialistas, agenda citas y recibe confirmaciones al instante.'
     }
   ]
-
 }
