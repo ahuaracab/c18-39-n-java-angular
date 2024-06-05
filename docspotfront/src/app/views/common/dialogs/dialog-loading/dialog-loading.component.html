@@ -1,1 +1,10 @@
-<p>dialog-loading works!</p>
+<div class="loadContainer">
+    <span>{{data.tittle}}</span>
+    <mat-progress-spinner
+        class="spinner"
+        mode="indeterminate"
+        [diameter]="125">
+    </mat-progress-spinner>
+    <p>{{data.content}}</p>
+  </div>
+  
