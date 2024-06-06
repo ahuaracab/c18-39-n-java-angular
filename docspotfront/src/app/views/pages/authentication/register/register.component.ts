@@ -211,6 +211,7 @@ export class RegisterComponent implements OnInit {
     formG.addControl('mp', new FormControl('', Validators.required));
     formG.addControl('specialties', new FormControl(this.specSelect));
     formG.addControl('specialtyAuto', new FormControl(''));
+    formG.addControl('valueQuery',new FormControl(''));
   }
 
   private removeControlsPatient(formG: FormGroup): void {
@@ -244,6 +245,7 @@ export class RegisterComponent implements OnInit {
     formG.removeControl('mp');
     formG.removeControl('specialties');
     formG.removeControl('specialtyAuto');
+    formG.removeControl('valueQuery');
   }
   /* FIN - Cambio de formulario Paciente */
 
@@ -470,6 +472,7 @@ export class RegisterComponent implements OnInit {
     professionalData.nameRole = FormG.get('rol')?.value;
 
     professionalData.mp = FormG.get('mp')?.value;
+    professionalData.valueQuery = FormG.get('valueQuery')?.value;
     professionalData.specialties = FormG.get('specialties')?.value.map(
       (spec: Specialty) => spec.idSpecialty
     );
