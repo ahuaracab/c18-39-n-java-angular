@@ -38,8 +38,6 @@ public class CORS extends CorsFilter  {
 
         List<String> allowedOrigins = new ArrayList<>();
         allowedOrigins.add("http://localhost:4200");
-        allowedOrigins.add("https://docspotback.onrender.com");
-        allowedOrigins.add("http://docspotback.onrender.com");
 
         response.setHeader("Access-Control-Allow-Origin", String.join(", ", allowedOrigins));
         response.setHeader("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, PATCH, POST, PUT");
