@@ -54,7 +54,8 @@ public class SpringSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/specialty","/api/specialty/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/auth/register","/api/login").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/login").permitAll()
      
                         .anyRequest().authenticated())
                 .addFilter(jwtAuthorizationFilter())
@@ -72,7 +73,7 @@ public class SpringSecurityConfig {
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE","OPTION","PATCH"));
         config.setAllowedHeaders(Arrays.asList("x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN"));
         config.setAllowCredentials(true);
-        config.setAllowedOrigins( Arrays.asList("*"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://docspotback.onrender.com"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
 
