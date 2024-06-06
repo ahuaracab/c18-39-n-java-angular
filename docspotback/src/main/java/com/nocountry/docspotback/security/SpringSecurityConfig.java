@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -80,7 +81,7 @@ public class SpringSecurityConfig {
         return source;
     }
 
-    @Bean
+
     FilterRegistrationBean<CorsFilter> corsFilter() {
         FilterRegistrationBean<CorsFilter> corsbean = new FilterRegistrationBean<>(
                 new CorsFilter(corsConfigurationSource()));
@@ -88,7 +89,8 @@ public class SpringSecurityConfig {
 
         return corsbean;
     }
-
+    
+    
     public JwtAuthenticationFilter jwtAuthorizationFilter() throws Exception {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
         jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");

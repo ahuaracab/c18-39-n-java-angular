@@ -12,7 +12,9 @@ import {
   HttpErrorResponse,
   HttpResponse,
 } from '@angular/common/http';
-import { eventListeners } from '@popperjs/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-login',
@@ -21,8 +23,11 @@ import { eventListeners } from '@popperjs/core';
     CommonModule,
     ReactiveFormsModule,
     MatIconModule,
+    MatButtonModule,
     MatProgressSpinnerModule,
     HttpClientModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -82,6 +87,7 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         // guardar data del usuario en localStorage
         // navegar a la vista segun tipo de rol
+        console.log(response);
       },
       error: (error: HttpErrorResponse) => {
         this.loading = false;

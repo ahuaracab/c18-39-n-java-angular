@@ -1,0 +1,25 @@
+.loadContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+
+  p, span {
+    color: white;
+    font-size: 1.75rem;
+    line-height: normal;
+    min-width: 300px;
+    width: 60%;
+    max-width: 800px;
+    text-align: center;
+  }
+}
+
+.spinner .mat-progress-spinner circle {
+  stroke: #9ebeff;
+  width: 500px;
+  height: 500px;
+  stroke-width: 100px;
+  margin: 16px;
+}

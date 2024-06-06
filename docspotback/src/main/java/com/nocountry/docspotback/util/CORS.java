@@ -29,7 +29,6 @@ public class CORS extends CorsFilter  {
     public CORS(@Qualifier("corsConfigurationSource") CorsConfigurationSource configSource) {
         super();
     }
-
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
             throws IOException, ServletException {
