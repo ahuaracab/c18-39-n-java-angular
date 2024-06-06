@@ -73,7 +73,7 @@ public class SpringSecurityConfig {
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE","OPTION","PATCH"));
         config.setAllowedHeaders(Arrays.asList("x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN"));
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://docspotback.onrender.com","https://docspotback.onrender.com/api/login"));
+        config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://docspotback.onrender.com","http://docspotback.onrender.com","https://docspotback.onrender.com/api/login"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
 
