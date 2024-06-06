@@ -1,6 +1,6 @@
 <div class="RegisterContainer">
     <div class="divImage">
-
+      <img src="assets/images/doctor-register.jpg" alt="Imagen de doctor" style="width: 100%; height: 100%;">
     </div>
     <div class="container"
     [style.view-transition-name]="'transition-form'">
@@ -99,7 +99,7 @@
                         }
                     </mat-select>
                 </mat-form-field> -->
-                
+
                 <mat-form-field appearance="outline" class="">
                     <mat-label>Especialidades</mat-label>
                     <input #inputSpec type="text" matInput [matAutocomplete]="auto" formControlName="specialtyAuto">
@@ -140,12 +140,12 @@
                                 <mat-error>Cellphone is <strong>required</strong></mat-error>
                             }
                         </mat-form-field>
-                        
+
                         @if (this.hasWorkAdded) {
                             <div class="form-patient__content1__work">
                                 <!-- hasWork -->
                                 <mat-checkbox formControlName="hasWork" color="primary">¿Tiene trabajo social?</mat-checkbox>
-                                
+
                                 <!-- socialWork -->
                                 <mat-form-field appearance="outline" class="field">
                                     <mat-label>Social work</mat-label>
@@ -163,10 +163,10 @@
                         <app-upload-image (fileOut)="onFileReceived($event)"></app-upload-image>
                     </div>
                 </div>
-                    
+
             }
 
-            <button mat-raised-button type="submit" color='primary' [ngClass]="showTouched ? 
+            <button mat-raised-button type="submit" color='primary' [ngClass]="showTouched ?
                             'btn-select':'btn-unselect'">Enviar</button>
         </form>
         <div class="d-flex flex-column gap-3">
