@@ -78,6 +78,16 @@
                     }
                 </mat-form-field>
 
+                <!-- valueQuery -->
+                <mat-form-field appearance="outline" class="">
+                    <mat-label>Precio de consulta</mat-label>
+                    <input type="text" matInput formControlName="valueQuery" placeholder="Ex. S/.20">
+                    <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
+                    @if (register.get('valueQuery')?.hasError('required')) {
+                    <mat-error>Precio de consulta es <strong>requerido</strong></mat-error>
+                    }
+                </mat-form-field>
+
                 <!-- especialidades [] -->
                 <!-- <mat-form-field appearance="outline" class="">
                     <mat-label>Seleccione una especialidad</mat-label>
