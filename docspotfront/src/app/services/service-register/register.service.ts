@@ -60,12 +60,15 @@ export class RegisterService {
     const ctrl: string = ApiRoutes.register;
     const params = new URLSearchParams();
 
+    let strSpecialties:string = profesional.specialties.join(',');
+
     params.append("email", profesional.email);
     params.append("password", profesional.password);
     params.append("nameRole", profesional.nameRole);
     params.append("nameUser", profesional.nameUser);
     params.append("mp", profesional.mp);
     params.append("valueQuery", profesional.valueQuery);
+    params.append("specialties", strSpecialties);
   
     return this.http.post<any>(`${this.appUrl}${ctrl}`, params,
         {

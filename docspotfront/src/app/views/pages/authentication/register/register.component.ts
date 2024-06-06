@@ -475,7 +475,7 @@ export class RegisterComponent implements OnInit {
     professionalData.valueQuery = FormG.get('valueQuery')?.value;
     professionalData.specialties = FormG.get('specialties')?.value.map(
       (spec: Specialty) => spec.idSpecialty
-    );
+    ) ?? [];
   }
 
   public navLogin(): void {
