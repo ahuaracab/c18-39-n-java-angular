@@ -10,7 +10,6 @@ import com.nocountry.docspotback.models.Patient;
 import com.nocountry.docspotback.models.Professional;
 import com.nocountry.docspotback.models.Role;
 import com.nocountry.docspotback.models.User;
-import com.nocountry.docspotback.services.IRoleService;
 import com.nocountry.docspotback.services.impl.PatientServiceImpl;
 import com.nocountry.docspotback.services.impl.ProfessionalServiceImpl;
 import com.nocountry.docspotback.services.impl.RoleServiceImpl;
@@ -19,7 +18,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 
 
@@ -85,8 +83,8 @@ public class AuthController {
             user.setIdUser(UUID.randomUUID());
             user.setRoles(roles);
             String roleName="";
-            for (int i=0;i<1;i++) {
-                 roleName = roles.get(i).getNameRole();
+          
+                 roleName = roles.get(0).getNameRole();
                 System.out.println(roleName);
                 if (roleName.equals("ROLE_PATIENT")){
                     Patient patient = new Patient();
@@ -119,7 +117,7 @@ public class AuthController {
                     return ResponseEntity.ok(body);
                 }
            
-            }
+           
             service.save(user);
             body.put("message", "Admin registered successfully!");
             return ResponseEntity.ok(body);
@@ -131,7 +129,7 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
 
         } catch (Exception e) {
-            body.put("message", "Error registering user!");
+            body.put("message", "Error registering user!"+e.getMessage().toString());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
         }
     }
