@@ -64,5 +64,6 @@ export interface registerProfessional {
   nameRole:string;
   nameUser:string;
   mp:string;
-  specialties:string[]
+  valueQuery:string;
+  specialties:string[];
 }
