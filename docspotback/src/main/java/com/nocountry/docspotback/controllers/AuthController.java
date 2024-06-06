@@ -6,10 +6,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.zip.DataFormatException;
 
 import com.nocountry.docspotback.dto.RegisterRequest;
-import com.nocountry.docspotback.dto.RoleDTO;
 import com.nocountry.docspotback.dto.UserDTO;
 import com.nocountry.docspotback.models.Patient;
 import com.nocountry.docspotback.models.Professional;
@@ -21,7 +19,6 @@ import com.nocountry.docspotback.services.impl.RoleServiceImpl;
 import com.nocountry.docspotback.services.impl.UserServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
