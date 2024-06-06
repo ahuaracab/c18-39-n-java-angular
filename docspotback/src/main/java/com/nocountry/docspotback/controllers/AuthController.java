@@ -1,6 +1,11 @@
 package com.nocountry.docspotback.controllers;
 
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.zip.DataFormatException;
 
 import com.nocountry.docspotback.dto.RegisterRequest;
@@ -44,7 +49,7 @@ public class AuthController {
     private ProfessionalServiceImpl professionalService;
     
     @Autowired
-    private PatientServiceImpl patientlService;
+    private PatientServiceImpl patientService;
     
     @Autowired
     private RoleServiceImpl roleService;
@@ -56,83 +61,101 @@ public class AuthController {
     private ModelMapper mapper;
 
     @Operation(
-    	      summary = "Registra al Usuario según rol(ROLE_ADMIN,ROLE_PATIENT,ROLE_PROFESSIONAL)",
-    	      description = "User necesita que se envie email,password,Lista de roles(roles),patient o professional",
-    	      tags = { })
-    	  @ApiResponses({
-    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation = UserDTO.class),mediaType = "x-www-form-urlencoded")}),
-    	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
-    	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    @PostMapping(value = "/register",consumes="application/x-www-form-urlencoded")
-    public ResponseEntity<Map<String, String>> register(@RequestBody RegisterRequest userDto) {
-        Map<String, String> body = new HashMap<>();
+    	    summary = "Registra al Usuario según rol(ROLE_ADMIN,ROLE_PATIENT,ROLE_PROFESSIONAL)",
+    	    description = "User necesita que se envie email,password,Lista de roles(roles),patient o professional",
+    	    tags = {}
+    	)
+    	@ApiResponses({
+    	    @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation = UserDTO.class),mediaType = "x-www-form-urlencoded")} ),
+    	    @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) } ),
+    	    @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) } )
+    	})
+    	@PostMapping(value = "/register",consumes="application/x-www-form-urlencoded")
+    	public ResponseEntity<Map<String, String>> register(@RequestBody RegisterRequest userDto) {
+    	    Map<String, String> body = new HashMap<>();
 
-        try {
-            User user = new User();
-            user.setEmail(userDto.getEmail());
-            String encryptedPassword = passwordEncoder.encode(userDto.getPassword());
-
-            user.setPassword(encryptedPassword);
-            user.setActive(true);
-
+    	    ExecutorService executor = Executors.newFixedThreadPool(3);
             List<Role> roles = new ArrayList<>();
             Role role1 = new Role();
-            role1 =mapper.map(roleService.findRoleByroleName(userDto.getNameRole()),Role.class);
+            role1 = mapper.map(roleService.findRoleByroleName(userDto.getNameRole()), Role.class);
             roles.add(role1);
-           
-            user.setIdUser(UUID.randomUUID());
-            user.setRoles(roles);
-            String roleName="";
-          
-                 roleName = roles.get(0).getNameRole();
-                System.out.println(roleName);
-                if (roleName.equals("ROLE_PATIENT")){
-                    Patient patient = new Patient();
-                    patient.setIdPatient(UUID.randomUUID());
-                    patient.setNamePatient(userDto.getNameUser());
-                    patient.setPhotoPatient(userDto.getPhotoPatient());
-                    patient.setCellphonePatient(userDto.getCellphonePatient());
-                    patient.setHasSocialWork(userDto.getHasSocialWork());
-                    patient.setSocialWork(userDto.getSocialWork());
-                    patient.setUser(user);
-                    user.setPatient(patient);
-                    roleName="";
-                    service.save(user);
-                    patientlService.save(patient);
-                    body.put("message", "Patient registered successfully!");
-                    return ResponseEntity.ok(body);
-                } else if(roleName.equals("ROLE_PROFESSIONAL")){
-                    Professional professional = new Professional();
-                    professional.setIdProfessional(UUID.randomUUID());
-                    professional.setNameProfessional(userDto.getNameUser());
-                    professional.setMp(userDto.getMp());
-                    professional.setReputation(0.0);
-                    professional.setValueQuery(userDto.getValueQuery());
-                    professional.setUser(user);
-                    user.setProfessional(professional);
-                    roleName="";
-                    service.save(user);
-                    professionalService.save(professional);
-                    body.put("message", "Professional registered successfully!");
-                    return ResponseEntity.ok(body);
-                }
-           
-           
-            service.save(user);
-            body.put("message", "Admin registered successfully!");
-            return ResponseEntity.ok(body);
-        } catch (NoSuchElementException e) {
-            body.put("message", "Error: Element not found!");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
-        } catch (DataIntegrityViolationException e) {
-            body.put("message", "Error: Data integrity violation!");
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
+    	    try {
+    	        // Tarea 1: Crear el usuario
+    	        Callable<User> createUserTask = () -> {
+    	            User user = new User();
+    	            user.setEmail(userDto.getEmail());
+    	            String encryptedPassword = passwordEncoder.encode(userDto.getPassword());
+    	            user.setPassword(encryptedPassword);
+    	            user.setActive(true);
+    	            user.setIdUser(UUID.randomUUID());
+    	            user.setRoles(roles);
+    	            return service.save(user); // Save the user to the database
+    	        };
 
-        } catch (Exception e) {
-            body.put("message", "Error registering user!"+e.getMessage().toString());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
-        }
-    }
+    	        Future<User> userFuture = executor.submit(createUserTask);
+
+    	        // Tarea 2: Crear el paciente o profesional según el rol
+    	        Callable<Object> createRoleTask = () -> {
+
+
+    	            String roleName = roles.get(0).getNameRole();
+    	            Object roleObject = null;
+
+    	            if (roleName.equals("ROLE_PATIENT")) {
+    	                Patient patient = new Patient();
+    	                patient.setIdPatient(UUID.randomUUID());
+    	                patient.setNamePatient(userDto.getNameUser());
+    	                patient.setPhotoPatient(userDto.getPhotoPatient());
+    	                patient.setCellphonePatient(userDto.getCellphonePatient());
+    	                patient.setHasSocialWork(userDto.getHasSocialWork());
+    	                patient.setSocialWork(userDto.getSocialWork());
+    	                roleObject = patient;
+    	            } else if (roleName.equals("ROLE_PROFESSIONAL")) {
+    	                Professional professional = new Professional();
+    	                professional.setIdProfessional(UUID.randomUUID());
+    	                professional.setNameProfessional(userDto.getNameUser());
+    	                professional.setMp(userDto.getMp());
+    	                professional.setReputation(0.0);
+    	                professional.setValueQuery(userDto.getValueQuery());
+    	                roleObject = professional;
+    	            }
+
+    	            return roleObject;
+    	        };
+
+    	        Future<Object> roleFuture = executor.submit(createRoleTask);
+
+    	        // Tarea 3: Actualizar el usuario con el paciente o profesional creado
+    	        Callable<Void> updateUserTask = () -> {
+    	            User user = userFuture.get();
+    	            Object roleObject = roleFuture.get();
+
+    	            if (roleObject instanceof Patient) {
+    	                Patient patient = (Patient) roleObject;
+    	                user.setPatient(patient);
+    	                patient.setUser(user);
+    	                patientService.save(patient);
+    	            } else if (roleObject instanceof Professional) {
+    	                Professional professional = (Professional) roleObject;
+    	                user.setProfessional(professional);
+    	                professional.setUser(user);
+    	                professionalService.save(professional);
+    	            }
+
+    	            return null;
+    	        };
+
+    	        executor.submit(updateUserTask).get();
+
+    	        body.put("message", "User registered successfully!");
+    	        return ResponseEntity.ok(body);
+    	    } catch (InterruptedException | ExecutionException e) {
+    	        body.put("message", "Error registering user!"+e.getMessage().toString());
+    	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
+    	    } finally {
+    	        executor.shutdown();
+    	    }
+    	}
     
     @Operation(
   	      summary = "Obtine datos de un usuario por email como parámetro",
