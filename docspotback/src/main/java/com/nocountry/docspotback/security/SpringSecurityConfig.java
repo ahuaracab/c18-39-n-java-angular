@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -50,7 +51,7 @@ public class SpringSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
-     
+                        .requestMatchers(HttpMethod.POST,"/api/login").permitAll()
                         .anyRequest().authenticated())
                 .addFilter(jwtAuthorizationFilter())
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
@@ -67,14 +68,14 @@ public class SpringSecurityConfig {
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
-
+        config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "https://docspotback.onrender.com"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
 
         return source;
     }
 
-    @Bean
+
     FilterRegistrationBean<CorsFilter> corsFilter() {
         FilterRegistrationBean<CorsFilter> corsbean = new FilterRegistrationBean<>(
                 new CorsFilter(corsConfigurationSource()));
@@ -82,7 +83,8 @@ public class SpringSecurityConfig {
 
         return corsbean;
     }
-
+    
+    
     public JwtAuthenticationFilter jwtAuthorizationFilter() throws Exception {
         JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
         jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");

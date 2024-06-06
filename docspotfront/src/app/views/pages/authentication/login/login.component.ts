@@ -87,6 +87,7 @@ export class LoginComponent implements OnInit {
         this.loading = false;
         // guardar data del usuario en localStorage
         // navegar a la vista segun tipo de rol
+        console.log(response);
       },
       error: (error: HttpErrorResponse) => {
         this.loading = false;
