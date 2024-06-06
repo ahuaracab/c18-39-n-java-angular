@@ -16,12 +16,12 @@ export class AuthV1Service {
     private http: HttpClient,
   ) {
     this.properties = environment;
-    this.appUrl = this.properties.url_api_render;
+    this.appUrl = this.properties.url_api;
   }
 
   public login(user: userLogin): Observable<HttpResponse<any>> {
     const ctrl: string = ApiRoutes.login;
-    return this.http.post<any>(`http://localhost:8000/api/login`, user,
+    return this.http.post<any>(`https://docspotback.onrender.com/api/login`, user,
       {observe: 'response'}
     );
   }
