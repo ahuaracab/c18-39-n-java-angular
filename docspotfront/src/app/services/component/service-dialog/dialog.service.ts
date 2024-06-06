@@ -59,6 +59,7 @@ export class DialogService {
       id: 'loadingWindow',
       panelClass: ['loadingDialog'],
       width: '100%',
+      maxWidth: '100%',
       backdropClass: 'blur-backdrop',
       disableClose: true,
       data: {
