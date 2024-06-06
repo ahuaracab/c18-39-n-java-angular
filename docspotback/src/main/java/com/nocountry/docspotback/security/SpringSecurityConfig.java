@@ -23,6 +23,8 @@ import org.springframework.core.Ordered;
 import com.nocountry.docspotback.security.filter.JwtAuthenticationFilter;
 import com.nocountry.docspotback.security.filter.JwtValidationFilter;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true)
 public class SpringSecurityConfig {
@@ -67,7 +69,7 @@ public class SpringSecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE","OPTION","PATCH"));
         config.setAllowedHeaders(Arrays.asList("x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN"));
         config.setAllowCredentials(true);
         config.setAllowedOrigins( Arrays.asList("http://localhost:4200"));
