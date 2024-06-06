@@ -14,12 +14,4 @@ import { FieldsetModule } from "primeng/fieldset";
   templateUrl: './search-profesional.component.html',
   styleUrl: './search-profesional.component.scss'
 })
-export class SearchProfesionalComponent {
-
-  constructor() {}
-
-  getProfessionals() {
-
-  }
-
-}
+export class SearchProfesionalComponent {}

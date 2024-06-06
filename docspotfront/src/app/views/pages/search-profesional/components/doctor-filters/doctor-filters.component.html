@@ -1,13 +1,15 @@
 <p-card [style]="{ margin: '1rem 4rem', border: '1px solid #d1d5db' }">
-  <form class="row">
+  <form class="row" [formGroup]="doctorFiltersForm">
     <div class="col-3">
       <label class="fw-semibold">Especialidades</label>
       <p-dropdown
-        [options]="specialtyData"
+        [options]="specialties"
         appendTo="body"
         [style]="{ width: '100%' }"
         optionLabel="nameSpecialty"
         optionValue="idSpecialty"
+        placeholder="Seleccione una especialidad"
+        formControlName="idSpecialty"
       ></p-dropdown>
     </div>
     <div class="col-2">
