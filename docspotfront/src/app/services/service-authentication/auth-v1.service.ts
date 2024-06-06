@@ -16,7 +16,7 @@ export class AuthV1Service {
     private http: HttpClient,
   ) {
     this.properties = environment;
-    this.appUrl = this.properties.url_api;
+    this.appUrl = this.properties.url_api_render;
   }
 
   public login(user: userLogin): Observable<HttpResponse<any>> {
