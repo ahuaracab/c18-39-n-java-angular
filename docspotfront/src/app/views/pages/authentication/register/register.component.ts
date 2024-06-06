@@ -439,8 +439,8 @@ export class RegisterComponent implements OnInit {
 
   private loadSuccessResponse():DialogDataDto {
     let dataSuccess:DialogDataDto = {
-      tittle: "Exito",
-      content: "Registro correctamente",
+      tittle: "¡Bienvenido!",
+      content: "Se registró correctamente",
       actions: [{
         name:"Ok",
         returnValue: true,
