@@ -4,21 +4,30 @@
     </div>
     <div class="container"
     [style.view-transition-name]="'transition-form'">
-        <section class="selectRol">
-            <p>Desea registrarse como:</p>
-            <div class="seccionBtn">
+        <section class="selectRol" [ngClass]="{'btn-clicked': !showTouched}">
+            <h1>Registro DocSpot</h1>
+            <p>Seleccione su tipo de usuario:</p>
+            <div class="seccionBtn " [ngClass]="{'btn-column': !showTouched}">
                 <button mat-raised-button [ngClass]="{
                     'btn-select': showForm === selectedRol.patient,
                     'btn-unselect': showForm !== selectedRol.patient
                   }" [ngStyle]="{ opacity: showForm === selectedRol.professional ? 0.5 : 1 }"
                     (click)="selectPacient()">Paciente</button>
-                <p>ó</p>
+                <!-- <p>ó</p> -->
                 <button mat-raised-button [ngClass]="{
                     'btn-select': showForm === selectedRol.professional,
                     'btn-unselect': showForm !== selectedRol.professional
                   }" [ngStyle]="{ opacity: showForm === selectedRol.patient ? 0.5 : 1 }"
+                  [disabled]="this.disabledProfessional"
+                  styl
                     (click)="selectProfessional()">Professional</button>
             </div>
+            <span class="mt-5" [ngClass]="{'d-none': showTouched}">
+                ¿Ya tienes una cuenta?
+            </span>
+            <span class="mb-0" [ngClass]="{'d-none': showTouched}">
+                <a (click)="navLogin()">Inicia sesión aqui</a>
+            </span>
         </section>
         @if (this.showTouched && this.register) {
         <form [formGroup]="register" (ngSubmit)="send()">
@@ -38,7 +47,7 @@
                 <input type="text" matInput formControlName="email" placeholder="Ex. pat@example.com">
                 <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
                 @if (register.get('email')?.hasError('email') && !register.get('email')?.hasError('required')) {
-                <mat-error>Por favor ingresa una dirección de correo electrónico valido</mat-error>
+                <mat-error>Por favor ingresa un correo electrónico <strong>valido</strong></mat-error>
                 }
                 @if (register.get('email')?.hasError('required')) {
                 <mat-error>Correo electrónico es <strong>requerido</strong></mat-error>
@@ -95,8 +104,8 @@
                   </mat-form-field>
 
                 @if (this.specSelect.length > 0) {
-                    <p>Especialidades seleccionadas:</p>
-                    <mat-chip-set>
+                    <p class="m-0">Especialidades seleccionadas:</p>
+                    <mat-chip-set class="chip-section">
                         @for (spec of this.specSelect; track $index) {
                             <mat-chip [removable]="true" id="chipElement" (removed)="DeleteSpecialty(spec)">
                                 {{ spec.nameSpecialty }}
@@ -150,6 +159,14 @@
             <button mat-raised-button type="submit" color='primary' [ngClass]="showTouched ? 
                             'btn-select':'btn-unselect'">Enviar</button>
         </form>
+        <div class="d-flex flex-column gap-3">
+            <span class="mt-5">
+                ¿Ya tienes una cuenta?
+            </span>
+            <span class="mb-5">
+                <a (click)="navLogin()">Inicia sesión aqui</a>
+            </span>
+        </div>
         }
     </div>
 </div>
