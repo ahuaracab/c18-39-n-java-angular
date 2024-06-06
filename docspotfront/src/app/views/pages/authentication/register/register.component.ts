@@ -41,6 +41,7 @@ import {
 } from '@angular/common/http';
 import { RegisterService } from 'src/app/services/service-register/register.service';
 import { DialogService } from 'src/app/services/component/service-dialog/dialog.service';
+import { DialogDataDto } from 'src/app/models/components/common/dialog.model';
 
 enum Rol {
   professional = 'ROLE_PROFESSIONAL',
@@ -332,12 +333,9 @@ export class RegisterComponent implements OnInit {
 
   public async send(): Promise<void> {
     console.log('Form:', this.register.value);
-    // cambio de array especialty for id,
-    // this.register.get("specialties")?.setValue(this.specSelect.map((spec)=>spec.idSpecialty));
     console.log('Form format:', this.register.value);
 
     if (this.register.invalid) {
-      this.dialogService.openLoadingWindow();
       console.log('Form invalid:', this.register);
       console.log('formulario invalido');
       return;
@@ -353,7 +351,6 @@ export class RegisterComponent implements OnInit {
       this.loadDataFormPatient(patientDto, this.register);
       console.log('envio backend: ', patientDto);
 
-      // loading=true;
       this.dialogService.openLoadingWindow();
       this.registerService.registerPatient(patientDto).pipe(
         finalize(() => this.dialogService.closeDialog())
@@ -362,13 +359,24 @@ export class RegisterComponent implements OnInit {
           // loading=false;
           console.log('response: ', res);
           console.log('response status:', res.status);
-          if (res.status === 201) {
-            this.navLogin();
+          if (res.status === 200) {
+            let data:DialogDataDto = this.loadSuccessResponse();
+            this.dialogService.openSuccessDialog(data).subscribe(
+              () => {
+                this.navLogin();
+                return;
+              }
+            );
           }
         },
         error: (error: HttpErrorResponse) => {
           // loading=false;
-          console.log('Error:', error);
+          let data:DialogDataDto = this.loadErrorResponse();
+          this.dialogService.openAlertDialog(data).subscribe(
+            () => {
+              return;
+            }
+          );
         },
       });
       // llamar a la API
@@ -388,6 +396,30 @@ export class RegisterComponent implements OnInit {
     }
 
     console.log('Enviar formulario');
+  }
+
+  private loadErrorResponse():DialogDataDto {
+    let dataError:DialogDataDto = {
+      tittle: "Error",
+      content: "Registro fallido",
+      actions: [{
+        name:"Volver",
+        returnValue: true,
+      }]
+    }
+    return dataError;
+  }
+
+  private loadSuccessResponse():DialogDataDto {
+    let dataSuccess:DialogDataDto = {
+      tittle: "Exito",
+      content: "Registro correctamente",
+      actions: [{
+        name:"Ok",
+        returnValue: true,
+      }]
+    }
+    return dataSuccess;
   }
 
   private loadDataFormPatient(patientData: registerPatient, FormG: FormGroup) {

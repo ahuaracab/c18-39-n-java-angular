@@ -5,6 +5,7 @@
     align-items: center;
     justify-content: center;
     gap: 15px;
+    padding: 16px;
     font-size: 1.075rem;
     text-align: center;
     line-height: 1.7rem;
@@ -36,7 +37,7 @@
       }
     }
 
-    .mat-dialog-actions {
+    .mat-mdc-dialog-actions  {
         display: flex;
         gap: 25px;
         padding: 0;
