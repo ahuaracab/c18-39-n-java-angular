@@ -3,7 +3,7 @@ import { SearchProfesionalComponent } from './search-profesional.component';
 
 export const SEARCH_PROFESSIONAL_ROUTES: Routes = [
     {
-        path: '',
+        path: 'list',
         component: SearchProfesionalComponent,
     }
 ]

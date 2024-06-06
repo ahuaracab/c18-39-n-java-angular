@@ -18,6 +18,8 @@
                     'btn-select': showForm === selectedRol.professional,
                     'btn-unselect': showForm !== selectedRol.professional
                   }" [ngStyle]="{ opacity: showForm === selectedRol.patient ? 0.5 : 1 }"
+                  [disabled]="this.disabledProfessional"
+                  styl
                     (click)="selectProfessional()">Professional</button>
             </div>
             <span class="mt-5" [ngClass]="{'d-none': showTouched}">

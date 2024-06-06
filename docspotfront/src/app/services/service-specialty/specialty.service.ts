@@ -16,12 +16,12 @@ export class SpecialtyService {
     private http: HttpClient,
   ) { 
     this.properties = environment;
-    this.appUrl = this.properties.url_api;
+    this.appUrl = this.properties.url_api_render;
   }
 
 public getSpecialties(): Observable<HttpResponse<specialty[]>> {
     const ctrl: string = ApiRoutes.specialties;
-    return this.http.get<any>(`${this.appUrl}${ctrl}/`,
+    return this.http.get<any>(`${this.appUrl}${ctrl}`,
       {observe: 'response'}
     );
   }
