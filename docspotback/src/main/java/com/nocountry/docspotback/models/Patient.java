@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Getter
@@ -42,6 +43,7 @@ public class Patient extends Auditable {
     private String socialWork;
 
     @OneToOne
+    @JsonIgnore
     private User user;
 
     @JsonManagedReference

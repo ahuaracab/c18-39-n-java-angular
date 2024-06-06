@@ -1,7 +1,6 @@
 package com.nocountry.docspotback.dto;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.nocountry.docspotback.models.Patient;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +15,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDTO {
+public class UserDTO extends AuditableDTO{
     private UUID idUser;
 
     @NotNull
@@ -34,7 +33,7 @@ public class UserDTO {
     private List<RoleDTO> roles;
 
     @JsonManagedReference
-    private PatientDTO patients;
+    private PatientDTO patient;
 
     @JsonManagedReference
     private ProfessionalDTO professional;
