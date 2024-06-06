@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { DialogDataDto } from 'src/app/models/components/common/dialog.model';
 
 @Component({
@@ -14,7 +15,8 @@ import { DialogDataDto } from 'src/app/models/components/common/dialog.model';
     MatIconModule,
     MatButtonModule,
     MatDialogModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgxSpinnerModule,
   ],
   templateUrl: './dialog-loading.component.html',
   styleUrl: './dialog-loading.component.scss'
