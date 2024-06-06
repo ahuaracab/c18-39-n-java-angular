@@ -31,6 +31,7 @@ import {
   ProfessionalRegister,
   Specialty,
   registerPatient,
+  registerProfessional,
 } from 'src/app/models/authentication-models/register.models';
 import { Observable, finalize, map, startWith } from 'rxjs';
 import { SpecialtyService } from 'src/app/services/service-specialty/specialty.service';
@@ -386,13 +387,37 @@ export class RegisterComponent implements OnInit {
     } else if (this.showForm == this.selectedRol.professional) {
       if (this.specSelect.length === 0) return;
       // pasar data a un objeto para crear professional
-      let professionalDto: ProfessionalRegister = {} as ProfessionalRegister;
+      let professionalDto: registerProfessional = {} as registerProfessional;
       this.loadDataFormProfessional(professionalDto, this.register);
       console.log('backend:', professionalDto);
-      // llamar a la API
-      // controlar respuesta
-      //  -- exitoso -> volver a login
-      //  -- falla -> mostrar modal
+      this.dialogService.openLoadingWindow();
+      this.registerService.registerProfessional(professionalDto).pipe(
+        finalize(() => this.dialogService.closeDialog())
+      ).subscribe({
+        next: (res: HttpResponse<any>) => {
+          // loading=false;
+          console.log('response: ', res);
+          console.log('response status:', res.status);
+          if (res.status === 200) {
+            let data:DialogDataDto = this.loadSuccessResponse();
+            this.dialogService.openSuccessDialog(data).subscribe(
+              () => {
+                this.navLogin();
+                return;
+              }
+            );
+          }
+        },
+        error: (error: HttpErrorResponse) => {
+          // loading=false;
+          let data:DialogDataDto = this.loadErrorResponse();
+          this.dialogService.openAlertDialog(data).subscribe(
+            () => {
+              return;
+            }
+          );
+        },
+      });
     }
 
     console.log('Enviar formulario');
@@ -436,13 +461,13 @@ export class RegisterComponent implements OnInit {
   }
 
   private loadDataFormProfessional(
-    professionalData: ProfessionalRegister,
+    professionalData: registerProfessional,
     FormG: FormGroup
   ) {
     professionalData.email = FormG.get('email')?.value;
     professionalData.password = FormG.get('password')?.value;
-    professionalData.nameProfessional = FormG.get('name')?.value;
-    professionalData.rol = FormG.get('rol')?.value;
+    professionalData.nameUser = FormG.get('name')?.value;
+    professionalData.nameRole = FormG.get('rol')?.value;
 
     professionalData.mp = FormG.get('mp')?.value;
     professionalData.specialties = FormG.get('specialties')?.value.map(

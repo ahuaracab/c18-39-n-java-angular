@@ -1,7 +1,7 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { registerPatient } from 'src/app/models/authentication-models/register.models';
+import { registerPatient, registerProfessional } from 'src/app/models/authentication-models/register.models';
 import { ApiRoutes } from 'src/app/utils/config/api/api-routes';
 import { environment } from 'src/environments/environment';
 
@@ -25,8 +25,6 @@ export class RegisterService {
 
   public registerPatient(patient:registerPatient): Observable<HttpResponse<any>> {
     const ctrl: string = ApiRoutes.register;
-
-    console.log("data patient a enviar:",patient);
     const newPatient:registerPatientAny = patient as registerPatientAny;
     const params = new URLSearchParams();
 
@@ -46,10 +44,28 @@ export class RegisterService {
     params.append("socialWork", patient.socialWork);
     params.append("photoPatient", patient.photoPatient);
 
-    console.log("data codificada:", params);
-    console.log("data url:", params.toString());
+    // console.log("data codificada:", params);
+    // console.log("data url:", params.toString());
   
 
+    return this.http.post<any>(`${this.appUrl}${ctrl}`, params,
+        {
+          observe: 'response',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }
+    );
+  }
+
+  public registerProfessional(profesional:registerProfessional): Observable<HttpResponse<any>> {
+    const ctrl: string = ApiRoutes.register;
+    const params = new URLSearchParams();
+
+    params.append("email", profesional.email);
+    params.append("password", profesional.password);
+    params.append("nameRole", profesional.nameRole);
+    params.append("nameUser", profesional.nameUser);
+    params.append("mp", profesional.mp);
+  
     return this.http.post<any>(`${this.appUrl}${ctrl}`, params,
         {
           observe: 'response',

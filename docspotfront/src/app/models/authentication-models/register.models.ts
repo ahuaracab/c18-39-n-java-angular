@@ -57,3 +57,12 @@ export interface registerPatient {
   hasSocialWork:boolean;
   socialWork:string;
 }
+
+export interface registerProfessional {
+  email:string;
+  password:string;
+  nameRole:string;
+  nameUser:string;
+  mp:string;
+  specialties:string[]
+}
