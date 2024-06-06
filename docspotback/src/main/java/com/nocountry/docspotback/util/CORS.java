@@ -1,6 +1,8 @@
 package com.nocountry.docspotback.util;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.catalina.filters.CorsFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,17 +29,23 @@ public class CORS extends CorsFilter  {
     public CORS(@Qualifier("corsConfigurationSource") CorsConfigurationSource configSource) {
         super();
     }
+
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain)
             throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) res;
         HttpServletRequest request = (HttpServletRequest) req;
 
-        response.setHeader("Access-Control-Allow-Origin", "http://localhost:4200", "https://docspotback.onrender.com","http://docspotback.onrender.com","https://docspotback.onrender.com/api/login");
+        List<String> allowedOrigins = new ArrayList<>();
+        allowedOrigins.add("http://localhost:4200");
+        allowedOrigins.add("https://docspotback.onrender.com");
+        allowedOrigins.add("http://docspotback.onrender.com");
+
+        response.setHeader("Access-Control-Allow-Origin", String.join(", ", allowedOrigins));
         response.setHeader("Access-Control-Allow-Methods", "DELETE, GET, OPTIONS, PATCH, POST, PUT");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN");
-        //response.setHeader("Access-Control-Allow-Credentials", "true"); // Línea agregada
+        response.setHeader("Access-Control-Allow-Credentials", "true");
 
         if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
@@ -45,7 +53,6 @@ public class CORS extends CorsFilter  {
 
         chain.doFilter(req, res); // Llamar siempre a la cadena de filtros
     }
-
 
     @Override
     public void destroy() {
