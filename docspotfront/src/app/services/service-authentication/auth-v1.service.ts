@@ -14,14 +14,14 @@ export class AuthV1Service {
 
   constructor(
     private http: HttpClient,
-  ) { 
+  ) {
     this.properties = environment;
     this.appUrl = this.properties.url_api;
   }
 
   public login(user: userLogin): Observable<HttpResponse<any>> {
     const ctrl: string = ApiRoutes.login;
-    return this.http.post<any>(`${this.appUrl}${ctrl}`, user,
+    return this.http.post<any>(`https://docspotback.onrender.com/api/login`, user,
       {observe: 'response'}
     );
   }
