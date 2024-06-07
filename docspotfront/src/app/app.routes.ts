@@ -25,13 +25,12 @@ export const routes: Routes = [
     path: 'page-not-found',
     loadComponent: () => import('./views/common/page-not-found/page-not-found.component').then(c => c.PageNotFoundComponent)
   },
-  // ,
-  // {
-  //   path: "",
-  //   canActivate: [AfterUserLoggedGuard],
-  //   loadChildren: () =>
-  //     import('./views/layouts/layouts.module')
-  //       .then((m) => m.LayoutsModule),
-  // },
+  {
+    path: "app",
+    // canActivate: [AfterUserLoggedGuard],
+    loadChildren: () =>
+      import('src/app/views/layout/layout-v1.routes')
+        .then((m) => m.LAYOUT_V1_ROUTES),
+  },
   { path: '**', pathMatch: 'full', redirectTo: '/page-not-found' },
 ];
