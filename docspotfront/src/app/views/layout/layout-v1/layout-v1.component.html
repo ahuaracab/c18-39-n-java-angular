@@ -1,0 +1,39 @@
+<mat-drawer-container hasBackdrop="true">
+
+    <mat-drawer #drawer
+      [(opened)]="sidebarSwitch"
+      [position]="sidebarParams.position"
+      [mode]="sidebarParams.mode"
+      [disableClose]="sidebarParams.disableClose"
+    >
+      <ng-container *ngComponentOutlet="sidebarContent"></ng-container>
+    </mat-drawer>
+
+    <mat-drawer-content>
+      <section>
+        <aside (click)="openMainSidebar()">
+          <div class="side-navbar redeban_gradient">
+            <img
+            src="assets/images/docspot-logo-nobg.png"
+            style="cursor: pointer;"
+            height="86"
+            width="86"
+            alt="Logo"
+            [routerLink]="['/home']"
+            >
+            <!-- <a *ngIf="accessRole(module.GESTIONAR_USUARIOS)" routerLink="/cms/gestionar-usuarios" -->
+            <a routerLink="/app/profile"
+               routerLinkActive="link-active">
+              <mat-icon>person</mat-icon>
+           </a>
+          </div>
+          <div class="navbar-sep">&nbsp;</div>
+        </aside>
+        <main>
+          <app-header-v1></app-header-v1>
+          <router-outlet></router-outlet>
+        </main>
+      </section>
+    </mat-drawer-content>
+  </mat-drawer-container>
+
