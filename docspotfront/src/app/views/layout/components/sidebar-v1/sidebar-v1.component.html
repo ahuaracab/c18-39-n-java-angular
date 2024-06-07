@@ -1,0 +1,56 @@
+<nav class="redeban_gradient">
+  <img
+    src="assets/images/docspot-logo-nobg.png"
+    style="cursor: pointer"
+    height="86"
+    width="86"
+    alt="Logo"
+    [routerLink]="['/home']"
+  />
+
+  <section class="header_sect">
+    <div class="close_sect">
+      <img
+        src="assets/images/docspot-logo-nobg.png"
+        style="cursor: pointer"
+        height="86"
+        width="86"
+        alt="Logo"
+        [routerLink]="['/home']"
+      />
+
+      <button class="btn_close" (click)="closeSidebar()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="info_sect">
+      <h2>Hola, Usuario</h2>
+      <span>{{ getCurrentDate() }}</span>
+    </div>
+  </section>
+
+  <section class="routing_list">
+    <!-- <a *ngIf="accessRole(module.GESTIONAR_USUARIOS)" routerLink="/cms/gestionar-usuarios" -->
+    <a routerLink="/doctor/list" routerLinkActive="link-active">
+      <mat-icon>search</mat-icon>
+      <span>Busqueda Especialidad</span>
+    </a>
+  </section>
+
+  <section class="footer_sect">
+    <hr />
+    <button mat-menu-item>
+      <mat-icon>person</mat-icon>
+      <span>Ver Perfil</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      <span>Configuracion</span>
+    </button>
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Salir</span>
+    </button>
+  </section>
+</nav>
