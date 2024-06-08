@@ -31,6 +31,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.core.Ordered;
 
+import com.nocountry.docspotback.security.filter.JwtAuthenticationFilter;
 import com.nocountry.docspotback.services.impl.JpaUserDetailsService;
 
 import com.nimbusds.jose.jwk.JWK;
@@ -39,20 +40,19 @@ import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
-
+import com.nocountry.docspotback.security.filter.JwtValidationFilter;
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity( prePostEnabled = true)
 public class SpringSecurityConfig {
-	  /*
+	  
     @Autowired
     private AuthenticationConfiguration authenticationConfiguration;
 
   @Bean
     AuthenticationManager authenticationManager() throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
-    }
-*/
+  }
     @Autowired
     private RsaKeyConfigProperties rsaKeyConfigProperties;
 	
@@ -61,14 +61,14 @@ public class SpringSecurityConfig {
     private JpaUserDetailsService userDetailsService;
 
 	
-    @Bean
+   /* @Bean
     public AuthenticationManager authManager() {
 
         var authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(authProvider);
-    }
+    }*/
 
 
     @Bean
@@ -89,10 +89,10 @@ public class SpringSecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
      
                         .anyRequest().authenticated())
-                //.addFilter(jwtAuthorizationFilter())
-                //.addFilter(new JwtAuthenticationFilter(authenticationManager()))
-                //.addFilter(new JwtValidationFilter(authenticationManager()))
-                .oauth2ResourceServer((oauth2) -> oauth2.jwt((jwt) -> jwt.decoder(jwtDecoder())))
+                .addFilter(jwtAuthorizationFilter())
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtValidationFilter(authenticationManager()))
+                //.oauth2ResourceServer((oauth2) -> oauth2.jwt((jwt) -> jwt.decoder(jwtDecoder())))
                 .userDetailsService(userDetailsService)
                 .httpBasic(Customizer.withDefaults())
                 .csrf(config -> config.disable())
@@ -144,7 +144,7 @@ public class SpringSecurityConfig {
         corsbean.setOrder(Ordered.HIGHEST_PRECEDENCE);
 
         return corsbean;
-    }*/
+    }
     @Bean
     public JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(rsaKeyConfigProperties.publicKey()).build();
@@ -155,16 +155,15 @@ public class SpringSecurityConfig {
 
         JWKSource<SecurityContext> jwks = new ImmutableJWKSet<>(new JWKSet(jwk));
         return new NimbusJwtEncoder(jwks);
-    }
+    }*/
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
     
-   /* @Bean
     public JwtAuthenticationFilter jwtAuthorizationFilter() throws Exception {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new CustomJwtAuthenticationFilter(authenticationManager());
-        //jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
+       JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager());
+       jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
         return jwtAuthenticationFilter;
-}*/
+}
 }

@@ -17,7 +17,7 @@ import com.nocountry.docspotback.dto.AuthUser;
 import com.nocountry.docspotback.models.User;
 import com.nocountry.docspotback.repositories.IUserRepo;
 
-/*
+
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
 
@@ -50,8 +50,8 @@ public class JpaUserDetailsService implements UserDetailsService {
                 authorities);
     }
 
-}*/
-
+}
+/*
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
 
@@ -65,7 +65,9 @@ public class JpaUserDetailsService implements UserDetailsService {
         List<GrantedAuthority> authorities = user.getRoles().stream()
                .map(role -> new SimpleGrantedAuthority(role.getNameRole()))
                .collect(Collectors.toList());
-        System.out.println(authorities);
+        System.out.println("Roles encontrados"+authorities);
+        //user.setRoles(authorities);
         return new AuthUser(user, authorities);
     }
 }
+*/

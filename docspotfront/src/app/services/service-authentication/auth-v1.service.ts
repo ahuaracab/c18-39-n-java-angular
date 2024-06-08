@@ -20,11 +20,8 @@ export class AuthV1Service {
   }
 
   public login(user: userLogin): Observable<HttpResponse<any>> {
-    let formLogin = new FormData();
-    formLogin.append("username", user.email);
-    formLogin.append("password",user.password);
     const ctrl: string = ApiRoutes.login;
-    return this.http.post<any>(`${this.appUrl}${ctrl}`, formLogin,
+    return this.http.post<any>(`${this.appUrl}${ctrl}`, user,
       {observe: 'response'}
     );
   }

@@ -8,15 +8,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.nocountry.docspotback.models.User;
 
-@SuppressWarnings("serial")
-public class AuthUser extends User implements UserDetails {
+//@SuppressWarnings("serial")
+public class AuthUser{/* extends User implements UserDetails {
 
-    private final User user;
+    private final User	 user;
     private final List<GrantedAuthority> authorities;
 
     public AuthUser(User user, List<GrantedAuthority> authorities) {
         this.user = user;
         this.authorities = authorities;
+        this.user.setEmail(getUsername());
     }
 
     public User getUser() {
@@ -29,7 +30,7 @@ public class AuthUser extends User implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
+    public String getEmail() {
         return user.getEmail();
     }
 
@@ -56,5 +57,5 @@ public class AuthUser extends User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
+    }*/
 }

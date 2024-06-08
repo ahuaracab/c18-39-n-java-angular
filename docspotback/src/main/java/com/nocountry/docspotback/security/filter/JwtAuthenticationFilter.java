@@ -30,8 +30,8 @@ import java.io.IOException;
 
 import static com.nocountry.docspotback.security.TokenJwtConfig.*;
 
-public class JwtAuthenticationFilter {//extends UsernamePasswordAuthenticationFilter {
-/*
+public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
+
     private final AuthenticationManager authenticationManager;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
@@ -110,7 +110,7 @@ public class JwtAuthenticationFilter {//extends UsernamePasswordAuthenticationFi
         response.setContentType(CONTENT_TYPE);
     }
 
-*/
+
 
 
 }

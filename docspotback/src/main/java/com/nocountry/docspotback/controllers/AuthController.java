@@ -77,7 +77,7 @@ public class AuthController {
     @Autowired
     private IUserRepo userRepo;
     
-    @Autowired AuthService authService;
+    //@Autowired AuthService authService;
     
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -85,8 +85,8 @@ public class AuthController {
     @Autowired
     private ModelMapper mapper;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+  /*  @Autowired
+    private AuthenticationManager authenticationManager;*/
 
 /*    @Autowired
     private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -232,7 +232,7 @@ public class AuthController {
         }
     }*/
     
-    @PostMapping("/login")
+  /*  @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthDTO.LoginRequest userLogin) throws IllegalAccessException {
         Authentication authentication =
                 authenticationManager
@@ -246,9 +246,12 @@ public class AuthController {
         Optional<User> user = userRepo.findByEmail(userLogin.username());
         log.info("Token requested for user :{}", authentication.getAuthorities());
         String token = authService.generateToken(authentication);
-
+        // Set the authorities from the token
+        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
+        Authentication newAuthentication = new UsernamePasswordAuthenticationToken(userDetails, token, authorities);
+        SecurityContextHolder.getContext().setAuthentication(newAuthentication);
         AuthDTO.Response response = new AuthDTO.Response("User logged in successfully", token,user);
   
         return ResponseEntity.ok(response);
-    }
+    }*/
 }

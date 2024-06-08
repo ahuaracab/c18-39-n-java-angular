@@ -42,4 +42,9 @@ public class DocspotbackApplication extends SpringBootServletInitializer {
 		        }
 		};
 	}*/
+	
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(DocspotbackApplication.class);
+	}
 }
