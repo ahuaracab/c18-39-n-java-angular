@@ -32,5 +32,12 @@ export const routes: Routes = [
       import('src/app/views/layout/layout-v1/layout-v1.routes')
         .then((m) => m.LAYOUT_V1_ROUTES),
   },
+  {
+    path: "app",
+    // canActivate: [AfterUserLoggedGuard],
+    loadChildren: () =>
+      import('src/app/views/layout/layout-v2/layout-v2.routes')
+        .then((m) => m.LAYOUT_V2_ROUTES),
+  },
   { path: '**', pathMatch: 'full', redirectTo: '/page-not-found' },
 ];
