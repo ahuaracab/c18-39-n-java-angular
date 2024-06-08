@@ -9,6 +9,7 @@ import com.nocountry.docspotback.repositories.IProfessionalRepo;
 import com.nocountry.docspotback.repositories.IProfessionalSpecialtyRepo;
 import com.nocountry.docspotback.services.IProfessionalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -38,8 +39,8 @@ public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implem
         return professional;
     }
 
-    @Override
-    public List<Professional> getAllProfessionalsBySpecialityName(String nameSpecialty, int numPage, int pageSize, String orderBy, String sort) {
+   /* @Override
+    public Page<Professional> getAllProfessionalsBySpecialityName(String nameSpecialty, int numPage, int pageSize, String orderBy, String sort) {
         Sort.Direction direction;
         try {
             direction = Sort.Direction.fromString(sort);
@@ -56,6 +57,20 @@ public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implem
         }
 
         return repo.getAllProfessionalsBySpecialityName(nameSpecialty, pageable);
-    }
+    }*/
+
+	@Override
+	public Page<Professional> findAllProfessional(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return repo.findAllProfessional(pageable);
+	}
+
+@Override
+public Page<Professional> getAllProfessionalsBySpecialityName(String nameSpecialty, Pageable pageable) {
+	// TODO Auto-generated method stub
+	return repo.getAllProfessionalsBySpecialityName(nameSpecialty, pageable);
+}
+
+
 
 }

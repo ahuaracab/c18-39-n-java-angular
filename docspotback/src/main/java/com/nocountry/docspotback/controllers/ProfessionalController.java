@@ -22,6 +22,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -168,24 +170,17 @@ public class ProfessionalController {
     	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
     	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/pageable/{bySpecialtyName}")
-    public ResponseEntity<List<ProfessionalDTO>> getAllByNameSpecialty(
+    public ResponseEntity<?> getAllByNameSpecialty(
             @PathVariable("bySpecialtyName")@Parameter(example = "Cardiología") String nameProfessional,
-            @RequestParam("numberPage") @Parameter(example = "0") Integer numberPage,
-            @RequestParam("pageSize")@Parameter(example = "10") Integer sizePage,
-            @RequestParam("orderBy") @Parameter(example = "value_query") String orderBy,
-            @RequestParam("sort") @Parameter(example = "ASC") String sort) {
-        try {
-            List<Professional> lst = service.getAllProfessionalsBySpecialityName(nameProfessional, numberPage, sizePage, orderBy, sort);
-            List<ProfessionalDTO> listDto = new ArrayList<>();
-            for (Professional ps : lst) {
-                listDto.add(mapper.map(ps, ProfessionalDTO.class));
-            }
-            return new ResponseEntity<>(listDto, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            Pageable pageable) {
+
+           return new ResponseEntity<>(service.getAllProfessionalsBySpecialityName(nameProfessional.toString(), pageable), HttpStatus.OK);
+       
     }
     
-
+    @GetMapping("/pageable")
+    public ResponseEntity<?>pageableProfessionals(Pageable pageable){
+    	return ResponseEntity.ok(service.findAllProfessional(pageable));
+    }
 
 }

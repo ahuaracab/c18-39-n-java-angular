@@ -78,7 +78,7 @@ public class SpringSecurityConfig {
                 .authorizeHttpRequests((authz) -> authz
                 		 .requestMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/professional","/api/professional/pageable/**","/api/professional/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/professional","/api/professional/pageable/**","/api/professional/**","/api/professional/pageable").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/api/professional").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/shifts","/api/shifts/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
