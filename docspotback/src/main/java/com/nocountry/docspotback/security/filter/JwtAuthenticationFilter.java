@@ -30,8 +30,8 @@ import java.io.IOException;
 
 import static com.nocountry.docspotback.security.TokenJwtConfig.*;
 
-public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
+public class JwtAuthenticationFilter {//extends UsernamePasswordAuthenticationFilter {
+/*
     private final AuthenticationManager authenticationManager;
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
@@ -65,7 +65,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
+	public void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
 
         org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authResult
@@ -109,6 +109,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setStatus(401);
         response.setContentType(CONTENT_TYPE);
     }
+
+*/
 
 
 }

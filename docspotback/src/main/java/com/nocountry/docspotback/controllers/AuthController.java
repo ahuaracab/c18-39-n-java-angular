@@ -1,5 +1,6 @@
 package com.nocountry.docspotback.controllers;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -7,24 +8,39 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import com.nocountry.docspotback.dto.AuthDTO;
+import com.nocountry.docspotback.dto.AuthUser;
 import com.nocountry.docspotback.dto.RegisterRequest;
 import com.nocountry.docspotback.dto.UserDTO;
 import com.nocountry.docspotback.models.Patient;
 import com.nocountry.docspotback.models.Professional;
 import com.nocountry.docspotback.models.Role;
 import com.nocountry.docspotback.models.User;
+import com.nocountry.docspotback.repositories.IUserRepo;
+import com.nocountry.docspotback.security.filter.JwtAuthenticationFilter;
+import com.nocountry.docspotback.security.filter.JwtValidationFilter;
+import com.nocountry.docspotback.services.AuthService;
 import com.nocountry.docspotback.services.impl.PatientServiceImpl;
 import com.nocountry.docspotback.services.impl.ProfessionalServiceImpl;
 import com.nocountry.docspotback.services.impl.RoleServiceImpl;
 import com.nocountry.docspotback.services.impl.UserServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.Authentication;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,11 +50,18 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletResponse;
 
 @Tag(name = "Autentificación y Registro", description = "Registro de usuario según roles y Autentificación")
 @RestController
 @RequestMapping("/api/auth")
+@CrossOrigin("http:localhost:4200")
 public class AuthController {
+	
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
+
     @Autowired
     private UserServiceImpl service;
 
@@ -52,11 +75,27 @@ public class AuthController {
     private RoleServiceImpl roleService;
     
     @Autowired
+    private IUserRepo userRepo;
+    
+    @Autowired AuthService authService;
+    
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private ModelMapper mapper;
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+/*    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
+
+*/
+    
+
+    //@Autowired
+    //private JwtValidationFilter jwtValidationFilter;
     @Operation(
     	    summary = "Registra al Usuario según rol(ROLE_ADMIN,ROLE_PATIENT,ROLE_PROFESSIONAL)",
     	    description = "User necesita que se envie email,password,Lista de roles(roles),patient o professional",
@@ -179,5 +218,37 @@ public class AuthController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+    
+ /*   @PostMapping("/auth/login")
+    public ResponseEntity<String> login(@RequestBody UserDTO userDTO) {
+        try {
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
+            Authentication authentication = authenticationManager.authenticate(authenticationToken);
+            jwtAuthenticationFilter.successfulAuthentication(null, null, null, authentication);
+            return ResponseEntity.ok("Login successful");
+        } catch (AuthenticationException | IOException | ServletException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
+    }*/
+    
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody AuthDTO.LoginRequest userLogin) throws IllegalAccessException {
+        Authentication authentication =
+                authenticationManager
+                        .authenticate(new UsernamePasswordAuthenticationToken(
+                                userLogin.username(),
+                                userLogin.password()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        AuthUser userDetails = (AuthUser) authentication.getPrincipal();
+        System.out.println(userDetails);
+        Optional<User> user = userRepo.findByEmail(userLogin.username());
+        log.info("Token requested for user :{}", authentication.getAuthorities());
+        String token = authService.generateToken(authentication);
+
+        AuthDTO.Response response = new AuthDTO.Response("User logged in successfully", token,user);
+  
+        return ResponseEntity.ok(response);
     }
 }

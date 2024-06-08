@@ -32,6 +32,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @Tag(name = "API de Especialidades Médicas", description = "Se puede crear,listar todo, actualizar y/o elimanar especialidades Médicass")
 @RestController
 @RequestMapping("/api/specialty")
+@CrossOrigin("*")
 public class SpecialtyController {
     @Autowired
     private SpecialtyServiceImpl service;

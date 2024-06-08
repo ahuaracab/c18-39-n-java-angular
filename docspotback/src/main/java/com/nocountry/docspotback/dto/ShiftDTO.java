@@ -30,8 +30,6 @@ public class ShiftDTO {
     @NotNull
     private Boolean repeatShift;
     
-    @NotNull
-    private Boolean stateShift;
 
     @NotNull
     @JsonIgnore

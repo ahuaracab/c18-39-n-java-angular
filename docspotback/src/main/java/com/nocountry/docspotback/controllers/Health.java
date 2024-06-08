@@ -30,7 +30,7 @@ public class Health {
         return ResponseEntity.ok(resp);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
     @GetMapping("protected/admin")
     public ResponseEntity<Map<String, Date>> healthcheckProtectedAdmin() {
         Map<String, Date> resp = new HashMap<>();

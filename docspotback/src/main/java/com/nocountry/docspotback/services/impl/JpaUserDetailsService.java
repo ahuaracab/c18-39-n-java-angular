@@ -13,16 +13,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.nocountry.docspotback.dto.AuthUser;
 import com.nocountry.docspotback.models.User;
 import com.nocountry.docspotback.repositories.IUserRepo;
 
+/*
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
 
     @Autowired
     private IUserRepo repository;
 
-    @Transactional(readOnly = true)
+   @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -48,4 +50,22 @@ public class JpaUserDetailsService implements UserDetailsService {
                 authorities);
     }
 
+}*/
+
+@Service
+public class JpaUserDetailsService implements UserDetailsService {
+
+    @Autowired
+    private IUserRepo userRepository;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User name not found: " + username));
+
+        List<GrantedAuthority> authorities = user.getRoles().stream()
+               .map(role -> new SimpleGrantedAuthority(role.getNameRole()))
+               .collect(Collectors.toList());
+        System.out.println(authorities);
+        return new AuthUser(user, authorities);
+    }
 }
