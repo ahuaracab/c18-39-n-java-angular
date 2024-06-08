@@ -1,6 +1,6 @@
 export class ApiRoutes {
     /* LOGIN CONTROLLER */
-    public static login: string = '/api/login';
+    public static login: string = '/api/auth/login';
 
     /* REGISTER CONTROLLER */
     public static register: string = '/api/auth/register';
