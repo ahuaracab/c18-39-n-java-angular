@@ -25,9 +25,6 @@ public class Reservation extends Auditable {
     @Column(name = "id_reservation")
     private UUID idReservation = UUID.randomUUID();
 
-    @Column(name = "appointment_date", nullable = false)
-    private Instant appointmentDate;
-
     @Column(name = "query_intent", nullable = false)
     private String queryIntent;
 
@@ -36,7 +33,7 @@ public class Reservation extends Auditable {
     private Patient patient;
 
     @JsonIgnore
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_shift", nullable = false)
     private Shift shift;
 
@@ -48,13 +45,6 @@ public class Reservation extends Auditable {
         this.idReservation = idReservation;
     }
 
-    public Instant getAppointmentDate() {
-        return appointmentDate;
-    }
-
-    public void setAppointmentDate(Instant appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
 
     public String getQueryIntent() {
         return queryIntent;

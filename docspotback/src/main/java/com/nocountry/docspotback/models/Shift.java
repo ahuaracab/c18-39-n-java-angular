@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -22,7 +25,19 @@ public class Shift extends Auditable {
     @Column(name = "id_shift")
     private UUID idShift = UUID.randomUUID();
 
-    @Enumerated(EnumType.STRING)
+    @Column(name = "date_shift")
+    private LocalDate dateShift;
+    
+    @Column(name = "hoursTime")
+    private LocalDateTime hoursTime;
+    
+    private Boolean stateShift;
+    
+    private Boolean repeatShift;
+    
+    @OneToOne(mappedBy = "shift")
+    private Reservation reservations;
+   /* @Enumerated(EnumType.STRING)
     private WeekDay day;
 
     @Column(name = "start_time", nullable = false, length = 5)
@@ -38,7 +53,6 @@ public class Shift extends Auditable {
     private Boolean repeatShift;
 
 
-    @OneToMany(mappedBy = "shift")
-    private Set<Reservation> reservations;
+*/
 
 }

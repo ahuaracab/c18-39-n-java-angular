@@ -5,12 +5,16 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nocountry.docspotback.models.Professional;
 import com.nocountry.docspotback.models.Reservation;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,23 +23,20 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ShiftDTO {
-    private UUID idShift;
+    private UUID idShift = UUID.randomUUID();
 
     @NotNull
-    private Date dateShift;
-
+    private LocalDate dateShift;
+    
     @NotNull
-    private Boolean sateShift;
-
+    private LocalDateTime hoursTime;
+    
+    @NotNull
+    private Boolean stateShift;
+    
     @NotNull
     private Boolean repeatShift;
     
-
-    @NotNull
-    @JsonIgnore
-    private ProfessionalDTO professional;
-
-    @NotNull
-    @JsonIgnore
-    private ReservationDTO reservation;
+   
+    private Reservation reservations;
 }

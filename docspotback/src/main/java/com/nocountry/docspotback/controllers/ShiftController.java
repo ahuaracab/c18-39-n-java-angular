@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.nocountry.docspotback.dto.ReservationResponseDto;
 import com.nocountry.docspotback.dto.ShiftDTO;
 import com.nocountry.docspotback.exception.ModelNotFoundException;
 import com.nocountry.docspotback.models.Shift;
@@ -94,6 +95,12 @@ public class ShiftController {
         resource.add(link1.withRel("Shift-info1"));
         resource.add(link2.withRel("Shift-info2"));
         return resource;
+    }
+    
+    @GetMapping("/shifts-by-professional/{id}")
+    public ResponseEntity<List<ShiftDTO>> listShiftsByProfessional(@PathVariable UUID id) {
+        List<ShiftDTO> response = service.findAllShiftByProfessionalID(id).stream().map(p->mapper.map(p,ShiftDTO.class)).collect(Collectors.toList());;
+        return new ResponseEntity<List<ShiftDTO>>(response, HttpStatus.OK);
     }
 
 }

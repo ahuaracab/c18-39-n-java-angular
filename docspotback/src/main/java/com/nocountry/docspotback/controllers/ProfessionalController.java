@@ -3,7 +3,8 @@ package com.nocountry.docspotback.controllers;
 import com.nocountry.docspotback.dto.ProfessionalDTO;
 import com.nocountry.docspotback.dto.ProfessionalDTO;
 import com.nocountry.docspotback.dto.ProfessionalListSpecialtyDTO;
-
+import com.nocountry.docspotback.dto.ReservationResponseDto;
+import com.nocountry.docspotback.dto.ShiftDTO;
 import com.nocountry.docspotback.exception.ModelNotFoundException;
 import com.nocountry.docspotback.models.Professional;
 
@@ -184,4 +185,7 @@ public class ProfessionalController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+
+
 }
