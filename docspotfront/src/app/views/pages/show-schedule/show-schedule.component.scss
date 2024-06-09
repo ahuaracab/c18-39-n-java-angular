@@ -20,7 +20,7 @@
             // gap: 16px;
 
             .fecha-container {
-                padding: 16px;
+                padding: 12px;
                 background-color: transparent;
 
                 .fecha-container-2 {
@@ -29,7 +29,7 @@
                     justify-items: center;
                     align-items: center;
                     padding: .8rem .8rem 1.6rem;
-                    min-width: 7rem;
+                    min-width: 6rem;
                     margin-bottom:16px;
 
                     border: 1px solid black;
@@ -61,6 +61,7 @@
         border-radius: 16px;
 
         .hora {
+            border-radius: 8px;
             background-color: yellowgreen;
             font-weight: 500;
             color:red;
