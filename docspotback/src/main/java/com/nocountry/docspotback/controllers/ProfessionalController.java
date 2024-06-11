@@ -1,10 +1,8 @@
 package com.nocountry.docspotback.controllers;
 
 import com.nocountry.docspotback.dto.ProfessionalDTO;
-import com.nocountry.docspotback.dto.ProfessionalDTO;
 import com.nocountry.docspotback.dto.ProfessionalListSpecialtyDTO;
-import com.nocountry.docspotback.dto.ReservationResponseDto;
-import com.nocountry.docspotback.dto.ShiftDTO;
+
 import com.nocountry.docspotback.exception.ModelNotFoundException;
 import com.nocountry.docspotback.models.Professional;
 
@@ -22,7 +20,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -33,7 +30,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;

@@ -1,7 +1,6 @@
 package com.nocountry.docspotback.repositories;
 
 import com.nocountry.docspotback.models.User;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 

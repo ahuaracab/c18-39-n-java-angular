@@ -2,7 +2,6 @@ package com.nocountry.docspotback.controllers;
 
 import com.nocountry.docspotback.dto.PatientDTO;
 import com.nocountry.docspotback.dto.ReservationDTO;
-import com.nocountry.docspotback.dto.SpecialtyDTO;
 import com.nocountry.docspotback.exception.ModelNotFoundException;
 import com.nocountry.docspotback.models.Patient;
 import com.nocountry.docspotback.models.Reservation;
