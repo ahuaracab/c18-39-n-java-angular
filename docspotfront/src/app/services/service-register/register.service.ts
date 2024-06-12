@@ -41,8 +41,11 @@ export class RegisterService {
     params.append("nameUser", patient.nameUser);
     params.append("cellphonePatient", patient.cellphonePatient);
     params.append("hasSocialWork", patient.hasSocialWork ? 'true':'false');
-    params.append("socialWork", patient.socialWork);
-    params.append("photoPatient", patient.photoPatient);
+    params.append("socialWork", '');
+    params.append("photoPatient", '');
+    // params.append("hasSocialWork", patient.hasSocialWork ? 'true':'false');
+    // params.append("socialWork", patient.socialWork);
+    // params.append("photoPatient", patient.photoPatient);
 
     // console.log("data codificada:", params);
     // console.log("data url:", params.toString());
