@@ -34,7 +34,7 @@
         </li>
       </span>
       } @else {
-      <ng-container>
+      <span class="d-flex align-items-center" style="gap: 0.5rem; margin-top: 0.75rem;">
         <li mat-button [matMenuTriggerFor]="userMenu" class="mat-menu-panel circle-avatar">
           {{ initial }}
         </li>
@@ -42,7 +42,7 @@
           <button mat-menu-item [routerLink]="['/profile']">Mi Perfil</button>
           <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
         </mat-menu>
-      </ng-container>
+      </span>
 
       }
 
