@@ -8,7 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Getter
@@ -28,7 +28,7 @@ public class Shift extends Auditable {
     private LocalDate dateShift;
     
     @Column(name = "hoursTime")
-    private LocalDateTime hoursTime;
+    private LocalTime hoursTime;
     
     private Boolean stateShift;
     

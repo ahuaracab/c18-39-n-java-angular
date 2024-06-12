@@ -12,6 +12,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.UUID;
 
 @Getter
@@ -25,7 +26,7 @@ public class ShiftDTO {
     private LocalDate dateShift;
     
     @NotNull
-    private LocalDateTime hoursTime;
+    private LocalTime hoursTime;
     
     @NotNull
     private Boolean stateShift;

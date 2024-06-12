@@ -10,6 +10,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -24,11 +25,6 @@ public class ShiftServiceImpl extends CRUDImpl<Shift, UUID> implements IShiftSer
         return repo;
     }
 
-	@Override
-	public List<Shift> findAllShiftByProfessionalID(UUID id) {
-		// TODO Auto-generated method stub
-		return repo.findAllShiftByProfessionalID(id);
-	}
 
 	@Transactional
 	@Override
@@ -36,4 +32,13 @@ public class ShiftServiceImpl extends CRUDImpl<Shift, UUID> implements IShiftSer
 		// TODO Auto-generated method stub
 		repo.newShiftForProfessional(idProfessional, idShift);
 	}
+
+
+	@Override
+	public List<Shift> availableShiftsByProfessional(UUID idProfessional, LocalDate dateShift) {
+		// TODO Auto-generated method stub
+		return repo.availableShiftsByProfessional(idProfessional, dateShift);
+	}
+
+
 }

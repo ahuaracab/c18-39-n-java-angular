@@ -4,12 +4,14 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -98,9 +100,9 @@ public class ShiftController {
         return resource;
     }
     
-    @GetMapping("/shifts-by-professional/{id}")
-    public ResponseEntity<List<ShiftDTO>> listShiftsByProfessional(@PathVariable UUID id) {
-        List<ShiftDTO> response = service.findAllShiftByProfessionalID(id).stream().map(p->mapper.map(p,ShiftDTO.class)).collect(Collectors.toList());;
+    @GetMapping("/professional/{id}")
+    public ResponseEntity<List<ShiftDTO>> listShiftsByProfessional(@PathVariable("id") UUID id, @Param("localDate") LocalDate localDate) {
+        List<ShiftDTO> response = service.availableShiftsByProfessional(id,localDate).stream().map(p->mapper.map(p,ShiftDTO.class)).collect(Collectors.toList());;
         return new ResponseEntity<List<ShiftDTO>>(response, HttpStatus.OK);
     }
 
