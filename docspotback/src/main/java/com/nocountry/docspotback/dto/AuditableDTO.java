@@ -12,8 +12,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public abstract class AuditableDTO {
-    private String createdAt;
-    private String updateAt;
+    private Instant createdAt;
+    private Instant updateAt;
     private Instant deletedAt;
     private boolean isDeleted;
 

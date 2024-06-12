@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'auth/login' },
+  { path: '', pathMatch: 'full', redirectTo: '/home' },
   {
     path: 'auth',
     //   canActivate: [BeforeUserLoggedGuard],
@@ -21,6 +21,10 @@ export const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./views/pages/home/home.routes').then((c) => c.HOME_ROUTES),
   },
+  {
+    path: 'page-not-found',
+    loadComponent: () => import('./views/common/page-not-found/page-not-found.component').then(c => c.PageNotFoundComponent)
+  },
   // ,
   // {
   //   path: "",
@@ -29,5 +33,5 @@ export const routes: Routes = [
   //     import('./views/layouts/layouts.module')
   //       .then((m) => m.LayoutsModule),
   // },
-  { path: '**', pathMatch: 'full', redirectTo: 'auth/login' },
+  { path: '**', pathMatch: 'full', redirectTo: '/page-not-found' },
 ];

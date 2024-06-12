@@ -30,7 +30,7 @@ export class ServiceCardComponent {
     {
       icon:'assets/images/medical-record.png',
       alt: '',
-      title: 'Historial Clínico Digital',
+      title: 'Historial Médico Online',
       description: 'Accede a tu historial médico, recetas y resultados de laboratorio en un solo lugar.'
     },
     {

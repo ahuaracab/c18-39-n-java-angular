@@ -20,7 +20,7 @@ public class Professional extends Auditable{
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id_professional")
-    private UUID idProfessional=UUID.randomUUID();
+    private UUID idProfessional;
 
     @Column(name = "name_professional",length = 70, nullable = false)
     private String nameProfessional;
@@ -34,7 +34,8 @@ public class Professional extends Auditable{
     @Column(length = 12,nullable = false,unique = true)
     private String mp;
 
-   @ManyToOne
+   @OneToOne
+   @JsonIgnore
     private User user;
 
 

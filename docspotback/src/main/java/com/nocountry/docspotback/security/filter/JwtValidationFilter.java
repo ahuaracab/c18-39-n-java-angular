@@ -29,7 +29,7 @@ import static com.nocountry.docspotback.security.TokenJwtConfig.*;
 
 public class JwtValidationFilter extends BasicAuthenticationFilter {
 
-    public JwtValidationFilter(AuthenticationManager authenticationManager) {
+   public JwtValidationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
 
     }

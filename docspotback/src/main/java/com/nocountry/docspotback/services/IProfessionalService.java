@@ -2,6 +2,7 @@ package com.nocountry.docspotback.services;
 
 import com.nocountry.docspotback.models.Professional;
 import com.nocountry.docspotback.models.ProfessionalSpecialty;
+import com.nocountry.docspotback.models.Shift;
 import com.nocountry.docspotback.models.Specialty;
 import org.springframework.data.repository.query.Param;
 

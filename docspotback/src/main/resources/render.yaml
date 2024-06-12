@@ -1,0 +1,7 @@
+services:
+  docspotback:
+    type: web
+    port: 8000
+    build:
+      context: .
+      dockerfile: dockerfile
