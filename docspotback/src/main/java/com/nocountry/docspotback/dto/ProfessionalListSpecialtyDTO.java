@@ -17,17 +17,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class ProfessionalListSpecialtyDTO {
     @NotNull
     @JsonIgnore
-    private ProfessionalDTO consult;
+    private ProfessionalDTO professional;
 
     @NotNull
     private List<SpecialtyDTO> listSpecialty;
 
-    public ProfessionalDTO getConsult() {
-        return consult;
+    public ProfessionalDTO getProfessional() {
+        return professional;
     }
 
-    public void setConsult(ProfessionalDTO consult) {
-        this.consult = consult;
+    public void setProfessional(ProfessionalDTO professional) {
+        this.professional = professional;
     }
 
     public List<SpecialtyDTO> getListSpecialty() {

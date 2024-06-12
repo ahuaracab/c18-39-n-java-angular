@@ -7,6 +7,9 @@ import com.nocountry.docspotback.repositories.IGenericRepo;
 import com.nocountry.docspotback.repositories.IProfessionalRepo;
 import com.nocountry.docspotback.repositories.IProfessionalSpecialtyRepo;
 import com.nocountry.docspotback.services.IProfessionalService;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,9 +32,13 @@ public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implem
         return repo;
     }
 
+    @Transactional
     @Override
     public Professional saveTransactional(Professional professional, List<Specialty> specialties) {
-        repo.save(professional);
+        //repo.save(professional);
+        System.out.println("Especialidad 1: "+specialties.get(0).getIdSpecialty());
+        System.out.println("Especialidad 2: "+specialties.get(1).getIdSpecialty());
+        System.out.println("Profesional: "+professional.getIdProfessional());
         specialties.forEach(specialty ->psRepo.saveSpecialty(professional.getIdProfessional(), specialty.getIdSpecialty()));
         return professional;
     }

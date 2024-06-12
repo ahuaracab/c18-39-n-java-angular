@@ -29,14 +29,6 @@ public class PatientDTO {
     @Schema(example = "987535878")
     private String cellphonePatient;
     
-    @Schema(example = "https://robohash.org/bd6da376-037a-458a-97bb-bb7ff5f62c07")
-    private String photoPatient;
-
-    @Schema(example = "true",requiredMode = RequiredMode.REQUIRED)
-    private Boolean hasSocialWork;
-
-    @Schema(example = "855858f")
-    private String socialWork;
     
     @JsonIgnore
     private UserDTO user;

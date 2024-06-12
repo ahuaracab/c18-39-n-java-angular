@@ -91,7 +91,7 @@ public class ProfessionalController {
   	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody ProfessionalListSpecialtyDTO dto) {
-        Professional professional = mapper.map(dto.getConsult(), Professional.class);
+        Professional professional = mapper.map(dto.getProfessional(), Professional.class);
         List<Specialty> specialties = mapper.map(dto.getListSpecialty(), new TypeToken<List<Specialty>>() {
         }.getType());
 

@@ -24,11 +24,11 @@ public class UserDTO extends AuditableDTO{
 
     @NotNull
     @UniqueElements
-    @Schema(name = "User email", example = "luiscordova@gmail.com", requiredMode = RequiredMode.REQUIRED)
+    @Schema(example = "luiscordova@gmail.com", requiredMode = RequiredMode.REQUIRED)
     private String email;
 
     @NotNull
-    @Schema(name = "User password",example = "luis123",requiredMode = RequiredMode.REQUIRED)
+    @Schema(example = "luis123",requiredMode = RequiredMode.REQUIRED)
     private String password;
 
     @NotNull
@@ -42,4 +42,6 @@ public class UserDTO extends AuditableDTO{
 
     @JsonManagedReference
     private ProfessionalDTO professional;
+    
+
 }

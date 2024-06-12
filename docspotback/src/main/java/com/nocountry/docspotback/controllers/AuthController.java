@@ -12,6 +12,7 @@ import com.nocountry.docspotback.dto.UserDTO;
 import com.nocountry.docspotback.models.Patient;
 import com.nocountry.docspotback.models.Professional;
 import com.nocountry.docspotback.models.Role;
+import com.nocountry.docspotback.models.Specialty;
 import com.nocountry.docspotback.models.User;
 import com.nocountry.docspotback.services.impl.PatientServiceImpl;
 import com.nocountry.docspotback.services.impl.ProfessionalServiceImpl;
@@ -23,7 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -108,10 +108,7 @@ public class AuthController {
     	                Patient patient = new Patient();
     	                patient.setIdPatient(UUID.randomUUID());
     	                patient.setNamePatient(userDto.getNameUser());
-    	                patient.setPhotoPatient(userDto.getPhotoPatient());
     	                patient.setCellphonePatient(userDto.getCellphonePatient());
-    	                patient.setHasSocialWork(userDto.getHasSocialWork());
-    	                patient.setSocialWork(userDto.getSocialWork());
     	                roleObject = patient;
     	            } else if (roleName.equals("ROLE_PROFESSIONAL")) {
     	                Professional professional = new Professional();
@@ -128,7 +125,7 @@ public class AuthController {
 
     	        Future<Object> roleFuture = executor.submit(createRoleTask);
 
-    	        // Tarea 3: Actualizar el usuario con el paciente o profesional creado
+    	     // Tarea 3: Actualizar el usuario con el paciente o profesional creado
     	        Callable<Void> updateUserTask = () -> {
     	            User user = userFuture.get();
     	            Object roleObject = roleFuture.get();
@@ -142,13 +139,36 @@ public class AuthController {
     	                Professional professional = (Professional) roleObject;
     	                user.setProfessional(professional);
     	                professional.setUser(user);
-    	                professionalService.save(professional);
+    	                Professional obj=professionalService.save(professional);
+    	                
+
+
+    	                // Crear tarea para guardar especialidades
+    	                Callable<Void> saveSpecialtiesTask = () -> {
+    	                    List<Specialty> specialties = new ArrayList<>();
+    	                    Specialty specialty1 = new Specialty();
+    	                    Specialty specialty2 = new Specialty();
+    	                    specialty1.setIdSpecialty(userDto.getSpecialty1());
+    	                    specialty2.setIdSpecialty(userDto.getSpecialty2());
+    	                    specialties.add(specialty1);
+    	                    if(specialty2!=null) {
+        	                    specialties.add(specialty2);
+
+    	                    }
+    	                    professionalService.saveTransactional(obj, specialties);
+    	                    return null;
+    	                };
+
+    	                // Submitir tarea para guardar especialidades
+    	                executor.submit(saveSpecialtiesTask);
     	            }
 
     	            return null;
     	        };
 
+    	        // Submitir tarea para actualizar usuario
     	        executor.submit(updateUserTask).get();
+
 
     	        body.put("message", "User registered successfully!");
     	        return ResponseEntity.ok(body);
@@ -187,38 +207,5 @@ public class AuthController {
         }
     }
     
- /*   @PostMapping("/auth/login")
-    public ResponseEntity<String> login(@RequestBody UserDTO userDTO) {
-        try {
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDTO.getEmail(), userDTO.getPassword());
-            Authentication authentication = authenticationManager.authenticate(authenticationToken);
-            jwtAuthenticationFilter.successfulAuthentication(null, null, null, authentication);
-            return ResponseEntity.ok("Login successful");
-        } catch (AuthenticationException | IOException | ServletException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
-        }
-    }*/
-    
-  /*  @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody AuthDTO.LoginRequest userLogin) throws IllegalAccessException {
-        Authentication authentication =
-                authenticationManager
-                        .authenticate(new UsernamePasswordAuthenticationToken(
-                                userLogin.username(),
-                                userLogin.password()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        AuthUser userDetails = (AuthUser) authentication.getPrincipal();
-        System.out.println(userDetails);
-        Optional<User> user = userRepo.findByEmail(userLogin.username());
-        log.info("Token requested for user :{}", authentication.getAuthorities());
-        String token = authService.generateToken(authentication);
-        // Set the authorities from the token
-        Collection<? extends GrantedAuthority> authorities = userDetails.getAuthorities();
-        Authentication newAuthentication = new UsernamePasswordAuthenticationToken(userDetails, token, authorities);
-        SecurityContextHolder.getContext().setAuthentication(newAuthentication);
-        AuthDTO.Response response = new AuthDTO.Response("User logged in successfully", token,user);
-  
-        return ResponseEntity.ok(response);
-    }*/
 }

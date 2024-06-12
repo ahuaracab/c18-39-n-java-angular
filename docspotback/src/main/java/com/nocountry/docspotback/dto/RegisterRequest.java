@@ -1,5 +1,7 @@
 package com.nocountry.docspotback.dto;
 
+import java.util.UUID;
+
 import org.hibernate.validator.constraints.UniqueElements;
 
 
@@ -37,15 +39,6 @@ public class RegisterRequest {
     @Schema(example = "98564726")
     private String cellphonePatient;
 
-    @Schema(example = "https://robohash.org/bd6da376-037a-458a-97bb-bb7ff5f62c07")
-    private String photoPatient;
-
-    @Schema(example = "true")
-    private Boolean hasSocialWork;
-
-    @Schema(example = "258eg9e7")
-    private String socialWork;
-    
     
     @Schema(example = "70.50")
     private Double valueQuery;
@@ -53,4 +46,8 @@ public class RegisterRequest {
     @Schema(example = "8w5w8f8g452")
     private String mp;
 
+    @Schema(example = "d421ed25-c472-4e7f-9694-e86e051132ee")
+    private UUID specialty1;
+    @Schema(example = "c629bec5-3ea7-482f-84a0-d78b3e968de3")
+    private UUID specialty2;
 }
