@@ -8,4 +8,5 @@ export const environment = {
     /* RENDER */
     url_api_render: "https://docspotback.onrender.com"
     //url_api_render: "http://localhost:8000"
+
 }
