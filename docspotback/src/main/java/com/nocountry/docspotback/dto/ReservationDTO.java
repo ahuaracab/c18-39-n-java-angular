@@ -10,7 +10,6 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Getter
 @Setter

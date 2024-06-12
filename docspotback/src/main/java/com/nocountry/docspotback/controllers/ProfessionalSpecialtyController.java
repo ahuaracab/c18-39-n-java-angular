@@ -5,22 +5,17 @@ import com.nocountry.docspotback.dto.ProfessionalSpecialtyDTO;
 
 import com.nocountry.docspotback.models.ProfessionalSpecialty;
 import com.nocountry.docspotback.services.IProfessionalSpecialtyService;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
-import jakarta.websocket.server.PathParam;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
+
 import java.util.List;
 import java.util.UUID;
 

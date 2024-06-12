@@ -1,12 +1,9 @@
 package com.nocountry.docspotback.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nocountry.docspotback.models.Professional;
+
 import com.nocountry.docspotback.models.Reservation;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToOne;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,7 +12,6 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.UUID;
 
 @Getter

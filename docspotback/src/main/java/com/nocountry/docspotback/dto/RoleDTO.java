@@ -1,6 +1,5 @@
 package com.nocountry.docspotback.dto;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,9 +1,7 @@
 package com.nocountry.docspotback.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nocountry.docspotback.models.ClinicalStory;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
