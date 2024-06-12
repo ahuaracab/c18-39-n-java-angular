@@ -189,22 +189,22 @@ export class RegisterComponent implements OnInit {
     } else if (role == this.selectedRol.patient) {
       this.addControlsPatient(this.register);
       this.removeControlsProfessional(this.register);
-      this.listenCheckBox(this.register);
+      // this.listenCheckBox(this.register);
     }
   }
 
   /* Escuchar cambios en el checkbox */
-  private listenCheckBox(formG: FormGroup): void {
-    formG.get('hasWork')?.valueChanges.subscribe((hasSocialWork) => {
-      if (hasSocialWork) {
-        formG.get('socialWork')?.enable();
-      } else {
-        formG.get('socialWork')?.disable();
-        formG.get('socialWork')?.setValue('');
-        formG.get('socialWork')?.markAsUntouched();
-      }
-    });
-  }
+  // private listenCheckBox(formG: FormGroup): void {
+  //   formG.get('hasWork')?.valueChanges.subscribe((hasSocialWork) => {
+  //     if (hasSocialWork) {
+  //       formG.get('socialWork')?.enable();
+  //     } else {
+  //       formG.get('socialWork')?.disable();
+  //       formG.get('socialWork')?.setValue('');
+  //       formG.get('socialWork')?.markAsUntouched();
+  //     }
+  //   });
+  // }
 
   /* Cambio de formulario Profesional */
   private addControlsProfessional(formG: FormGroup): void {
@@ -218,8 +218,8 @@ export class RegisterComponent implements OnInit {
     this.hasWorkAdded = false;
     formG.removeControl('cellphone');
     formG.removeControl('photo');
-    formG.removeControl('hasWork');
-    formG.removeControl('socialWork');
+    // formG.removeControl('hasWork');
+    // formG.removeControl('socialWork');
   }
   /* FIN - Cambio de formulario Profesional */
 
@@ -230,14 +230,14 @@ export class RegisterComponent implements OnInit {
       'photo',
       new FormControl('photo1.jpg', Validators.required)
     );
-    formG.addControl(
-      'hasWork',
-      new FormControl({ value: false, disabled: false }, Validators.required)
-    );
-    formG.addControl(
-      'socialWork',
-      new FormControl({ value: '', disabled: true }, Validators.required)
-    );
+    // formG.addControl(
+    //   'hasWork',
+    //   new FormControl({ value: false, disabled: false }, Validators.required)
+    // );
+    // formG.addControl(
+    //   'socialWork',
+    //   new FormControl({ value: '', disabled: true }, Validators.required)
+    // );
     this.hasWorkAdded = true;
   }
 
@@ -344,11 +344,11 @@ export class RegisterComponent implements OnInit {
       return;
     }
     if (this.showForm == this.selectedRol.patient) {
-      if (!this.receivedFile) return;
+      // if (!this.receivedFile) return;
       // subir imagen y esperar string para agregar al formulario
-      let pathImage = await this.uploadImage(this.receivedFile);
-      if (!pathImage) return;
-      this.register.get('photo')?.setValue(pathImage);
+      // let pathImage = await this.uploadImage(this.receivedFile);
+      // if (!pathImage) return;
+      // this.register.get('photo')?.setValue(pathImage);
       // pasar data a un objeto para crear paciente
       let patientDto: registerPatient = {} as registerPatient;
       this.loadDataFormPatient(patientDto, this.register);
@@ -456,10 +456,10 @@ export class RegisterComponent implements OnInit {
     patientData.nameRole = FormG.get('rol')?.value;
 
     patientData.cellphonePatient = FormG.get('cellphone')?.value;
-    patientData.hasSocialWork = FormG.get('hasWork')?.value;
-    patientData.socialWork = FormG.get('socialWork')?.value;
+    // patientData.hasSocialWork = FormG.get('hasWork')?.value;
+    // patientData.socialWork = FormG.get('socialWork')?.value;
 
-    patientData.photoPatient = FormG.get('photo')?.value;
+    // patientData.photoPatient = FormG.get('photo')?.value;
   }
 
   private loadDataFormProfessional(
