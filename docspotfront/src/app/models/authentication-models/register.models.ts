@@ -53,9 +53,9 @@ export interface registerPatient {
   nameRole:string;
   nameUser:string;
   cellphonePatient:string;
-  photoPatient:string;
-  hasSocialWork:boolean;
-  socialWork:string;
+  photoPatient?:string;
+  hasSocialWork?:boolean;
+  socialWork?:string;
 }
 
 export interface registerProfessional {
