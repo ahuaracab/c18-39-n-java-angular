@@ -5,7 +5,7 @@ import { ButtonModule } from "primeng/button";
 import { CardModule } from "primeng/card";
 import { DropdownModule } from 'primeng/dropdown';
 import { SearchProfessionalService } from '../../../../../services/search-professional/search-professional.service';
-import { Specialty } from '../../../../../models/search-professional-models/searchProfessional.model';
+import { Professional, Specialty } from '../../../../../models/search-professional-models/searchProfessional.model';
 
 @Component({
   selector: 'app-doctor-filters',
@@ -31,7 +31,7 @@ export class DoctorFiltersComponent implements OnInit {
 
   constructor(
     private _fb:                        FormBuilder,
-    private _searchProfessionalService: SearchProfessionalService
+    private _searchProfessionalService: SearchProfessionalService,
   ) {}
 
   ngOnInit():void {
@@ -61,10 +61,33 @@ export class DoctorFiltersComponent implements OnInit {
   }
 
   sortPunctuation():void {
+    const professional: Professional[] = this._searchProfessionalService.getProfessionalData();
+
     this.descendantPunctuation = !this.descendantPunctuation;
+
+    const sortProfessionalByPunctuation = professional.sort((a, b) => a.reputation - b.reputation);
+    this._searchProfessionalService.setProfessionalData(sortProfessionalByPunctuation);
+
+    // const sortProfessionalByPunctuation = this.descendantPunctuation
+    // ?
+    //   professional.sort((a, b) => a.reputation - b.reputation).reverse()
+    // :
+    //   professional.sort((a, b) => a.reputation - b.reputation)
+
+    // this._searchProfessionalService.setProfessionalData(sortProfessionalByPunctuation);
   }
 
   sortPrice():void {
+    const professional: Professional[] = this._searchProfessionalService.getProfessionalData();
     this.descendantPrice = !this.descendantPrice;
+
+    /* La función sort nos devuelve un arreglo ascendente, así que cuando queremos un arreglo descendente, hacemos el .reverse() */
+    const sortProfessionalsByPrice = this.descendantPrice
+    ?
+      professional.sort((a, b) => a.valueQuery - b.valueQuery).reverse()
+    :
+      professional.sort((a, b) => a.valueQuery - b.valueQuery)
+
+    this._searchProfessionalService.setProfessionalData(sortProfessionalsByPrice);
   }
 }

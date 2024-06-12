@@ -17,7 +17,7 @@
         pButton
         class="search-button"
         label="Buscar"
-        (onClick)="searchSpecialty()"
+        (click)="searchSpecialty()"
         [style]="{ marginLeft: '0rem' }"
       ></button>
     </div>
@@ -27,7 +27,7 @@
           label="Puntuación"
           [icon]="descendantPunctuation ? 'pi pi-arrow-down' : 'pi pi-arrow-up'"
           iconPos="right"
-          (onClick)="sortPunctuation()"
+          (click)="sortPunctuation()"
           styleClass="fw-normal"
         ></button>
       </div>
@@ -37,7 +37,7 @@
           label="Precio"
           [icon]="descendantPrice ? 'pi pi-arrow-down' : 'pi pi-arrow-up'"
           iconPos="right"
-          (onClick)="sortPrice()"
+          (click)="sortPrice()"
           styleClass="fw-normal"
         ></button>
       </div>
