@@ -104,6 +104,7 @@ export class LoginComponent implements OnInit {
 
           const roles = JSON.parse(decodedToken.authorities);
           const role = roles[0].authority;
+          localStorage.setItem('role', role);
 
           console.log('ROLE: ', role);
           this.dialogService.openLoadingWindow();
