@@ -33,6 +33,8 @@ public class ShiftDTO {
     @NotNull
     private Boolean repeatShift;
     
-   
+    @NotNull
+    private UUID idProfessional;
+    
     private Reservation reservations;
 }

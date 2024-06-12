@@ -14,6 +14,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,10 +55,11 @@ public class ShiftController {
             return new ResponseEntity<>(mapper.map(obj,ShiftDTO.class),HttpStatus.OK);
         }
     }
-
+    @PreAuthorize("hasRole('ROLE_PROFESSIONAL')")
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody ShiftDTO dto){
         Shift obj = service.save(mapper.map(dto, Shift.class));
+        service.newShiftForProfessional(dto.getIdProfessional(), obj.getIdShift());
         //localhost:8000/Shifts/5
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdShift()).toUri();
         return ResponseEntity.created(location).build();
