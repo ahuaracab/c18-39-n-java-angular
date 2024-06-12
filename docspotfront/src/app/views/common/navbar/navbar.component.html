@@ -18,7 +18,7 @@
       </li>
       }
 
-      @if(!namePatient){
+      @if(!name){
       <span class="d-flex" style="gap: 0.5rem;">
         <li style="font-weight: 500;">
           <a style="border: 1px solid #19b2dd; color: #19b2dd; padding: 0.5rem 0.75rem; text-decoration: none; border-radius: 8px"
@@ -36,7 +36,7 @@
       } @else {
       <ng-container>
         <li mat-button [matMenuTriggerFor]="userMenu" class="mat-menu-panel circle-avatar">
-          {{ name }}
+          {{ initial }}
         </li>
         <mat-menu #userMenu="matMenu">
           <button mat-menu-item [routerLink]="['/profile']">Mi Perfil</button>

@@ -20,14 +20,14 @@ export class NavbarComponent {
   ];
 
   public showUserMenu: boolean = false;
-  public namePatient: string | null = null;
   public name: string | null = null;
+  public initial: string | null = null;
 
   ngOnInit(): void {
-    this.namePatient = localStorage.getItem('namePatient');
-    if (this.namePatient) {
-      this.name = this.namePatient.charAt(0).toUpperCase();
-      console.log('Letra inicial de usuario:', this.name);
+    this.name = localStorage.getItem('name');
+    if (this.name) {
+      this.initial = this.name.charAt(0).toUpperCase();
+      console.log('Letra inicial de usuario:', this.initial);
     } else {
       console.log('No has iniciado sesión');
     }
@@ -35,7 +35,7 @@ export class NavbarComponent {
 
   logout() {
     localStorage.removeItem('token');
-    localStorage.removeItem('namePatient');
+    localStorage.removeItem('name');
     window.location.reload(); // Optional: To refresh the view
   }
 }

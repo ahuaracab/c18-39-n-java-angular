@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { userLogin } from 'src/app/models/authentication-models/login.models';
@@ -18,8 +22,7 @@ import { MatInputModule } from '@angular/material/input';
 import { LoginResponse } from 'src/app/models/authentication-models/login-response.model';
 import { DialogService } from 'src/app/services/component/service-dialog/dialog.service';
 import { DialogDataDto } from 'src/app/models/components/common/dialog.model';
-import { Observable, finalize, map, startWith } from 'rxjs';
-
+import { finalize } from 'rxjs';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -98,22 +101,33 @@ export class LoginComponent implements OnInit {
           console.log(decodedToken);
 
           const email = decodedToken.username;
+
+          const roles = JSON.parse(decodedToken.authorities);
+          const role = roles[0].authority;
+
+          console.log('ROLE: ', role);
           this.dialogService.openLoadingWindow();
           this.authService
             .getUserData(email)
             .pipe(finalize(() => this.dialogService.closeDialog()))
             .subscribe({
               next: (res: HttpResponse<any>) => {
-                // loading=false;
                 console.log('response: ', res);
                 console.log('response status:', res.status);
                 if (res.status === 200) {
-                  console.log(res.body.patient.namePatient);
-                  localStorage.setItem('namePatient', res.body.patient.namePatient);
+                  console.log(res);
+                  if (role == 'ROLE_PATIENT') {
+                    localStorage.setItem('name', res.body.patient.namePatient);
+                  } else {
+                    localStorage.setItem(
+                      'name',
+                      res.body.professional.nameProfessional
+                    );
+                  }
+
                   let data: DialogDataDto = this.loadSuccessResponse();
-                  this.dialogService.openSuccessDialog(data).subscribe(() => {                    
+                  this.dialogService.openSuccessDialog(data).subscribe(() => {
                     this.navHome();
-                    return;
                   });
                 }
               },
