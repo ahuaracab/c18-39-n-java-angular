@@ -1,12 +1,15 @@
 <div class="RegisterContainer">
-    <div class="divImage">
-      <img src="assets/images/doctor-register.jpg" alt="Imagen de doctor" style="width: 100%; height: 100%;">
+    <div class="divImage"
+    [style.view-transition-name]="'transition-img'">
+      <img src="assets/images/doctor-register.jpg" alt="Imagen de doctor" style="width: 100%; height: 100%;object-fit: cover;">
     </div>
     <div class="container"
     [style.view-transition-name]="'transition-form'">
         <section class="selectRol" [ngClass]="{'btn-clicked': !showTouched}">
-            <h1>Registro DocSpot</h1>
-            <p>Seleccione su tipo de usuario:</p>
+            <h1
+            [style.view-transition-name]="'transition-title'">Registro DocSpot</h1>
+            <p
+            [style.view-transition-name]="'transition-subtitle'">Seleccione su tipo de usuario:</p>
             <div class="seccionBtn " [ngClass]="{'btn-column': !showTouched}">
                 <button mat-raised-button [ngClass]="{
                     'btn-select': showForm === selectedRol.patient,
@@ -22,10 +25,12 @@
                   styl
                     (click)="selectProfessional()">Profesional</button>
             </div>
-            <span class="mt-5" [ngClass]="{'d-none': showTouched}">
+            <span class="mt-5" [ngClass]="{'d-none': showTouched}"
+            [style.view-transition-name]="'transition-cuenta'">
                 ¿Ya tienes una cuenta?
             </span>
-            <span class="mb-0" [ngClass]="{'d-none': showTouched}">
+            <span class="mb-0" [ngClass]="{'d-none': showTouched}"
+            [style.view-transition-name]="'transition-cuentaLink'">
                 <a (click)="navLogin()">Inicia sesión aqui</a>
             </span>
         </section>
@@ -100,9 +105,14 @@
                     </mat-select>
                 </mat-form-field> -->
 
-                <mat-form-field appearance="outline" class="">
+                <mat-form-field appearance="outline" class=""
+                [ariaDisabled]="this.specSelect.length >= 2">
                     <mat-label>Especialidades</mat-label>
-                    <input #inputSpec type="text" matInput [matAutocomplete]="auto" formControlName="specialtyAuto">
+                    <input #inputSpec type="text" matInput [matAutocomplete]="auto"
+                    formControlName="specialtyAuto"
+                    [readonly]="this.specSelect.length >= 2" 
+                    [attr.disabled]="this.specSelect.length >= 2"
+                    [style.pointer-events]="this.specSelect.length >= 2 ? 'none' : ''">
                     <mat-autocomplete #auto="matAutocomplete"
                      [displayWith]="displaySpecialty"
                      [hideSingleSelectionIndicator]=true
@@ -170,10 +180,12 @@
                             'btn-select':'btn-unselect'">Enviar</button>
         </form>
         <div class="d-flex flex-column gap-3">
-            <span class="mt-5">
+            <span class="mt-5"
+            [style.view-transition-name]="'transition-cuenta'">
                 ¿Ya tienes una cuenta?
             </span>
-            <span class="mb-5">
+            <span class="mb-5"
+            [style.view-transition-name]="'transition-cuentaLink'">
                 <a (click)="navLogin()">Inicia sesión aqui</a>
             </span>
         </div>

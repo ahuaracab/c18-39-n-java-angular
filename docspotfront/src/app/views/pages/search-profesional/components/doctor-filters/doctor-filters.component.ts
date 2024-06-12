@@ -1,11 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ButtonModule } from "primeng/button";
-import { CardModule } from "primeng/card";
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { CardModule } from 'primeng/card';
 import { DropdownModule } from 'primeng/dropdown';
 import { SearchProfessionalService } from '../../../../../services/search-professional/search-professional.service';
-import { Professional, Specialty } from '../../../../../models/search-professional-models/searchProfessional.model';
+import {
+  Professional,
+  Specialty,
+} from '../../../../../models/search-professional-models/searchProfessional.model';
 
 @Component({
   selector: 'app-doctor-filters',
@@ -21,73 +29,69 @@ import { Professional, Specialty } from '../../../../../models/search-profession
   styleUrl: './doctor-filters.component.scss',
 })
 export class DoctorFiltersComponent implements OnInit {
-
   public doctorFiltersForm: FormGroup = this._fb.group({});
 
   public specialties: Specialty[] = [];
 
-  public descendantPunctuation:boolean = true;
-  public descendantPrice:boolean = true;
+  public descendantReputation: boolean = true;
+  public descendantPrice: boolean = true;
 
   constructor(
-    private _fb:                        FormBuilder,
-    private _searchProfessionalService: SearchProfessionalService,
+    private _fb: FormBuilder,
+    private _searchProfessionalService: SearchProfessionalService
   ) {}
 
-  ngOnInit():void {
+  ngOnInit(): void {
     this.getSpecialties();
     this.initForm();
   }
 
-  initForm():void {
+  initForm(): void {
     this.doctorFiltersForm = this._fb.group({
-      idSpecialty: [ '', [Validators.required] ]
-    })
+      idSpecialty: ['', [Validators.required]],
+    });
   }
 
-  getSpecialties():void {
+  getSpecialties(): void {
     this._searchProfessionalService.getSpecialties().subscribe({
-      next: (res) => this.specialties = res
-    })
+      next: (res) => (this.specialties = res),
+    });
   }
 
-  searchSpecialty():void {
-
+  searchSpecialty(): void {
     const id = this.doctorFiltersForm.controls['idSpecialty'].value;
 
     this._searchProfessionalService.getSpecialtyById(id).subscribe({
-      next: (res) => console.log(res)
-    })
+      next: (res) => console.log(res),
+    });
   }
 
-  sortPunctuation():void {
-    const professional: Professional[] = this._searchProfessionalService.getProfessionalData();
+  sortReputation(): void {
+    const professional: Professional[] =
+      this._searchProfessionalService.getProfessionalData();
+    this.descendantReputation = !this.descendantReputation;
 
-    this.descendantPunctuation = !this.descendantPunctuation;
+    const sortProfessionalByReputation = this.descendantReputation
+      ? professional.sort((a, b) => a.reputation - b.reputation)
+      : professional.sort((a, b) => a.reputation - b.reputation).reverse();
 
-    const sortProfessionalByPunctuation = professional.sort((a, b) => a.reputation - b.reputation);
-    this._searchProfessionalService.setProfessionalData(sortProfessionalByPunctuation);
-
-    // const sortProfessionalByPunctuation = this.descendantPunctuation
-    // ?
-    //   professional.sort((a, b) => a.reputation - b.reputation).reverse()
-    // :
-    //   professional.sort((a, b) => a.reputation - b.reputation)
-
-    // this._searchProfessionalService.setProfessionalData(sortProfessionalByPunctuation);
+    this._searchProfessionalService.setProfessionalData(
+      sortProfessionalByReputation
+    );
   }
 
-  sortPrice():void {
-    const professional: Professional[] = this._searchProfessionalService.getProfessionalData();
+  sortPrice(): void {
+    const professional: Professional[] =
+      this._searchProfessionalService.getProfessionalData();
     this.descendantPrice = !this.descendantPrice;
 
     /* La función sort nos devuelve un arreglo ascendente, así que cuando queremos un arreglo descendente, hacemos el .reverse() */
     const sortProfessionalsByPrice = this.descendantPrice
-    ?
-      professional.sort((a, b) => a.valueQuery - b.valueQuery).reverse()
-    :
-      professional.sort((a, b) => a.valueQuery - b.valueQuery)
+      ? professional.sort((a, b) => a.valueQuery - b.valueQuery).reverse()
+      : professional.sort((a, b) => a.valueQuery - b.valueQuery);
 
-    this._searchProfessionalService.setProfessionalData(sortProfessionalsByPrice);
+    this._searchProfessionalService.setProfessionalData(
+      sortProfessionalsByPrice
+    );
   }
 }

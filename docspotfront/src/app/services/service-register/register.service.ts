@@ -71,7 +71,8 @@ export class RegisterService {
     params.append("nameUser", profesional.nameUser);
     params.append("mp", profesional.mp);
     params.append("valueQuery", profesional.valueQuery);
-    params.append("specialties", strSpecialties);
+    params.append("specialty1", profesional.specialties[0] ?? "");
+    params.append("specialty2", profesional.specialties[1] ?? "");
   
     return this.http.post<any>(`${this.appUrl}${ctrl}`, params,
         {
