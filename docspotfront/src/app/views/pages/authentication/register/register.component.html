@@ -102,7 +102,7 @@
 
                 <mat-form-field appearance="outline" class="">
                     <mat-label>Especialidades</mat-label>
-                    <input #inputSpec type="text" matInput [matAutocomplete]="auto" formControlName="specialtyAuto">
+                    <input #inputSpec type="text" matInput [matAutocomplete]="auto" formControlName="specialtyAuto" [disabled]="this.specSelect.length >= 2">
                     <mat-autocomplete #auto="matAutocomplete"
                      [displayWith]="displaySpecialty"
                      [hideSingleSelectionIndicator]=true
