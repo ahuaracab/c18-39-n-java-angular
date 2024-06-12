@@ -2,6 +2,7 @@ package com.nocountry.docspotback.security;
 
 import java.util.Arrays;
 
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -56,6 +57,7 @@ public class SpringSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/professional","/api/professional/pageable/**","/api/professional/**","/api/professional/pageable").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/professional").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/patients").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/api/professional").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/shifts","/api/shifts/**").permitAll()
@@ -64,7 +66,7 @@ public class SpringSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/specialty","/api/specialty/{id}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/login").permitAll()
      
                         .anyRequest().authenticated())
                 .addFilter(jwtAuthorizationFilter())
@@ -73,6 +75,8 @@ public class SpringSecurityConfig {
                 //.oauth2ResourceServer((oauth2) -> oauth2.jwt((jwt) -> jwt.decoder(jwtDecoder())))
                 .userDetailsService(userDetailsService)
                 .httpBasic(Customizer.withDefaults())
+                /*.httpBasic(c -> c.authenticationEntryPoint(
+                        (request, response, authException) -> response.sendError(HttpStatus.SC_UNAUTHORIZED)))*/
                 .csrf(config -> config.disable())
                 //.cors(cors -> cors.disable())
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

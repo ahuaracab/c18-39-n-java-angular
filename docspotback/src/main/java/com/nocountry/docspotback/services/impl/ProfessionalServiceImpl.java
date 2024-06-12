@@ -37,7 +37,7 @@ public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implem
     public Professional saveTransactional(Professional professional, List<Specialty> specialties) {
         //repo.save(professional);
         System.out.println("Especialidad 1: "+specialties.get(0).getIdSpecialty());
-        System.out.println("Especialidad 2: "+specialties.get(1).getIdSpecialty());
+        //System.out.println("Especialidad 2: "+specialties.get(1).getIdSpecialty());
         System.out.println("Profesional: "+professional.getIdProfessional());
         specialties.forEach(specialty ->psRepo.saveSpecialty(professional.getIdProfessional(), specialty.getIdSpecialty()));
         return professional;

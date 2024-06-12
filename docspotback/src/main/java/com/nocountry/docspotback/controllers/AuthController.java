@@ -38,7 +38,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name = "Autentificación y Registro", description = "Registro de usuario según roles y Autentificación")
 @RestController
 @RequestMapping("/api/auth")
-@CrossOrigin("http:localhost:4200")
+@CrossOrigin("http://localhost:4200")
 public class AuthController {
 	
 
@@ -149,9 +149,9 @@ public class AuthController {
     	                    Specialty specialty1 = new Specialty();
     	                    Specialty specialty2 = new Specialty();
     	                    specialty1.setIdSpecialty(userDto.getSpecialty1());
-    	                    specialty2.setIdSpecialty(userDto.getSpecialty2());
     	                    specialties.add(specialty1);
-    	                    if(specialty2!=null) {
+    	                    if(userDto.getSpecialty2()!=null) {
+        	                    specialty2.setIdSpecialty(userDto.getSpecialty2());
         	                    specialties.add(specialty2);
 
     	                    }
