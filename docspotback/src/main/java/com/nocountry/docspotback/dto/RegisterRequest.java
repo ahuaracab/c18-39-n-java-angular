@@ -39,6 +39,7 @@ public class RegisterRequest {
     @Schema(example = "98564726")
     private String cellphonePatient;
 
+    private String urlPhoto;
     
     @Schema(example = "70.50")
     private Double valueQuery;

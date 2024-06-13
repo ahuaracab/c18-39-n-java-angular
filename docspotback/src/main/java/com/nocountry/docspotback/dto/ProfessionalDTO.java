@@ -29,6 +29,8 @@ public class ProfessionalDTO {
     @NotNull
     private Double reputation;
 
+    private String urlPhoto;
+    
     @NotNull
     @Schema(example = "79.9")
     private Double valueQuery;

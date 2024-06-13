@@ -25,6 +25,8 @@ public class Professional extends Auditable{
     @Column(name = "name_professional",length = 70, nullable = false)
     private String nameProfessional;
 
+    private String urlPhoto;
+    
     @Column(length = 4,nullable = false)
     private Double reputation;
 

@@ -114,6 +114,7 @@ public class AuthController {
     	                Professional professional = new Professional();
     	                professional.setIdProfessional(UUID.randomUUID());
     	                professional.setNameProfessional(userDto.getNameUser());
+    	                professional.setUrlPhoto(userDto.getUrlPhoto());
     	                professional.setMp(userDto.getMp());
     	                professional.setReputation(0.0);
     	                professional.setValueQuery(userDto.getValueQuery());
