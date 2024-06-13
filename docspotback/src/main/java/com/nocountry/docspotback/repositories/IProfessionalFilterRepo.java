@@ -1,5 +1,6 @@
 package com.nocountry.docspotback.repositories;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.domain.Page;
@@ -15,4 +16,7 @@ public interface IProfessionalFilterRepo extends IGenericRepo<ProfessionalFilter
     		+ "	FROM professional_filter pf WHERE pf.id_specialty=:idSpecialty",nativeQuery = true)
     Page<ProfessionalFilter>getAllProfessionalsByIdSpecialty(@Param("idSpecialty") UUID idSpecialty, Pageable pageable);
 
+    @Query(value = "SELECT pf.id_professional, pf.mp, pf.name_professional, pf.reputation, pf.value_query, pf.url_photo, pf.id_specialty, pf.name_specialty\r\n"
+    		+ "	FROM professional_filter pf WHERE pf.id_specialty=:idSpecialty",nativeQuery = true)
+    public List<ProfessionalFilter>getAllProfByIdSpecialty(UUID idSpecialty);
 }

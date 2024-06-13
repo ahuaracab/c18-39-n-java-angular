@@ -19,5 +19,6 @@ public interface IProfessionalService extends ICRUDService<Professional, UUID>{
     Page<Professional>findAllProfessional(Pageable pageable);
 
     List<ProfessionalView>findAllProfessionalView();
-
+    
+    public List<ProfessionalFilter>getAllProfByIdSpecialty(UUID idSpecialty);
 }

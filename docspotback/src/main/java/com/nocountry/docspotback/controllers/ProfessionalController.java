@@ -180,4 +180,12 @@ public class ProfessionalController {
     	return ResponseEntity.ok(service.findAllProfessional(pageable));
     }
 
+//provicional
+  @GetMapping("/list1/{idSpecialty}")
+  public ResponseEntity<?> getAllProfByIdSpecialty(
+          @PathVariable("idSpecialty") UUID idSpecialty) {
+
+         return new ResponseEntity<>(service.getAllProfByIdSpecialty(idSpecialty), HttpStatus.OK);
+     
+  }
 }

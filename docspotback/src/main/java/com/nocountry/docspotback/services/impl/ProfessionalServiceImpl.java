@@ -79,6 +79,8 @@ public Page<ProfessionalFilter> getAllProfessionalsByIdSpecialty(UUID idSpecialt
 	return filterRepo.getAllProfessionalsByIdSpecialty(idSpecialty, pageable);
 }
 
-	
+	public List<ProfessionalFilter>getAllProfByIdSpecialty(UUID idSpecialty){
+		return filterRepo.getAllProfByIdSpecialty(idSpecialty);
+	}
 
 }
