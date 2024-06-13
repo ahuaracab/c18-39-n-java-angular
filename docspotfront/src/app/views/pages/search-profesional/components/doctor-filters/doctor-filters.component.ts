@@ -72,8 +72,8 @@ export class DoctorFiltersComponent implements OnInit {
     this.descendantReputation = !this.descendantReputation;
 
     const sortProfessionalByReputation = this.descendantReputation
-      ? professional.sort((a, b) => a.reputation - b.reputation)
-      : professional.sort((a, b) => a.reputation - b.reputation).reverse();
+      ? professional.sort((a, b) => a.reputation - b.reputation).reverse()
+      : professional.sort((a, b) => a.reputation - b.reputation);
 
     this._searchProfessionalService.setProfessionalData(
       sortProfessionalByReputation
