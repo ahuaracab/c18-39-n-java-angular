@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, SimpleChanges } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -30,12 +30,21 @@ export class DoctorDetailsCardComponent implements OnInit {
 
   constructor(
     private _fb: FormBuilder,
-    private _searchProfessionalService: SearchProfessionalService
+    private _searchProfessionalService: SearchProfessionalService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.getProfessionals();
-    this.getProfessionalsBySpecialty();
+    this._searchProfessionalService.getProfessionalDataSub().subscribe(
+      (data) => {
+        // if(data.length > 0) {
+          this.professionals = [...data];
+          console.log("data:", this.professionals);
+          this.cdr.detectChanges();
+        // }
+      }
+    );
   }
 
   getProfessionals(): void {
@@ -45,10 +54,6 @@ export class DoctorDetailsCardComponent implements OnInit {
         this._searchProfessionalService.setProfessionalData(this.professionals);
       },
     });
-  }
-
-  getProfessionalsBySpecialty(): void {
-    this.professionals = this._searchProfessionalService.getProfessionalData();
   }
 
   roundDown(value: number): number {

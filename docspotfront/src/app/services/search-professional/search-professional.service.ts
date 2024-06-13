@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Specialty } from 'src/app/models/authentication-models/register.models';
 import { Professional } from 'src/app/models/search-professional-models/searchProfessional.model';
@@ -10,6 +10,8 @@ import { Professional } from 'src/app/models/search-professional-models/searchPr
 })
 export class SearchProfessionalService {
   private professional = signal<Professional[]>([]);
+  
+  private proSubject = new BehaviorSubject<Professional[]>([]);
 
   constructor(private _http: HttpClient) {}
 
@@ -19,8 +21,13 @@ export class SearchProfessionalService {
     return this.professional();
   }
 
+  getProfessionalDataSub() {
+    return this.proSubject.asObservable();
+  }
+
   setProfessionalData(updatedData: Professional[]): void {
     this.professional.set(updatedData);
+    this.proSubject.next([...updatedData]);
   }
 
   // ? HTTP Responses

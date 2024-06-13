@@ -1,7 +1,7 @@
 <div class="d-flex flex-wrap">
-  @for (professional of professionals; track $index) {
+  @for (professional of this.professionals; track $index) {
   <div class="card">
-    <div class="w-100 h-100 text-center">
+    <div class="w-100 h-100 text-center" >
       <img [src]="professional.urlPhoto" alt="Foto del doctor">
     </div>
     <div class="text-start w-100" style="width: 100%">
