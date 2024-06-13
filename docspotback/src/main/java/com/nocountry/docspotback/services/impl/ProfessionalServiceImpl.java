@@ -56,12 +56,12 @@ public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implem
 	}
 
 @Override
-public Page<Professional> getAllProfessionalsBySpecialityName(String nameSpecialty, Pageable pageable) {
+public Page<Professional> getAllProfessionalsBySpecialityName(UUID idSpecialty, Pageable pageable) {
 	// TODO Auto-generated method stub
     if (pageable == null) {
         pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "value_query");
     }
-	return repo.getAllProfessionalsBySpecialityName(nameSpecialty, pageable);
+	return repo.getAllProfessionalsBySpecialityName(idSpecialty, pageable);
 }
 
 @Override
