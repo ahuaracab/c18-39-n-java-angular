@@ -13,7 +13,9 @@ import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -56,7 +58,9 @@ public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implem
 @Override
 public Page<Professional> getAllProfessionalsBySpecialityName(String nameSpecialty, Pageable pageable) {
 	// TODO Auto-generated method stub
-	return repo.getAllProfessionalsBySpecialityName(nameSpecialty, pageable);
+    PageRequest pageReq = PageRequest.of(0, 10,  Sort.Direction.fromString("ASC"), "value_query");
+
+	return repo.getAllProfessionalsBySpecialityName(nameSpecialty, pageReq);
 }
 
 @Override
