@@ -42,7 +42,7 @@ export class AuthV1Service {
 
   public getUserData(email: string | null): Observable<HttpResponse<any>> {
     const token = localStorage.getItem('token')
-    const ctrl: string = `/api/auth/User/${email}`;
+    const ctrl: string = `/api/auth/user/${email}`;
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
     return this.http.get<any>(`${this.appUrl}${ctrl}`, {
       headers,
