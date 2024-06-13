@@ -167,11 +167,11 @@ public class ProfessionalController {
     	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
     	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/pageable/{idSpecialty}")
-    public ResponseEntity<?> getAllByNameSpecialty(
-            @PathVariable("idSpecialty")@Parameter(example = "Cardiología") UUID idSpecialty,
+    public ResponseEntity<?> getAllByIdSpecialty(
+            @PathVariable("idSpecialty") UUID idSpecialty,
             Pageable pageable) {
 
-           return new ResponseEntity<>(service.getAllProfessionalsBySpecialityName(idSpecialty, pageable), HttpStatus.OK);
+           return new ResponseEntity<>(service.getAllProfessionalsByIdSpecialty(idSpecialty, pageable), HttpStatus.OK);
        
     }
     
