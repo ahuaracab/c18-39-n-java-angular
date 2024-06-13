@@ -65,7 +65,7 @@ public class ReservationController {
             return new ResponseEntity<>(mapper.map(obj,ReservationDTO.class),HttpStatus.OK);
         }
     }
-
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody ReservationDTO dto){
         Reservation obj = service.saveTransaction(mapper.map(dto, Reservation.class));
