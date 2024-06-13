@@ -6,10 +6,9 @@ import { Specialty } from 'src/app/models/authentication-models/register.models'
 import { Professional } from 'src/app/models/search-professional-models/searchProfessional.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SearchProfessionalService {
-
   private professional = signal<Professional[]>([]);
 
   constructor(private _http: HttpClient) {}
@@ -20,21 +19,29 @@ export class SearchProfessionalService {
     return this.professional();
   }
 
-  setProfessionalData(updatedData: Professional[]):void {
+  setProfessionalData(updatedData: Professional[]): void {
     this.professional.set(updatedData);
   }
 
   // ? HTTP Responses
 
-  getSpecialties():Observable<Specialty[]> {
+  getSpecialties(): Observable<Specialty[]> {
     return this._http.get<Specialty[]>(`${environment.url_api}/api/specialty`);
   }
 
-  getSpecialtyById(id: string):Observable<Specialty> {
+  /*getSpecialtyById(id: string):Observable<Specialty> {
     return this._http.get<Specialty>(`${environment.url_api}/api/specialty/${id}`);
+  }*/
+
+  getProfessionalsBySpecialtyId(id: string): Observable<Professional[]> {
+    return this._http.get<Professional[]>(
+      `${environment.url_api}/api/professional/pageable/${id}`
+    );
   }
 
-  getProfessionals():Observable<Professional[]> {
-    return this._http.get<Professional[]>(`${environment.url_api}/api/professional`);
+  getProfessionals(): Observable<Professional[]> {
+    return this._http.get<Professional[]>(
+      `${environment.url_api}/api/professional`
+    );
   }
 }

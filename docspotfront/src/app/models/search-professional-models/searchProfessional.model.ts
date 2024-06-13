@@ -5,6 +5,7 @@ export interface Professional {
   valueQuery: number;
   mp: string;
   nameSpecialty: string;
+  urlPhoto: string;
 }
 
 export interface Specialty {
