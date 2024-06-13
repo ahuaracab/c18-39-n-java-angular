@@ -1,9 +1,11 @@
 package com.nocountry.docspotback.services.impl;
 
 import com.nocountry.docspotback.models.Professional;
+import com.nocountry.docspotback.models.ProfessionalFilter;
 import com.nocountry.docspotback.models.ProfessionalView;
 import com.nocountry.docspotback.models.Specialty;
 import com.nocountry.docspotback.repositories.IGenericRepo;
+import com.nocountry.docspotback.repositories.IProfessionalFilterRepo;
 import com.nocountry.docspotback.repositories.IProfessionalRepo;
 import com.nocountry.docspotback.repositories.IProfessionalSpecialtyRepo;
 import com.nocountry.docspotback.repositories.IProfessionalViewRepo;
@@ -32,6 +34,10 @@ public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implem
 
     @Autowired
     private IProfessionalViewRepo viewRepo;
+    
+    @Autowired
+    private IProfessionalFilterRepo filterRepo;
+    
     @Override
     protected IGenericRepo<Professional, UUID> getRepo() {
         return repo;
@@ -55,20 +61,22 @@ public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implem
 		return repo.findAllProfessional(pageable);
 	}
 
-@Override
-public Page<Professional> getAllProfessionalsBySpecialityName(UUID idSpecialty, Pageable pageable) {
-	// TODO Auto-generated method stub
-    if (pageable == null) {
-        pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "value_query");
-    }
-	return repo.getAllProfessionalsBySpecialityName(idSpecialty, pageable);
-}
 
 @Override
 public List<ProfessionalView> findAllProfessionalView() {
 	// TODO Auto-generated method stub
 	return viewRepo.findAllProfessionalView();
 
+}
+
+@Override
+public Page<ProfessionalFilter> getAllProfessionalsByIdSpecialty(UUID idSpecialty, Pageable pageable) {
+	// TODO Auto-generated method stub
+    if (pageable == null) {
+        pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "value_query");
+    }
+    
+	return filterRepo.getAllProfessionalsByIdSpecialty(idSpecialty, pageable);
 }
 
 	
