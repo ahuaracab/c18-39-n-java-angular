@@ -8,6 +8,7 @@ import com.nocountry.docspotback.models.Professional;
 
 import com.nocountry.docspotback.models.Specialty;
 import com.nocountry.docspotback.services.impl.ProfessionalServiceImpl;
+import com.nocountry.docspotback.services.impl.ProfessionalSpecialtyServiceImpl;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,6 +47,8 @@ public class ProfessionalController {
     @Autowired
     private ProfessionalServiceImpl service;
 
+    @Autowired
+    private ProfessionalSpecialtyServiceImpl sservice;
     @Autowired
     private ModelMapper mapper;
 

@@ -56,6 +56,7 @@ public class SpringSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/professional","/api/professional/pageable/**","/api/professional/**","/api/professional/pageable").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/professional").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/professional-specialties/professional/**").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/patients").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/api/professional").permitAll()
