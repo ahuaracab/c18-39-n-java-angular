@@ -14,6 +14,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.nocountry.docspotback.dto.ReservationDTO;
+import com.nocountry.docspotback.dto.ReservationListDTO;
 import com.nocountry.docspotback.dto.ReservationResponseDto;
 import com.nocountry.docspotback.exception.ModelNotFoundException;
 import com.nocountry.docspotback.models.Reservation;
@@ -39,11 +41,11 @@ public class ReservationController {
     @Autowired
     private ModelMapper mapper;
 
-
+    @PreAuthorize("hasRole('ROLE_PROFESSIONAL')")
     @GetMapping("/professional/{id}")
-    public ResponseEntity<List<ReservationResponseDto>> listReservationsByProfessional(@PathVariable UUID id) {
-        List<ReservationResponseDto> response = service.findReservationsByProfessionalId(id);
-        return new ResponseEntity<List<ReservationResponseDto>>(response, HttpStatus.OK);
+    public ResponseEntity<List<ReservationListDTO>> listReservationsByProfessional(@PathVariable UUID id) {
+        List<ReservationListDTO> response = service.findAllReservationListsByProfesionalId(id).stream().map(p->mapper.map(p,ReservationListDTO.class)).collect(Collectors.toList());;
+        return new ResponseEntity<List<ReservationListDTO>>(response, HttpStatus.OK);
     }
 
 
@@ -66,7 +68,7 @@ public class ReservationController {
 
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody ReservationDTO dto){
-        Reservation obj = service.save(mapper.map(dto, Reservation.class));
+        Reservation obj = service.saveTransaction(mapper.map(dto, Reservation.class));
         //localhost:8000/Reservations/5
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getIdReservation()).toUri();
         return ResponseEntity.created(location).build();
@@ -104,4 +106,13 @@ public class ReservationController {
         resource.add(link2.withRel("Reservation-info2"));
         return resource;
     }
+    
+    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    @GetMapping("/patient/{id}")
+    public ResponseEntity<List<ReservationListDTO>> listReservationsByPatient(@PathVariable UUID id) {
+        List<ReservationListDTO> response = service.findAllReservationListsByPatientId(id).stream().map(p->mapper.map(p,ReservationListDTO.class)).collect(Collectors.toList());;
+        return new ResponseEntity<List<ReservationListDTO>>(response, HttpStatus.OK);
+    }
+
+    
 }
