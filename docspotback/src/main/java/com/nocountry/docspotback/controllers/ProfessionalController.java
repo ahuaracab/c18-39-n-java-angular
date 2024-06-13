@@ -2,7 +2,7 @@ package com.nocountry.docspotback.controllers;
 
 import com.nocountry.docspotback.dto.ProfessionalDTO;
 import com.nocountry.docspotback.dto.ProfessionalListSpecialtyDTO;
-
+import com.nocountry.docspotback.dto.ProfessionalViewDTO;
 import com.nocountry.docspotback.exception.ModelNotFoundException;
 import com.nocountry.docspotback.models.Professional;
 
@@ -48,8 +48,6 @@ public class ProfessionalController {
     private ProfessionalServiceImpl service;
 
     @Autowired
-    private ProfessionalSpecialtyServiceImpl sservice;
-    @Autowired
     private ModelMapper mapper;
 
     @Operation(
@@ -61,8 +59,8 @@ public class ProfessionalController {
   	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
   	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping
-    public ResponseEntity<List<ProfessionalDTO>> findAll(){
-        List<ProfessionalDTO> list = service.findAll().stream().map(p->mapper.map(p,ProfessionalDTO.class)).collect(Collectors.toList());
+    public ResponseEntity<List<ProfessionalViewDTO>> findAll(){
+        List<ProfessionalViewDTO> list = service.findAllProfessionalView().stream().map(p->mapper.map(p,ProfessionalViewDTO.class)).collect(Collectors.toList());
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     

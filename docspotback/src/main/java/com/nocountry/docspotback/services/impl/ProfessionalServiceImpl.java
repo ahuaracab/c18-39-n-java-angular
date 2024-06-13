@@ -1,11 +1,12 @@
 package com.nocountry.docspotback.services.impl;
 
 import com.nocountry.docspotback.models.Professional;
-
+import com.nocountry.docspotback.models.ProfessionalView;
 import com.nocountry.docspotback.models.Specialty;
 import com.nocountry.docspotback.repositories.IGenericRepo;
 import com.nocountry.docspotback.repositories.IProfessionalRepo;
 import com.nocountry.docspotback.repositories.IProfessionalSpecialtyRepo;
+import com.nocountry.docspotback.repositories.IProfessionalViewRepo;
 import com.nocountry.docspotback.services.IProfessionalService;
 
 import jakarta.transaction.Transactional;
@@ -27,6 +28,8 @@ public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implem
     @Autowired
     private IProfessionalSpecialtyRepo psRepo;
 
+    @Autowired
+    private IProfessionalViewRepo viewRepo;
     @Override
     protected IGenericRepo<Professional, UUID> getRepo() {
         return repo;
@@ -56,6 +59,13 @@ public Page<Professional> getAllProfessionalsBySpecialityName(String nameSpecial
 	return repo.getAllProfessionalsBySpecialityName(nameSpecialty, pageable);
 }
 
+@Override
+public List<ProfessionalView> findAllProfessionalView() {
+	// TODO Auto-generated method stub
+	return viewRepo.findAllProfessionalView();
 
+}
+
+	
 
 }

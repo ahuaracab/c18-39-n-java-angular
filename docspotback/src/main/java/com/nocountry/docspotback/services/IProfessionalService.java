@@ -2,6 +2,7 @@ package com.nocountry.docspotback.services;
 
 import com.nocountry.docspotback.models.Professional;
 import com.nocountry.docspotback.models.ProfessionalSpecialty;
+import com.nocountry.docspotback.models.ProfessionalView;
 import com.nocountry.docspotback.models.Shift;
 import com.nocountry.docspotback.models.Specialty;
 
@@ -17,5 +18,7 @@ public interface IProfessionalService extends ICRUDService<Professional, UUID>{
     Page<Professional> getAllProfessionalsBySpecialityName(@Param("nameSpecialty") String nameSpecialty, Pageable pageable);
 
     Page<Professional>findAllProfessional(Pageable pageable);
+
+    List<ProfessionalView>findAllProfessionalView();
 
 }

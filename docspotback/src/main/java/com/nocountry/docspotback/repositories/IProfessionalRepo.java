@@ -1,12 +1,14 @@
 package com.nocountry.docspotback.repositories;
 
 import com.nocountry.docspotback.models.Professional;
+import com.nocountry.docspotback.models.ProfessionalView;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface IProfessionalRepo extends IGenericRepo<Professional, UUID>{
@@ -18,4 +20,6 @@ public interface IProfessionalRepo extends IGenericRepo<Professional, UUID>{
     
     @Query(value = "SELECT p FROM Professional p")
     Page<Professional>findAllProfessional(Pageable pageable);
+    
+
 }
