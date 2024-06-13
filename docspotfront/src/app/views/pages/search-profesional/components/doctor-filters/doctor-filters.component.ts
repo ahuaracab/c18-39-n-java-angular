@@ -32,6 +32,7 @@ export class DoctorFiltersComponent implements OnInit {
   public doctorFiltersForm: FormGroup = this._fb.group({});
 
   public specialties: Specialty[] = [];
+  public professionals: Professional[] = [];
 
   public descendantReputation: boolean = true;
   public descendantPrice: boolean = true;
@@ -58,12 +59,26 @@ export class DoctorFiltersComponent implements OnInit {
     });
   }
 
-  searchSpecialty(): void {
+  /*searchSpecialty(): void {
     const id = this.doctorFiltersForm.controls['idSpecialty'].value;
 
     this._searchProfessionalService.getSpecialtyById(id).subscribe({
       next: (res) => console.log(res),
     });
+  }*/
+  getProfessionalsBySpecialtyId(): void {
+    const selectedSpecialtyId =
+      this.doctorFiltersForm.controls['idSpecialty'].value;
+    this._searchProfessionalService
+      .getProfessionalsBySpecialtyId(selectedSpecialtyId)
+      .subscribe({
+        next: (res) => {
+          this.professionals = res;
+          this._searchProfessionalService.setProfessionalData(
+            this.professionals
+          );
+        },
+      });
   }
 
   sortReputation(): void {
