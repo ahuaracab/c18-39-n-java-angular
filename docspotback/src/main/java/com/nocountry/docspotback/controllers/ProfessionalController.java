@@ -166,12 +166,12 @@ public class ProfessionalController {
     	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
     	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
     	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
-    @GetMapping("/pageable/{bySpecialtyName}")
+    @GetMapping("/pageable/{idSpecialty}")
     public ResponseEntity<?> getAllByNameSpecialty(
-            @PathVariable("bySpecialtyName")@Parameter(example = "Cardiología") String nameProfessional,
+            @PathVariable("idSpecialty")@Parameter(example = "Cardiología") UUID idSpecialty,
             Pageable pageable) {
 
-           return new ResponseEntity<>(service.getAllProfessionalsBySpecialityName(nameProfessional.toString(), pageable), HttpStatus.OK);
+           return new ResponseEntity<>(service.getAllProfessionalsBySpecialityName(idSpecialty, pageable), HttpStatus.OK);
        
     }
     
