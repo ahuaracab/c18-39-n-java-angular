@@ -1,11 +1,10 @@
-
 export interface Professional {
-  idProfessional:   string;
+  idProfessional: string;
   nameProfessional: string;
-  reputation:       number;
-  valueQuery:       number;
-  mp:               string;
-  specialties:      Specialty[];
+  reputation: number;
+  valueQuery: number;
+  mp: string;
+  nameSpecialty: string;
 }
 
 export interface Specialty {
