@@ -24,7 +24,7 @@ public class Reservation extends Auditable {
     @Column(name = "id_reservation")
     private UUID idReservation = UUID.randomUUID();
 
-    @Column(name = "query_intent", nullable = false)
+    @Column(name = "query_intent")
     private String queryIntent;
 
     @JsonBackReference
@@ -36,36 +36,4 @@ public class Reservation extends Auditable {
     @JoinColumn(name = "id_shift", nullable = false)
     private Shift shift;
 
-    public UUID getIdReservation() {
-        return idReservation;
-    }
-
-    public void setIdReservation(UUID idReservation) {
-        this.idReservation = idReservation;
-    }
-
-
-    public String getQueryIntent() {
-        return queryIntent;
-    }
-
-    public void setQueryIntent(String queryIntent) {
-        this.queryIntent = queryIntent;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Shift getShift() {
-        return shift;
-    }
-
-    public void setShift(Shift shift) {
-        this.shift = shift;
-    }
 }
