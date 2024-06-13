@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, SimpleChanges } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -35,6 +35,7 @@ export class DoctorDetailsCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.getProfessionals();
+    this.getProfessionalsBySpecialty();
   }
 
   getProfessionals(): void {
@@ -44,6 +45,10 @@ export class DoctorDetailsCardComponent implements OnInit {
         this._searchProfessionalService.setProfessionalData(this.professionals);
       },
     });
+  }
+
+  getProfessionalsBySpecialty(): void {
+    this.professionals = this._searchProfessionalService.getProfessionalData();
   }
 
   roundDown(value: number): number {

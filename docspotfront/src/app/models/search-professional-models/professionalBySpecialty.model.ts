@@ -1,4 +1,4 @@
-export interface Professional {
+export interface ProfessionalBySpecialty {
   idProfessional: string;
   nameProfessional: string;
   reputation: number;
@@ -6,11 +6,5 @@ export interface Professional {
   mp: string;
   nameSpecialty: string;
   urlPhoto: string;
-  idSpecialty?: string;
-}
-
-export interface Specialty {
   idSpecialty: string;
-  nameSpecialty: string;
-  descriptionSpecialty: string;
 }

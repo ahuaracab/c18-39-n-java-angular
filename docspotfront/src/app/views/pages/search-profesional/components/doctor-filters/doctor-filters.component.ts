@@ -14,6 +14,7 @@ import {
   Professional,
   Specialty,
 } from '../../../../../models/search-professional-models/searchProfessional.model';
+import { ProfessionalBySpecialty } from 'src/app/models/search-professional-models/professionalBySpecialty.model';
 
 @Component({
   selector: 'app-doctor-filters',
@@ -33,6 +34,7 @@ export class DoctorFiltersComponent implements OnInit {
 
   public specialties: Specialty[] = [];
   public professionals: Professional[] = [];
+  //public professionalsBySpecialty: ProfessionalBySpecialty[] = [];
 
   public descendantReputation: boolean = true;
   public descendantPrice: boolean = true;
@@ -74,6 +76,7 @@ export class DoctorFiltersComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.professionals = res;
+          console.log(this.professionals);
           this._searchProfessionalService.setProfessionalData(
             this.professionals
           );

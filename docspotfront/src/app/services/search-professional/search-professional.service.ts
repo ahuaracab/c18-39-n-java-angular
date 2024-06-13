@@ -35,7 +35,7 @@ export class SearchProfessionalService {
 
   getProfessionalsBySpecialtyId(id: string): Observable<Professional[]> {
     return this._http.get<Professional[]>(
-      `${environment.url_api}/api/professional/pageable/${id}`
+      `${environment.url_api}/api/professional/list1/${id}`
     );
   }
 
