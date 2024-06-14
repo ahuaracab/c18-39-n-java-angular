@@ -6,6 +6,9 @@ import { ResponseShift } from 'src/app/models/shitf-models/shift.model';
 import { ShiftService } from 'src/app/services/service-shift/shift.service';
 // import Swiper from 'swiper';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { DialogService } from 'src/app/services/component/service-dialog/dialog.service';
+import { ReservDto } from 'src/app/models/reservation-models/reservation.mode';
+import { ReservationDataDto } from 'src/app/models/reservation-models/reservationPopUpConfirm.model';
 
 /*
 {
@@ -91,8 +94,9 @@ export class ShowScheduleComponent implements OnInit {
   constructor(
     private cdr: ChangeDetectorRef,
     // servicios consulta horario
-    private shiftService: ShiftService // servicio obtener data usuario para la reserva
+    private shiftService: ShiftService, // servicio obtener data usuario para la reserva
     // servicios reservar turno
+    private dialogService: DialogService,
   ) 
   {}
 
@@ -300,8 +304,26 @@ export class ShowScheduleComponent implements OnInit {
   public selectHours(hour: DescHour): void {
     this.hourSelect = hour;
     console.log('hora seleccionada: ', this.hourSelect);
-
+    let data:ReservationDataDto = this.loadReaservations();
     // obtener id del paciente
     /* llamar a modal setteando data */
+    this.dialogService.openReservationConfirm(data).subscribe();
+  }
+
+  private loadReaservations():ReservationDataDto {
+    const reservationDto:ReservationDataDto = {
+      tittle:"Confimacion de Reserva",
+      nameProfessional:this.nameDoctor,
+      namePatient:localStorage.getItem('namePatient')??'',
+      fecha:this.daySelect.fecha,
+      hour:this.hourSelect.hour,
+      priceProfessional:this.priceDoctor,
+      actions: [{
+        name: "Aceptar",
+        returnValue: true,
+        style: "btn_standard",
+      }],
+    }
+    return reservationDto;
   }
 }
