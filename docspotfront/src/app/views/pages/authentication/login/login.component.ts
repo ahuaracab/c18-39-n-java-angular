@@ -115,14 +115,18 @@ export class LoginComponent implements OnInit {
               next: (res: HttpResponse<any>) => {
                 console.log('response: ', res);
                 console.log('response status:', res.status);
-                if (res.status === 200) {
+                if (res.status === 200) {                  
                   console.log(res);
                   if (role == 'ROLE_PATIENT') {
+                    localStorage.setItem('id', res.body.patient.idPatient);
+                    localStorage.setItem('name', res.body.patient.namePatient);
                     localStorage.setItem('namePatient', res.body.patient.namePatient);
                     localStorage.setItem('idPatient', res.body.patient.idPatient);
                     localStorage.removeItem('nameProfessional');
                     localStorage.removeItem('idProfessional');
                   } else {
+                    localStorage.setItem('id', res.body.professional.idProfessional);
+                    localStorage.setItem('name', res.body.professional.nameProfessional);
                     localStorage.setItem('nameProfessional',res.body.professional.nameProfessional);
                     localStorage.setItem('idProfessional', res.body.professional.idProfessional);
                     localStorage.removeItem('namePatient');
