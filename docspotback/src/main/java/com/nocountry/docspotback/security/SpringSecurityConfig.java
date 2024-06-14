@@ -60,6 +60,7 @@ public class SpringSecurityConfig {
                         .requestMatchers(HttpMethod.POST,"/api/users").permitAll()
                         .requestMatchers(HttpMethod.POST,"/api/patients").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/api/professional").permitAll()
+                        .requestMatchers("/api/reservations").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/shifts","/api/shifts/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/swagger-ui/**").permitAll()
