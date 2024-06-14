@@ -118,12 +118,15 @@ export class LoginComponent implements OnInit {
                 if (res.status === 200) {
                   console.log(res);
                   if (role == 'ROLE_PATIENT') {
-                    localStorage.setItem('name', res.body.patient.namePatient);
+                    localStorage.setItem('namePatient', res.body.patient.namePatient);
+                    localStorage.setItem('idPatient', res.body.patient.idPatient);
+                    localStorage.removeItem('nameProfessional');
+                    localStorage.removeItem('idProfessional');
                   } else {
-                    localStorage.setItem(
-                      'name',
-                      res.body.professional.nameProfessional
-                    );
+                    localStorage.setItem('nameProfessional',res.body.professional.nameProfessional);
+                    localStorage.setItem('idProfessional', res.body.professional.idProfessional);
+                    localStorage.removeItem('namePatient');
+                    localStorage.removeItem('idPatient');
                   }
 
                   let data: DialogDataDto = this.loadSuccessResponse();
