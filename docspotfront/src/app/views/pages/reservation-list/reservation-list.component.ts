@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReservationService } from 'src/app/services/reservation-list/reservation-list.service';
@@ -13,6 +13,8 @@ import { Reservation } from 'src/app/models/reservation-list/reservation-list.in
 })
 export default class ReservationListComponent implements OnInit {
   private reservationService = inject(ReservationService);
+
+  constructor(private cdr: ChangeDetectorRef) {}
 
   reservations: Reservation[] = [];
   id: string | null = '';
@@ -39,6 +41,8 @@ export default class ReservationListComponent implements OnInit {
       .listReservationsByPatient(this.id)
       .subscribe((reservations) => {
         this.reservations = reservations;
+        this.cdr.detectChanges();
+        console.log(this.reservations);
       });
   }
 
@@ -48,6 +52,7 @@ export default class ReservationListComponent implements OnInit {
       .listReservationsByProfessional(this.id)
       .subscribe((reservations) => {
         this.reservations = reservations;
+        this.cdr.detectChanges();
       });
   }
 }

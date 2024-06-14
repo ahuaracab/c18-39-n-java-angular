@@ -1,11 +1,5 @@
 <h2 class="mb-5">Mis Reservas</h2>
 
-<div class="text-end">
-    <button class="btn btn-primary" routerLink="/doctors/list">
-        Reservar otra cita
-    </button>
-</div>
-
 <table class="table table-hover">
     <thead>
         <tr>
@@ -13,16 +7,16 @@
             <th>PACIENTE</th>
             <th>FECHA</th>
             <th>HORA</th>
-            <th>COSTO</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @for (reservation of reservations; track reservation.idReservation) {
+        @for (reservation of reservations; track $index) {
         <tr>
             <td>{{ reservation.nameProfessional }}</td>
             <td>{{ reservation.namePatient }}</td>
             <td>{{ reservation.dateShift }}</td>
-            <td>{{ reservation.hoursTime | date: 'hh:mm'}}</td>
+            <td>{{ reservation.hoursTime}}</td>
             <td class="text-end">
                 <div class="btn-group">
                     <button class="btn btn-primary" routerLink="/">

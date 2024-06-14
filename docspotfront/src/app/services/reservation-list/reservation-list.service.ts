@@ -20,21 +20,23 @@ export class ReservationService {
     id: string | null
   ): Observable<Reservation[]> {
     const token = localStorage.getItem('token');
-    const ctrl: string = `/api/reservation/patient/${id}`;
+    const ctrl: string = `/api/reservations/patient/${id}`;
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
     return this.http.get<any>(`${this.appUrl}${ctrl}`, {
       headers,
     });
+    //return this.http.get<any>(`${this.appUrl}${ctrl}`);
   }
 
   public listReservationsByProfessional(
     id: string | null
   ): Observable<Reservation[]> {
     const token = localStorage.getItem('token');
-    const ctrl: string = `/api/reservation/professional/${id}`;
+    const ctrl: string = `/api/reservations/professional/${id}`;
     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
     return this.http.get<any>(`${this.appUrl}${ctrl}`, {
       headers,
     });
+    //return this.http.get<any>(`${this.appUrl}${ctrl}`);
   }
 }
