@@ -10,6 +10,7 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,7 +18,6 @@ import java.util.UUID;
 public class ReservationDTO {
     private UUID idReservation;
 
-    @NotNull
     private String queryIntent;
 
     @NotNull

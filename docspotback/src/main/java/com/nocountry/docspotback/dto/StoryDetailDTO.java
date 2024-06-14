@@ -1,8 +1,7 @@
 package com.nocountry.docspotback.dto;
 
-import com.nocountry.docspotback.models.ClinicalStory;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,5 +24,6 @@ public class StoryDetailDTO {
     private String recipe;
 
     @NotNull
+    @JsonIgnore
     private ClinicalStoryDTO clinicalStory;
 }

@@ -1,13 +1,20 @@
 package com.nocountry.docspotback.services.impl;
 
 import com.nocountry.docspotback.models.Professional;
-import com.nocountry.docspotback.models.ProfessionalSpecialty;
+import com.nocountry.docspotback.models.ProfessionalFilter;
+import com.nocountry.docspotback.models.ProfessionalView;
 import com.nocountry.docspotback.models.Specialty;
 import com.nocountry.docspotback.repositories.IGenericRepo;
+import com.nocountry.docspotback.repositories.IProfessionalFilterRepo;
 import com.nocountry.docspotback.repositories.IProfessionalRepo;
 import com.nocountry.docspotback.repositories.IProfessionalSpecialtyRepo;
+import com.nocountry.docspotback.repositories.IProfessionalViewRepo;
 import com.nocountry.docspotback.services.IProfessionalService;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,35 +32,55 @@ public class ProfessionalServiceImpl extends CRUDImpl<Professional, UUID> implem
     @Autowired
     private IProfessionalSpecialtyRepo psRepo;
 
+    @Autowired
+    private IProfessionalViewRepo viewRepo;
+    
+    @Autowired
+    private IProfessionalFilterRepo filterRepo;
+    
     @Override
     protected IGenericRepo<Professional, UUID> getRepo() {
         return repo;
     }
 
+    @Transactional
     @Override
     public Professional saveTransactional(Professional professional, List<Specialty> specialties) {
-        repo.save(professional);
+        //repo.save(professional);
+        System.out.println("Especialidad 1: "+specialties.get(0).getIdSpecialty());
+        //System.out.println("Especialidad 2: "+specialties.get(1).getIdSpecialty());
+        System.out.println("Profesional: "+professional.getIdProfessional());
         specialties.forEach(specialty ->psRepo.saveSpecialty(professional.getIdProfessional(), specialty.getIdSpecialty()));
         return professional;
     }
 
-    @Override
-    public List<Professional> getAllProfessionalsBySpecialityName(String nameSpecialty, int numPage, int pageSize, String orderBy, String sort) {
-        Sort.Direction direction;
-        try {
-            direction = Sort.Direction.fromString(sort);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid sort direction. Must be ASC or DESC", e);
-        }
-        if (nameSpecialty == null || nameSpecialty.isEmpty()) {
-            throw new IllegalArgumentException("Specialty name must not be null or empty");
-        }
 
-        Pageable pageable = PageRequest.of(numPage, pageSize, direction, orderBy);
-        if (pageable.getPageNumber() < 0 || pageable.getPageSize() < 0) {
-            throw new IllegalArgumentException("Page and size must be non-negative");
-        }
+	@Override
+	public Page<Professional> findAllProfessional(Pageable pageable) {
+		// TODO Auto-generated method stub
+		return repo.findAllProfessional(pageable);
+	}
 
-        return repo.getAllProfessionalsBySpecialityName(nameSpecialty, pageable);
+
+@Override
+public List<ProfessionalView> findAllProfessionalView() {
+	// TODO Auto-generated method stub
+	return viewRepo.findAllProfessionalView();
+
+}
+
+@Override
+public Page<ProfessionalFilter> getAllProfessionalsByIdSpecialty(UUID idSpecialty, Pageable pageable) {
+	// TODO Auto-generated method stub
+    if (pageable == null) {
+        pageable = PageRequest.of(0, 10, Sort.Direction.ASC, "value_query");
     }
+    
+	return filterRepo.getAllProfessionalsByIdSpecialty(idSpecialty, pageable);
+}
+
+	public List<ProfessionalFilter>getAllProfByIdSpecialty(UUID idSpecialty){
+		return filterRepo.getAllProfByIdSpecialty(idSpecialty);
+	}
+
 }

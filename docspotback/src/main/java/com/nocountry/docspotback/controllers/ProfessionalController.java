@@ -2,29 +2,35 @@ package com.nocountry.docspotback.controllers;
 
 import com.nocountry.docspotback.dto.ProfessionalDTO;
 import com.nocountry.docspotback.dto.ProfessionalListSpecialtyDTO;
-import com.nocountry.docspotback.dto.ProfessionalSpecialtyDTO;
-import com.nocountry.docspotback.dto.ReservationDTO;
+import com.nocountry.docspotback.dto.ProfessionalViewDTO;
 import com.nocountry.docspotback.exception.ModelNotFoundException;
 import com.nocountry.docspotback.models.Professional;
-import com.nocountry.docspotback.models.ProfessionalSpecialty;
-import com.nocountry.docspotback.models.Reservation;
+
 import com.nocountry.docspotback.models.Specialty;
 import com.nocountry.docspotback.services.impl.ProfessionalServiceImpl;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Pattern;
+import com.nocountry.docspotback.services.impl.ProfessionalSpecialtyServiceImpl;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -32,15 +38,11 @@ import java.util.stream.Collectors;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-@CrossOrigin(originPatterns = "*")
+@Tag(name = "API de Profesionales de la Salud", description = "Se puede crear,listar todo, actualizar y/o eliminar Profesionales de la Salud")
 @RestController
 @RequestMapping("/api/professional")
 public class ProfessionalController {
-
-    private static final Logger log = LoggerFactory.getLogger(ProfessionalController.class);
 
     @Autowired
     private ProfessionalServiceImpl service;
@@ -48,12 +50,28 @@ public class ProfessionalController {
     @Autowired
     private ModelMapper mapper;
 
+    @Operation(
+  	      summary = "Lista todos los Profesionales",
+  	      description = "Lista todos los rofesionales inscritos en la aplicación",
+  	      tags = { })
+  	  @ApiResponses({
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+  	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping
-    public ResponseEntity<List<ProfessionalDTO>> findAll(){
-        List<ProfessionalDTO> list = service.findAll().stream().map(p->mapper.map(p,ProfessionalDTO.class)).collect(Collectors.toList());
+    public ResponseEntity<List<ProfessionalViewDTO>> findAll(){
+        List<ProfessionalViewDTO> list = service.findAllProfessionalView().stream().map(p->mapper.map(p,ProfessionalViewDTO.class)).collect(Collectors.toList());
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
     
+    @Operation(
+    	      summary = "Busca un Profesional por ID",
+    	      description = "Busca un Profesional.Se requiere el parametro ID del rofesional",
+    	      tags = { })
+	  @ApiResponses({
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+  	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/{id}")
     public ResponseEntity<ProfessionalDTO>findById(@PathVariable("id") UUID id){
         Professional obj = service.findById(id);
@@ -64,9 +82,17 @@ public class ProfessionalController {
         }
     }
 
+    @Operation(
+  	      summary = "Crea un rofesional",
+  	      description = "Crea un Profesional.Se requiere enviar los parametros descritos a continuación",
+  	      tags = { })
+  	  @ApiResponses({
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+  	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody ProfessionalListSpecialtyDTO dto) {
-        Professional professional = mapper.map(dto.getConsult(), Professional.class);
+        Professional professional = mapper.map(dto.getProfessional(), Professional.class);
         List<Specialty> specialties = mapper.map(dto.getListSpecialty(), new TypeToken<List<Specialty>>() {
         }.getType());
 
@@ -76,12 +102,28 @@ public class ProfessionalController {
         return ResponseEntity.created(location).build();
     }
 
+    @Operation(
+  	      summary = "Actualiza datos de un Profesional por ID",
+  	      description = "Actualiza los datos de un Profesional.Se envia los atributos a actualizar del rofesional y el ID del Profesional",
+  	      tags = { })
+  	  @ApiResponses({
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+  	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @PutMapping
     public ResponseEntity<Professional> update(@RequestBody ProfessionalDTO dto){
         Professional obj = service.update(mapper.map(dto, Professional.class));
         return new ResponseEntity<>(obj, HttpStatus.OK);
     }
 
+    @Operation(
+  	      summary = "Elimina un Profesional por ID",
+  	      description = "Elimina un Profesional.Se requiere el parametro ID del rofesional",
+  	      tags = { })
+  	  @ApiResponses({
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+  	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") UUID id){
         Professional obj = service.findById(id);
@@ -92,7 +134,14 @@ public class ProfessionalController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
+    @Operation(
+  	      summary = "Lista dos rutas de un Profesional por ID",
+  	      description = "Lista dos rutas de un  Profesional.Se requiere el parametro ID del rofesional",
+  	      tags = { })
+  	  @ApiResponses({
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+  	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/hateoas/{id}")
     public EntityModel<ProfessionalDTO> findByIdHateoas(@PathVariable("id") UUID id) {
         Professional obj = service.findById(id);
@@ -109,23 +158,34 @@ public class ProfessionalController {
         return resource;
     }
 
+    @Operation(
+    	      summary = "Paginación de profesionales por especialidad",
+    	      description = "Paginación de profesionales por nombre de especialidad.Además se puede ordenar por cualquier atributo del profesional()",
+    	      tags = { })
+    	  @ApiResponses({
+    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =ProfessionalDTO.class),mediaType = "application/json")}),
+    	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+    	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
+    @GetMapping("/pageable/{idSpecialty}")
+    public ResponseEntity<?> getAllByIdSpecialty(
+            @PathVariable("idSpecialty") UUID idSpecialty,
+            Pageable pageable) {
 
-    @GetMapping("/search/{nameProfessional}")
-    public ResponseEntity<List<ProfessionalDTO>> getAllByNameSpecialty(
-            @PathVariable("nameProfessional") String nameProfessional,
-            @RequestParam("numberPage") Integer numberPage,
-            @RequestParam("pageSize") Integer sizePage,
-            @RequestParam("orderBy") String orderBy,
-            @RequestParam("sort") String sort) {
-        try {
-            List<Professional> lst = service.getAllProfessionalsBySpecialityName(nameProfessional, numberPage, sizePage, orderBy, sort);
-            List<ProfessionalDTO> listDto = new ArrayList<>();
-            for (Professional ps : lst) {
-                listDto.add(mapper.map(ps, ProfessionalDTO.class));
-            }
-            return new ResponseEntity<>(listDto, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+           return new ResponseEntity<>(service.getAllProfessionalsByIdSpecialty(idSpecialty, pageable), HttpStatus.OK);
+       
     }
+    
+    @GetMapping("/pageable")
+    public ResponseEntity<?>pageableProfessionals(Pageable pageable){
+    	return ResponseEntity.ok(service.findAllProfessional(pageable));
+    }
+
+//provicional
+  @GetMapping("/list1/{idSpecialty}")
+  public ResponseEntity<?> getAllProfByIdSpecialty(
+          @PathVariable("idSpecialty") UUID idSpecialty) {
+
+         return new ResponseEntity<>(service.getAllProfByIdSpecialty(idSpecialty), HttpStatus.OK);
+     
+  }
 }

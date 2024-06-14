@@ -16,13 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.nocountry.docspotback.models.User;
 import com.nocountry.docspotback.repositories.IUserRepo;
 
+
 @Service
 public class JpaUserDetailsService implements UserDetailsService {
 
     @Autowired
     private IUserRepo repository;
 
-    @Transactional(readOnly = true)
+   @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

@@ -1,12 +1,6 @@
 package com.nocountry.docspotback.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.nocountry.docspotback.models.Patient;
-import com.nocountry.docspotback.models.StoryDetail;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,8 +16,10 @@ import java.util.UUID;
 public class ClinicalStoryDTO {
 
     private UUID idPatient;
-
+    
+   
     private PatientDTO patient;
 
+    
     private List<StoryDetailDTO> details;
 }

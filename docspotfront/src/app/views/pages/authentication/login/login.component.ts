@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { userLogin } from 'src/app/models/authentication-models/login.models';
@@ -12,8 +16,13 @@ import {
   HttpErrorResponse,
   HttpResponse,
 } from '@angular/common/http';
-import { eventListeners } from '@popperjs/core';
-
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { LoginResponse } from 'src/app/models/authentication-models/login-response.model';
+import { DialogService } from 'src/app/services/component/service-dialog/dialog.service';
+import { DialogDataDto } from 'src/app/models/components/common/dialog.model';
+import { finalize } from 'rxjs';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -21,14 +30,15 @@ import { eventListeners } from '@popperjs/core';
     CommonModule,
     ReactiveFormsModule,
     MatIconModule,
+    MatButtonModule,
     MatProgressSpinnerModule,
     HttpClientModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
-  providers: [
-    AuthV1Service
-  ]
+  providers: [AuthV1Service],
 })
 export class LoginComponent implements OnInit {
   public loginForm!: FormGroup;
@@ -39,7 +49,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthV1Service
+    private authService: AuthV1Service,
+    private dialogService: DialogService
   ) {}
 
   ngOnInit(): void {
@@ -61,7 +72,6 @@ export class LoginComponent implements OnInit {
   }
 
   public login(): void {
-    console.log('Ruta absoluta:', this.router.url);
     if (this.loginForm.invalid) {
       this.errorMessage = 'Por favor, complete el formulario correctamente.';
       return;
@@ -77,18 +87,86 @@ export class LoginComponent implements OnInit {
     this.loading = true;
 
     // enviar a servicio
+
     this.authService.login(userData).subscribe({
-      next: (response: HttpResponse<any>) => {
-        this.loading = false;
-        // guardar data del usuario en localStorage
-        // navegar a la vista segun tipo de rol
+      next: (response: HttpResponse<LoginResponse>) => {
+        if (response.body) {
+          this.loading = false;
+          console.log(response.body);
+          const token = response.body.token;
+          localStorage.setItem('token', token);
+
+          const decodedToken = this.authService.decodeJwt(token);
+          console.log(decodedToken);
+
+          const email = decodedToken.username;
+
+          const roles = JSON.parse(decodedToken.authorities);
+          const role = roles[0].authority;
+          localStorage.setItem('role', role);
+
+          console.log('ROLE: ', role);
+          this.dialogService.openLoadingWindow();
+          this.authService
+            .getUserData(email)
+            .pipe(finalize(() => this.dialogService.closeDialog()))
+            .subscribe({
+              next: (res: HttpResponse<any>) => {
+                console.log('response: ', res);
+                console.log('response status:', res.status);
+                if (res.status === 200) {                  
+                  console.log(res);
+                  if (role == 'ROLE_PATIENT') {
+                    localStorage.setItem('id', res.body.patient.idPatient);
+                    localStorage.setItem('name', res.body.patient.namePatient);
+                    localStorage.setItem('namePatient', res.body.patient.namePatient);
+                    localStorage.setItem('idPatient', res.body.patient.idPatient);
+                   
+                  } else {
+                    localStorage.setItem('id', res.body.professional.idProfessional);
+                    localStorage.setItem('name', res.body.professional.nameProfessional);
+                    localStorage.setItem('nameProfessional',res.body.professional.nameProfessional);
+                    localStorage.setItem('idProfessional', res.body.professional.idProfessional);
+                    
+                  }
+
+                  let data: DialogDataDto = this.loadSuccessResponse();
+                  this.dialogService.openSuccessDialog(data).subscribe(() => {
+                    this.navHome();
+                  });
+                }
+              },
+            });
+          //}
+          // guardar data del usuario en localStorage
+          // navegar a la vista segun tipo de rol
+        }
       },
       error: (error: HttpErrorResponse) => {
         this.loading = false;
-        console.log("error:",error);
+        console.log('error:', error);
         // dependiendo del error
         this.errorMessage = 'correo o contraseña incorrecta';
       },
     });
+  }
+
+  private loadSuccessResponse(): DialogDataDto {
+    let dataSuccess: DialogDataDto = {
+      tittle: '¡Bienvenido!',
+      content: 'Inició sesión correctamente',
+      actions: [
+        {
+          name: 'Ok',
+          returnValue: true,
+        },
+      ],
+    };
+    return dataSuccess;
+  }
+
+  public navHome(): void {
+    event?.preventDefault();
+    this.router.navigate(['']);
   }
 }

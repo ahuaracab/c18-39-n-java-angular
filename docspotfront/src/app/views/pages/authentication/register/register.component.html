@@ -1,24 +1,38 @@
 <div class="RegisterContainer">
-    <div class="divImage">
-
+    <div class="divImage"
+    [style.view-transition-name]="'transition-img'">
+      <img src="assets/images/doctor-register.jpg" alt="Imagen de doctor" style="width: 100%; height: 100%;object-fit: cover;">
     </div>
     <div class="container"
     [style.view-transition-name]="'transition-form'">
-        <section class="selectRol">
-            <p>Desea registrarse como:</p>
-            <div class="seccionBtn">
+        <section class="selectRol" [ngClass]="{'btn-clicked': !showTouched}">
+            <h1
+            [style.view-transition-name]="'transition-title'">Registro DocSpot</h1>
+            <p
+            [style.view-transition-name]="'transition-subtitle'">Seleccione su tipo de usuario:</p>
+            <div class="seccionBtn " [ngClass]="{'btn-column': !showTouched}">
                 <button mat-raised-button [ngClass]="{
                     'btn-select': showForm === selectedRol.patient,
                     'btn-unselect': showForm !== selectedRol.patient
                   }" [ngStyle]="{ opacity: showForm === selectedRol.professional ? 0.5 : 1 }"
                     (click)="selectPacient()">Paciente</button>
-                <p>ó</p>
+                <!-- <p>ó</p> -->
                 <button mat-raised-button [ngClass]="{
                     'btn-select': showForm === selectedRol.professional,
                     'btn-unselect': showForm !== selectedRol.professional
                   }" [ngStyle]="{ opacity: showForm === selectedRol.patient ? 0.5 : 1 }"
-                    (click)="selectProfessional()">Professional</button>
+                  [disabled]="this.disabledProfessional"
+                  styl
+                    (click)="selectProfessional()">Profesional</button>
             </div>
+            <span class="mt-5" [ngClass]="{'d-none': showTouched}"
+            [style.view-transition-name]="'transition-cuenta'">
+                ¿Ya tienes una cuenta?
+            </span>
+            <span class="mb-0" [ngClass]="{'d-none': showTouched}"
+            [style.view-transition-name]="'transition-cuentaLink'">
+                <a (click)="navLogin()">Inicia sesión aqui</a>
+            </span>
         </section>
         @if (this.showTouched && this.register) {
         <form [formGroup]="register" (ngSubmit)="send()">
@@ -38,7 +52,7 @@
                 <input type="text" matInput formControlName="email" placeholder="Ex. pat@example.com">
                 <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
                 @if (register.get('email')?.hasError('email') && !register.get('email')?.hasError('required')) {
-                <mat-error>Por favor ingresa una dirección de correo electrónico valido</mat-error>
+                <mat-error>Por favor ingresa un correo electrónico <strong>valido</strong></mat-error>
                 }
                 @if (register.get('email')?.hasError('required')) {
                 <mat-error>Correo electrónico es <strong>requerido</strong></mat-error>
@@ -69,6 +83,16 @@
                     }
                 </mat-form-field>
 
+                <!-- valueQuery -->
+                <mat-form-field appearance="outline" class="">
+                    <mat-label>Precio de consulta</mat-label>
+                    <input type="text" matInput formControlName="valueQuery" placeholder="Ex. S/.20">
+                    <!-- <mat-hint>Errors appear instantly!</mat-hint> -->
+                    @if (register.get('valueQuery')?.hasError('required')) {
+                    <mat-error>Precio de consulta es <strong>requerido</strong></mat-error>
+                    }
+                </mat-form-field>
+
                 <!-- especialidades [] -->
                 <!-- <mat-form-field appearance="outline" class="">
                     <mat-label>Seleccione una especialidad</mat-label>
@@ -80,10 +104,15 @@
                         }
                     </mat-select>
                 </mat-form-field> -->
-                
-                <mat-form-field appearance="outline" class="">
+
+                <mat-form-field appearance="outline" class=""
+                [ariaDisabled]="this.specSelect.length >= 2">
                     <mat-label>Especialidades</mat-label>
-                    <input #inputSpec type="text" matInput [matAutocomplete]="auto" formControlName="specialtyAuto">
+                    <input #inputSpec type="text" matInput [matAutocomplete]="auto"
+                    formControlName="specialtyAuto"
+                    [readonly]="this.specSelect.length >= 2" 
+                    [attr.disabled]="this.specSelect.length >= 2"
+                    [style.pointer-events]="this.specSelect.length >= 2 ? 'none' : ''">
                     <mat-autocomplete #auto="matAutocomplete"
                      [displayWith]="displaySpecialty"
                      [hideSingleSelectionIndicator]=true
@@ -95,8 +124,8 @@
                   </mat-form-field>
 
                 @if (this.specSelect.length > 0) {
-                    <p>Especialidades seleccionadas:</p>
-                    <mat-chip-set>
+                    <p class="m-0">Especialidades seleccionadas:</p>
+                    <mat-chip-set class="chip-section">
                         @for (spec of this.specSelect; track $index) {
                             <mat-chip [removable]="true" id="chipElement" (removed)="DeleteSpecialty(spec)">
                                 {{ spec.nameSpecialty }}
@@ -121,13 +150,13 @@
                                 <mat-error>Cellphone is <strong>required</strong></mat-error>
                             }
                         </mat-form-field>
-                        
-                        @if (this.hasWorkAdded) {
+
+                        <!-- @if (this.hasWorkAdded) {
                             <div class="form-patient__content1__work">
-                                <!-- hasWork -->
+                                hasWork
                                 <mat-checkbox formControlName="hasWork" color="primary">¿Tiene trabajo social?</mat-checkbox>
-                                
-                                <!-- socialWork -->
+
+                                socialWork
                                 <mat-form-field appearance="outline" class="field">
                                     <mat-label>Social work</mat-label>
                                     <input matInput formControlName="socialWork" placeholder="Trabajo Social" [disabled]="!register.get('hasWork')?.value">
@@ -136,20 +165,30 @@
                                     }
                                 </mat-form-field>
                             </div>
-                        }
+                        } -->
                     </div>
 
-                    <div class="form-patient__content2">
-                        <!-- photo -->
+                    <!-- <div class="form-patient__content2">
+                        photo
                         <app-upload-image (fileOut)="onFileReceived($event)"></app-upload-image>
-                    </div>
+                    </div> -->
                 </div>
-                    
+
             }
 
-            <button mat-raised-button type="submit" color='primary' [ngClass]="showTouched ? 
+            <button mat-raised-button type="submit" color='primary' [ngClass]="showTouched ?
                             'btn-select':'btn-unselect'">Enviar</button>
         </form>
+        <div class="d-flex flex-column gap-3">
+            <span class="mt-5"
+            [style.view-transition-name]="'transition-cuenta'">
+                ¿Ya tienes una cuenta?
+            </span>
+            <span class="mb-5"
+            [style.view-transition-name]="'transition-cuentaLink'">
+                <a (click)="navLogin()">Inicia sesión aqui</a>
+            </span>
+        </div>
         }
     </div>
 </div>

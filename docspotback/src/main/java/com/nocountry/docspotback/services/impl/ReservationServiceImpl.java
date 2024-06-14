@@ -2,7 +2,9 @@ package com.nocountry.docspotback.services.impl;
 
 import com.nocountry.docspotback.dto.ReservationResponseDto;
 import com.nocountry.docspotback.models.Reservation;
+import com.nocountry.docspotback.models.ReservationList;
 import com.nocountry.docspotback.repositories.IGenericRepo;
+import com.nocountry.docspotback.repositories.IReservationListRepo;
 import com.nocountry.docspotback.repositories.IReservationRepo;
 import com.nocountry.docspotback.services.IReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class ReservationServiceImpl extends CRUDImpl<Reservation, UUID> implemen
     @Autowired
     private IReservationRepo repo;
 
+    @Autowired
+    private IReservationListRepo listRepo;
+    
     @Override
     protected IGenericRepo<Reservation, UUID> getRepo() {
         return repo;
@@ -45,4 +50,23 @@ public class ReservationServiceImpl extends CRUDImpl<Reservation, UUID> implemen
 
         return reservationResponse;
     }
+
+	@Override
+	public List<ReservationList> findAllReservationListsByPatientId(UUID idPatient) {
+		// TODO Auto-generated method stub
+		return listRepo.findAllReservationListsByPatientId(idPatient);
+	}
+
+	@Override
+	public List<ReservationList> findAllReservationListsByProfesionalId(UUID idProfessional) {
+		// TODO Auto-generated method stub
+		return listRepo.findAllReservationListsByProfesionalId(idProfessional);
+	}
+	
+	@Transactional
+	@Override
+	public Reservation saveTransaction(Reservation reservation) {
+		listRepo.updateStateShift(reservation.getShift().getIdShift());
+		return repo.save(reservation);
+	}
 }

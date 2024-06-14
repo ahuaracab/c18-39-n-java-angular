@@ -8,23 +8,26 @@ import lombok.Setter;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProfessionalListSpecialtyDTO {
     @NotNull
-    private ProfessionalDTO consult;
+    @JsonIgnore
+    private ProfessionalDTO professional;
 
     @NotNull
     private List<SpecialtyDTO> listSpecialty;
 
-    public ProfessionalDTO getConsult() {
-        return consult;
+    public ProfessionalDTO getProfessional() {
+        return professional;
     }
 
-    public void setConsult(ProfessionalDTO consult) {
-        this.consult = consult;
+    public void setProfessional(ProfessionalDTO professional) {
+        this.professional = professional;
     }
 
     public List<SpecialtyDTO> getListSpecialty() {

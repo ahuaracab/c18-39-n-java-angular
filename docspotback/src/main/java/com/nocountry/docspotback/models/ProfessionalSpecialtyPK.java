@@ -10,7 +10,12 @@ import java.io.Serializable;
 @Embeddable
 @EqualsAndHashCode
 public class ProfessionalSpecialtyPK implements Serializable {
-    @ManyToOne
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@ManyToOne
     @JoinColumn(name = "id_professional")
     private Professional professional;
 

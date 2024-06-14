@@ -1,25 +1,31 @@
 <div class="LoginContainer">
-  <div class="divImage">
+  <div class="divImage"
+  [style.view-transition-name]="'transition-img'">
     <!-- image -->
-    <div></div>
+    <img src="assets/images/doctor-login.jpg" alt="Imagen de doctor" style="width: 100%; height: 100%;object-fit: cover;">
   </div>
   <div class="container"
   [style.view-transition-name]="'transition-form'">
     <form [formGroup]="loginForm" (ngSubmit)="login()">
+
+      <!-- title -->
+      <div class="form-title">
+        <h1 [style.view-transition-name]="'transition-title'">Bienvenido a DocSpot</h1>
+        <div class="slogan"
+        [style.view-transition-name]="'transition-subtitle'">
+          <!-- <p>Tu médico siempre contigo, en tu móvil.</p> -->
+          <p>Atención médica personalizada</p>
+          <p>a tu alcance</p>
+        </div>
+      </div>
+
       @if (errorMessage) {
-        <div class="alert alert-danger ">
+        <div class="alert alert-danger" style="max-width: 500px; width: 70%; margin-left: auto; margin-right: auto;">
           {{ errorMessage }}
         </div>
       }
-      <!-- title -->
-      <div class="form-title">
-        <h1>Bienvenido a DocSpot</h1>
-        <div class="slogan">
-          <!-- <p>Tu médico siempre contigo, en tu móvil.</p> -->
-          <p>Atención médica personalizada,</p>
-          <p>a tu alcance.</p>
-        </div>
-      </div>
+
+
 
       <!-- input email -->
       <div class="form-group">
@@ -78,34 +84,37 @@
             }
           </div>
         }
-        
+
 
       </div>
 
       <!-- buttons section -->
       <div class="form-buttons">
 
-        <button mat-raised-button color="primary" type="submit" class="btn btn-primary btn-login">
+        <!-- class="btn btn-primary btn-login" -->
+        <button mat-raised-button color="primary" type="submit" >
           @if (loading){
             <mat-progress-spinner diameter="24"  mode="indeterminate" class="spinner"></mat-progress-spinner>
           }
           <span [ngClass]="!loading ? 'text1':'text2'">Iniciar sesión</span>
         </button>
 
-        <span class="mt-5">
+        <span class="mt-5"
+        [style.view-transition-name]="'transition-cuenta'">
           ¿Aún no tienes una cuenta?
         </span>
-        <span class="">
-          <a (click)="navRegister()">Registrate aqui</a>
+        <span class=""
+        [style.view-transition-name]="'transition-cuentaLink'">
+          <a (click)="navRegister()">Regístrate aquí</a>
         </span>
 
-        <!-- <button mat-raised-button 
-        (click)="navRegister()" 
+        <!-- <button mat-raised-button
+        (click)="navRegister()"
         class="btn btn-outline-secondary btn-register">
           <span>Registrarse</span>
         </button> -->
       </div>
-        
+
     </form>
   </div>
 </div>

@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.util.List;
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Getter
@@ -29,94 +30,18 @@ public class Patient extends Auditable {
     @Column(name = "cellphone_patient", length = 12, nullable = false)
     private String cellphonePatient;
 
-    @Column(name = "photo_patient")
-    private String photoPatient;
-
     @OneToOne(mappedBy = "patient", cascade = CascadeType.ALL, optional = false)
     private ClinicalStory clinicalStory;
 
-    @Column(name = "has_social_work", nullable = false)
-    private Boolean hasSocialWork;
 
-    @Column(name = "social_work", length = 15)
-    private String socialWork;
 
     @OneToOne
+    @JsonIgnore
     private User user;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "patient")
     private List<Reservation> reservations;
 
-    public List<Reservation> getReservations() {
-        return reservations;
-    }
 
-    public void setReservations(List<Reservation> reservations) {
-        this.reservations = reservations;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getSocialWork() {
-        return socialWork;
-    }
-
-    public void setSocialWork(String socialWork) {
-        this.socialWork = socialWork;
-    }
-
-    public Boolean getHasSocialWork() {
-        return hasSocialWork;
-    }
-
-    public void setHasSocialWork(Boolean hasSocialWork) {
-        this.hasSocialWork = hasSocialWork;
-    }
-
-    public ClinicalStory getClinicalStory() {
-        return clinicalStory;
-    }
-
-    public void setClinicalStory(ClinicalStory clinicalStory) {
-        this.clinicalStory = clinicalStory;
-    }
-
-    public String getPhotoPatient() {
-        return photoPatient;
-    }
-
-    public void setPhotoPatient(String photoPatient) {
-        this.photoPatient = photoPatient;
-    }
-
-    public String getCellphonePatient() {
-        return cellphonePatient;
-    }
-
-    public void setCellphonePatient(String cellphonePatient) {
-        this.cellphonePatient = cellphonePatient;
-    }
-
-    public String getNamePatient() {
-        return namePatient;
-    }
-
-    public void setNamePatient(String namePatient) {
-        this.namePatient = namePatient;
-    }
-
-    public UUID getIdPatient() {
-        return idPatient;
-    }
-
-    public void setIdPatient(UUID idPatient) {
-        this.idPatient = idPatient;
-    }
 }

@@ -6,6 +6,15 @@ import com.nocountry.docspotback.exception.ModelNotFoundException;
 import com.nocountry.docspotback.models.Patient;
 import com.nocountry.docspotback.models.Reservation;
 import com.nocountry.docspotback.services.impl.PatientServiceImpl;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +34,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Tag(name = "API de Pacientes", description = "Se puede crear,listar todo, actualizar y/o eliminar Pacientes")
 @RestController
 @RequestMapping("/api/patient")
 public class PatientController {
@@ -35,14 +45,30 @@ public class PatientController {
     @Autowired
     private ModelMapper mapper;
 
+    @Operation(
+    	      summary = "Lista todos los Pacientes",
+    	      description = "Lista todos los pacientes inscritos en la aplicación",
+    	      tags = { })
+    	  @ApiResponses({
+    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+    	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+    	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/")
     public ResponseEntity<List<PatientDTO>> findAll(){
         List<PatientDTO> list = service.findAll().stream().map(p->mapper.map(p,PatientDTO.class)).collect(Collectors.toList());
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
+    @Operation(
+  	      summary = "Busca un Paciente por ID",
+  	      description = "Busca un Paciente.Se requiere el parametro ID del paciente",
+  	      tags = { })
+  	  @ApiResponses({
+  	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+  	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+  	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/{id}")
-    public ResponseEntity<PatientDTO>findById(@PathVariable("id")UUID id){
+    public ResponseEntity<PatientDTO>findById(@PathVariable("id") @Parameter(example = "") UUID id){
         Patient obj = service.findById(id);
         if(obj == null){
             throw new ModelNotFoundException("ID NOT FOUND: "+ id);
@@ -50,7 +76,14 @@ public class PatientController {
             return new ResponseEntity<>(mapper.map(obj,PatientDTO.class),HttpStatus.OK);
         }
     }
-
+    @Operation(
+    	      summary = "Crea un paciente",
+    	      description = "Crea un Paciente.Se requiere enviar los parametros descritos a continuación",
+    	      tags = { })
+    	  @ApiResponses({
+    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+    	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+    	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody PatientDTO dto){
         Patient obj = service.save(mapper.map(dto, Patient.class));
@@ -59,14 +92,30 @@ public class PatientController {
         return ResponseEntity.created(location).build();
     }
 
+    @Operation(
+    	      summary = "Actualiza datos de un Paciente por ID",
+    	      description = "Actualiza los datos de un Paciente.Se envia los atributos a actualizar del paciente y el ID del Paciente",
+    	      tags = { })
+    	  @ApiResponses({
+    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+    	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+    	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @PutMapping
     public ResponseEntity<Patient> update(@RequestBody PatientDTO dto){
         Patient obj = service.update(mapper.map(dto, Patient.class));
         return new ResponseEntity<>(obj, HttpStatus.OK);
     }
 
+    @Operation(
+    	      summary = "Elimina un Paciente por ID",
+    	      description = "Elimina un Paciente.Se requiere el parametro ID del paciente",
+    	      tags = { })
+    	  @ApiResponses({
+    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+    	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+    	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable("id") UUID id){
+    public ResponseEntity<Void> delete(@PathVariable("id") @Parameter(example = "") UUID id){
         Patient obj = service.findById(id);
         if(obj == null){
             throw new ModelNotFoundException("ID NOT FOUND: " + id);
@@ -75,9 +124,16 @@ public class PatientController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
+    @Operation(
+    	      summary = "Lista dos rutas de un Paciente por ID",
+    	      description = "Lista dos rutas de un  Paciente.Se requiere el parametro ID del paciente",
+    	      tags = { })
+    	  @ApiResponses({
+    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+    	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+    	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/hateoas/{id}")
-    public EntityModel<PatientDTO> findByIdHateoas(@PathVariable("id") UUID id) {
+    public EntityModel<PatientDTO> findByIdHateoas(@PathVariable("id") @Parameter(example = "") UUID id) {
         Patient obj = service.findById(id);
 
         if(obj == null){
@@ -92,8 +148,16 @@ public class PatientController {
         return resource;
     }
 
+    @Operation(
+    	      summary = "Lista todas las reservaciones por ID",
+    	      description = "Busca un Paciente.Se requiere el parametro ID del paciente",
+    	      tags = { })
+    	  @ApiResponses({
+    	      @ApiResponse(responseCode = "200",content= {@Content(schema = @Schema(implementation =PatientDTO.class),mediaType = "application/json")}),
+    	      @ApiResponse(responseCode = "404", content = { @Content(schema = @Schema()) }),
+    	      @ApiResponse(responseCode = "500", content = { @Content(schema = @Schema()) }) })
     @GetMapping("/all-reservations/byPatient/{id}")
-    public ResponseEntity<List<ReservationDTO>> findAllReservation(@PathVariable("id")UUID id){
+    public ResponseEntity<List<ReservationDTO>> findAllReservation(@PathVariable("id") @Parameter(example = "") UUID id){
         List<Reservation> list = service.getAllReservationByPatientId(id);
         List<ReservationDTO>listDto=mapper.map(list,new TypeToken<List<ReservationDTO>>(){}.getType());
         return new ResponseEntity<>(listDto, HttpStatus.OK);

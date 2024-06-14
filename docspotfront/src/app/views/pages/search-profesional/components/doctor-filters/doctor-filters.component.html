@@ -1,37 +1,45 @@
-<p-card [style]="{ margin: '1rem 4rem', border: '1px solid #d1d5db' }">
-  <form class="grid formgrid">
-    <div class="field col-3">
+<div class="card">
+  <form class="row" [formGroup]="doctorFiltersForm">
+    <div class="col-lg-3 col-12">
       <label class="fw-semibold">Especialidades</label>
       <p-dropdown
-        [options]="specialtyOptions"
+        [options]="specialties"
         appendTo="body"
-        [style]="{ width: '100%' }"
-        optionLabel="value"
+        optionLabel="nameSpecialty"
+        optionValue="idSpecialty"
+        placeholder="Seleccione una especialidad"
+        formControlName="idSpecialty"
+        styleClass="w-100"
       ></p-dropdown>
     </div>
-    <div class="field col-2">
-      <p-button
+    <div class="col-lg-2 col-12">
+      <button
+        pButton
+        class="search-button"
         label="Buscar"
-        [style]="{ marginTop: '32px', width: '100%', borderRadius: '6px'}"
-      ></p-button>
+        (click)="getProfessionalsBySpecialtyId()"
+        [style]="{ marginLeft: '0rem' }"
+      ></button>
     </div>
-    <div class="field col-2">
-        <p-button
+    <div class="col-lg-2 col-12 first-button">
+      <button
+          pButton
           label="Puntuación"
-          [icon]="descendantPunctuation ? 'pi pi-arrow-down' : 'pi pi-arrow-up'"
+          [icon]="descendantReputation ? 'pi pi-arrow-down' : 'pi pi-arrow-up'"
           iconPos="right"
-          [style]="{ width: '100%', marginTop: '32px', borderRadius: '6px', marginLeft: '10rem' }"
-          (onClick)="sortPunctuation()"
-        ></p-button>
+          (click)="sortReputation()"
+          styleClass="fw-normal"
+        ></button>
       </div>
-      <div class="field col-2">
-        <p-button
+      <div class="col-lg-2 col-12 second-button">
+        <button
+          pButton
           label="Precio"
           [icon]="descendantPrice ? 'pi pi-arrow-down' : 'pi pi-arrow-up'"
           iconPos="right"
-          [style]="{ width: '100%', marginTop: '32px', borderRadius: '6px', marginLeft: '12rem' }"
-          (onClick)="sortPrice()"
-        ></p-button>
+          (click)="sortPrice()"
+          styleClass="fw-normal"
+        ></button>
       </div>
     </form>
-</p-card>
+</div>

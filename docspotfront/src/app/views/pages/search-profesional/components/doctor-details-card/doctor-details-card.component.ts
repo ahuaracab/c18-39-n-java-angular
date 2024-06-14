@@ -1,12 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
-
+import { ChangeDetectorRef, Component, OnInit, SimpleChanges } from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  FormsModule,
+} from '@angular/forms';
 import { CardModule } from 'primeng/card';
-import { Rating, RatingModule } from 'primeng/rating';
-
-
-import { Doctor } from '../../../../../models/search-professional-models/searchProfessional.model';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { RatingModule } from 'primeng/rating';
+import { Professional } from 'src/app/models/search-professional-models/searchProfessional.model';
+import { SearchProfessionalService } from 'src/app/services/search-professional/search-professional.service';
+import { ShowScheduleComponent } from '../show-schedule/show-schedule.component';
 
 @Component({
   selector: 'app-doctor-details-card',
@@ -15,130 +19,62 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
     CommonModule,
     CardModule,
     RatingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule,
+    ShowScheduleComponent,
   ],
   templateUrl: './doctor-details-card.component.html',
   styleUrl: './doctor-details-card.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DoctorDetailsCardComponent {
-
-  @ViewChild('rating') rating!: Rating;
-
+export class DoctorDetailsCardComponent implements OnInit {
   public doctorDetailsForm: FormGroup = this._fb.group({});
-
-  public doctors:Doctor[] = [
-    {
-      src: 'assets/images/doctor-2.jpg',
-      alt: 'Foto del doctor',
-      doctorName: 'Alfonso Valladares',
-      medicalSpecialty: 'Cirujano',
-      price: '1000.00',
-      rating: 1,
-    },
-    {
-      src: 'assets/images/doctor-1.jpg',
-      alt: 'Foto del doctor',
-      doctorName: 'Sara Figueroa',
-      medicalSpecialty: 'Medicina general',
-      price: '5000.00',
-      rating: 2,
-    },
-    {
-      src: 'assets/images/doctor-1.jpg',
-      alt: 'Foto del doctor',
-      doctorName: 'María González',
-      medicalSpecialty: 'Cardióloga',
-      price: '1200.00',
-      rating: 3,
-    },
-    {
-      src: 'assets/images/doctor-2.jpg',
-      alt: 'Foto del doctor',
-      doctorName: 'Carlos Umaña',
-      medicalSpecialty: 'Dermatólogo',
-      price: '900.00',
-      rating: 4,
-    },
-    {
-      src: 'assets/images/doctor-1.jpg',
-      alt: 'Foto del doctor',
-      doctorName: 'Laura Fernández',
-      medicalSpecialty: 'Pediatra',
-      price: '1100.00',
-      rating: 5,
-    },
-    {
-      src: 'assets/images/doctor-2.jpg',
-      alt: 'Foto del doctor',
-      doctorName: 'Javier Ruiz',
-      medicalSpecialty: 'Oncólogo',
-      price: '1300.00',
-      rating: 1,
-    },
-    {
-      src: 'assets/images/doctor-1.jpg',
-      alt: 'Foto del doctor',
-      doctorName: 'Ana Martínez',
-      medicalSpecialty: 'Ginecóloga',
-      price: '950.00',
-      rating: 2,
-    },
-    {
-      src: 'assets/images/doctor-2.jpg',
-      alt: 'Foto del doctor',
-      doctorName: 'Pedro Sánchez',
-      medicalSpecialty: 'Neurólogo',
-      price: '1400.00',
-      rating: 3,
-    },
-    {
-      src: 'assets/images/doctor-1.jpg',
-      alt: 'Foto del doctor',
-      doctorName: 'Lucía Ramírez',
-      medicalSpecialty: 'Psiquiatra',
-      price: '1000.00',
-      rating: 4,
-    },
-    {
-      src: 'assets/images/doctor-2.jpg',
-      alt: 'Foto del doctor',
-      doctorName: 'Fernando Torres',
-      medicalSpecialty: 'Ortopedista',
-      price: '1050.00',
-      rating: 5,
-    },
-    {
-      src: 'assets/images/doctor-1.jpg',
-      alt: 'Foto del doctor',
-      doctorName: 'Elena García',
-      medicalSpecialty: 'Endocrinóloga',
-      price: '1150.00',
-      rating: 1,
-    },
-    {
-      src: 'assets/images/doctor-2.jpg',
-      alt: 'Foto del doctor',
-      doctorName: 'Roberto López',
-      medicalSpecialty: 'Gastroenterólogo',
-      price: '1250.00',
-      rating: 2,
-    },
-  ];
+  public professionals: Professional[] = [];
+  public professionalSelected: Professional = {} as Professional;
+  public showFecha:boolean = false;
+  public selectProfessional:number | null = null;
 
   constructor(
-    private _fb: FormBuilder
+    private _fb: FormBuilder,
+    private _searchProfessionalService: SearchProfessionalService,
+    private cdr: ChangeDetectorRef
   ) {}
 
-  ngOnInit():void {
-    this.initForm();
+  ngOnInit(): void {
+    this.getProfessionals();
+    this._searchProfessionalService.getProfessionalDataSub().subscribe(
+      (data) => {
+        // if(data.length > 0) {
+          this.professionals = [...data];
+          console.log("data:", this.professionals);
+          this.cdr.detectChanges();
+        // }
+      }
+    );
   }
 
-  initForm() {
-    //TODO: Hacer que el valor del rating cambie dependiendo del valor que trae en el objeto
-    this.doctorDetailsForm = this._fb.group({
-      rating: [0, Validators.required ]
-    })
+  getProfessionals(): void {
+    this._searchProfessionalService.getProfessionals().subscribe({
+      next: (res) => {
+        this.professionals = res;
+        this._searchProfessionalService.setProfessionalData(this.professionals);
+      },
+    });
+  }
+
+  roundDown(value: number): number {
+    return Math.floor(value);
+  }
+
+  public showDates(index:number):void {
+    console.log("valor1:",this.selectProfessional,"valor2:",index);
+    this.selectProfessional = this.selectProfessional === index ? null : index;
+    console.log("nuevo valorL",this.selectProfessional);
+    if(this.selectProfessional !== null) {
+      this.professionalSelected = this.professionals[this.selectProfessional];
+      console.log("data cargada para showturnos: ", this.professionalSelected);
+    }
+    this.showFecha = true;
+    this.cdr.detectChanges();
   }
 
 

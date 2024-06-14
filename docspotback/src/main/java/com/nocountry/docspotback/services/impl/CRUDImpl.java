@@ -2,6 +2,9 @@ package com.nocountry.docspotback.services.impl;
 
 import com.nocountry.docspotback.repositories.IGenericRepo;
 import com.nocountry.docspotback.services.ICRUDService;
+
+import jakarta.transaction.Transactional;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
@@ -17,11 +20,13 @@ public abstract class CRUDImpl<T, ID> implements ICRUDService<T, ID> {
     @Autowired
     private Deleted<T> deletedRepository;
 */
+    @Transactional
     @Override
     public T save(T t) {
         return getRepo().save(t);
     }
 
+    @Transactional
     @Override
     public T update(T t) {
         return getRepo().save(t);

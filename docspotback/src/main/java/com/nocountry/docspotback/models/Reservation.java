@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.Instant;
 import java.util.UUID;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -25,10 +24,7 @@ public class Reservation extends Auditable {
     @Column(name = "id_reservation")
     private UUID idReservation = UUID.randomUUID();
 
-    @Column(name = "appointment_date", nullable = false)
-    private Instant appointmentDate;
-
-    @Column(name = "query_intent", nullable = false)
+    @Column(name = "query_intent")
     private String queryIntent;
 
     @JsonBackReference
@@ -36,47 +32,8 @@ public class Reservation extends Auditable {
     private Patient patient;
 
     @JsonIgnore
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "id_shift", nullable = false)
     private Shift shift;
 
-    public UUID getIdReservation() {
-        return idReservation;
-    }
-
-    public void setIdReservation(UUID idReservation) {
-        this.idReservation = idReservation;
-    }
-
-    public Instant getAppointmentDate() {
-        return appointmentDate;
-    }
-
-    public void setAppointmentDate(Instant appointmentDate) {
-        this.appointmentDate = appointmentDate;
-    }
-
-    public String getQueryIntent() {
-        return queryIntent;
-    }
-
-    public void setQueryIntent(String queryIntent) {
-        this.queryIntent = queryIntent;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public Shift getShift() {
-        return shift;
-    }
-
-    public void setShift(Shift shift) {
-        this.shift = shift;
-    }
 }
