@@ -23,7 +23,7 @@
         @for (hour of hoursAvailable; track $index) {
           <!-- [ngClass]="hour == this.hourSelect ? 'selectHour':''" -->
           <div class="hora" 
-          (click)="selectHours(hour)">{{ hour }}</div>
+          (click)="selectHours(hour)">{{ hour.hour }}</div>
         }
       </section>
     }

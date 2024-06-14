@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import moment from 'moment';
+import { Observable, forkJoin, map, mergeMap } from 'rxjs';
+import { ResponseShift } from 'src/app/models/shitf-models/shift.model';
+import { ShiftService } from 'src/app/services/service-shift/shift.service';
 // import Swiper from 'swiper';
 
 /*
@@ -49,7 +52,13 @@ interface Turno {
 
 interface Available {
   fecha: string;
-  appointmentHours: string[];
+  appointmentHours: DescHour[];
+}
+
+interface DescHour {
+  id:string,
+  hour:string,
+  available:boolean
 }
 
 @Component({
@@ -61,21 +70,40 @@ interface Available {
 })
 export class ShowScheduleComponent implements OnInit{
   // obtener el especialista
-  @Input() idDoctor:string = '';
+  @Input() idDoctor:string = '3da859d0-7c5c-451a-a4df-8e73cadb0a48';
+
+  private daysLen:number = 7;
+  private daysLoad:string[] = [];
 
   public days:Available[] = [];
-  public hoursAvailable:string[] = [];
+  public hoursAvailable:DescHour[] = [];
 
-  public turno:Turno = {} as Turno;
+  public turno:ResponseShift[] = [];
 
   public daySelect:Available = {} as Available;
-  public hourSelect:string = '';
+  public hourSelect:DescHour = {} as DescHour;
 
   constructor(
+    private cdr: ChangeDetectorRef,
     // servicios consulta horario
+    private shiftService:ShiftService,
     // servicio obtener data usuario para la reserva
     // servicios reservar turno
   ){}
+
+  private getDays(days:number):string[] {
+    const result: string[] = [];
+    const currentDate = new Date();
+  
+    for (let i = 0; i < days; i++) {
+      const date = new Date(currentDate);
+      date.setDate(currentDate.getDate() + i);
+      const formattedDate = date.toISOString().split('T')[0];
+      result.push(formattedDate);
+    }
+  
+    return result;
+  }
 
   // ngAfterViewInit() {
   //   const swiper = new Swiper('.swiper-container', {
@@ -91,79 +119,87 @@ export class ShowScheduleComponent implements OnInit{
   // }
 
   ngOnInit(): void {
+
+    // settear la cantidad de dias a traer
+    this.daysLoad = this.getDays(this.daysLen);
+
+    // loading  true
+
     // utilizar servicio para obtener los horarios;
-    // cargar los datos a las variables;
-    // ejemplo
-    this.turno = {
-      days: [
-        {
-          fecha:'2024-06-06',
-          appointmentHours: [
-            "08:15",
-            "08:30",
-            "08:45",
-            "09:00",
-          ]
-        },
-        {
-          fecha:'2024-06-07',
-          appointmentHours: [
-            "08:15",
-            "08:35",
-            "09:15",
-            "09:45",
-            "10:30",
-            "10:45",
-            "11:20",
-          ]
-        },
-        {
-          fecha:'2024-06-08',
-          appointmentHours: [
-            "08:15",
-            "08:30",
-            "10:00",
-            "10:15",
-            "10:30",
-            "10:45",
-            "11:00",
-            "11:30",
-          ]
-        },
-        {
-          fecha:'2024-06-09',
-          appointmentHours: [
-            "10:15",
-            "10:30",
-            "10:45",
-            "11:00",
-            "12:15",
-            "12:45",
-          ]
-        },
-        {
-          fecha:'2024-06-10',
-          appointmentHours: [
-            "12:15",
-            "12:45",
-            "13:30",
-            "15:00",
-          ]
+    const requests:Observable<ResponseShift[] | null>[]= this.daysLoad.map(date => 
+      this.shiftService.getShitfByProfessionalId(this.idDoctor, date)
+        .pipe(map(response => response.body))
+    );
+    // .pipe(
+    //   mergeMap(results => results)
+    forkJoin(requests).pipe(
+      map(results => 
+        // Filtrar los valores null y concatenar los arrays de turnos
+        results.filter((res): res is ResponseShift[] => res !== null).reduce((acc, curr) => acc.concat(curr), [])
+      ))
+    .subscribe({
+      next: (result:(ResponseShift[])) => {
+        // loading false
+        if(result && result.length > 1) {
+          console.log("results",result);
+          const allShifts: ResponseShift[] = result;
+          if (allShifts) {
+            this.turno = allShifts;
+            // this.turno.push(result);
+            // ejemplo
+            this.turno = this.loadDays(this.turno);
+            this.days = this.transformShiftsToDays(this.turno);
+            this.daySelect = this.days[0];
+            this.hoursAvailable = this.daySelect?.appointmentHours ?? [];
+            this.cdr.detectChanges();
+          }
         }
-      ]
+      },
+      error: (error) => {
+        // loading false
+        console.log(error);
+      } 
     }
-    this.days = this.loadDays(this.turno);
-    this.daySelect = this.days[0];
-    this.hoursAvailable = this.daySelect.appointmentHours;
+      
+    );
+
+    
   }
 
-  private loadDays(turno:Turno):Available[]{
-    const daysOrderByAsc = turno.days.sort((a, b) => {
-      const fechaA = new Date(a.fecha);
-      const fechaB = new Date(b.fecha);
+  private transformShiftsToDays(shifts: ResponseShift[]): Available[] {
+    console.log('Inicio Transform: ',shifts);
+    // Agrupar los turnos por fecha
+    const groupedByDate = shifts.reduce((acc: { [date: string]: ResponseShift[] }, shift) => {
+      if (!acc[shift.dateShift]) {
+        acc[shift.dateShift] = [];
+      }
+      acc[shift.dateShift].push(shift);
+      return acc;
+    }, {});
+
+    // Convertir el objeto agrupado en el formato deseado
+    const transformedDays: Available[] = Object.keys(groupedByDate).map(date => {
+      return {
+        fecha: date,
+        appointmentHours: groupedByDate[date].map(shift => ({
+          id: shift.idShift,
+          hour: shift.hoursTime,
+          available: !shift.stateShift // Aquí puedes aplicar tu lógica para determinar si está deshabilitado
+        }))
+      };
+    });
+
+    console.log('Fin Transform: ',transformedDays);
+    return transformedDays;
+  }
+
+  private loadDays(turno:ResponseShift[]):ResponseShift[]{
+    const daysOrderByAsc = turno.sort((a, b) => {
+      const fechaA = new Date(a.dateShift);
+      const fechaB = new Date(b.dateShift);
       return fechaA.getTime() - fechaB.getTime();
     }); 
-    return daysOrderByAsc;
+    return [...daysOrderByAsc];
   }
 
   // public getDayShort(dateComplete:string):string {
@@ -207,16 +243,27 @@ export class ShowScheduleComponent implements OnInit{
     this.hoursAvailable = this.orderHours([...this.daySelect.appointmentHours]);
   }
 
-  private orderHours(hours:string[]):string[] {
-    const hoursOrderByAsc = hours.sort((a, b) => {
-      const horaA = parseFloat(a.replace(':', '.'));
-      const horaB = parseFloat(b.replace(':', '.'));
-      return horaA - horaB;
-    });
-    return hoursOrderByAsc;
+  private orderHours(hours:DescHour[]):DescHour[] {
+    function compareDescHours(descHour1: DescHour, descHour2: DescHour): number {
+      const [h1, m1, s1] = descHour1.hour.split(':').map(Number);
+      const [h2, m2, s2] = descHour2.hour.split(':').map(Number);
+  
+      if (h1 !== h2) {
+        return h1 - h2;
+      }
+      if (m1 !== m2) {
+        return m1 - m2;
+      }
+      if (s1 !== s2) {
+        return s1 - s2;
+      }
+      return 0; // Igual si son exactamente iguales
+    }
+
+    return hours.sort(compareDescHours);
   }
 
-  public selectHours(hour:string):void {
+  public selectHours(hour:DescHour):void {
     this.hourSelect = hour;
     console.log("hora seleccionada: ",this.hourSelect);
   }
