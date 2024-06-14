@@ -72,7 +72,6 @@ export class LoginComponent implements OnInit {
   }
 
   public login(): void {
-    console.log('Ruta absoluta:', this.router.url);
     if (this.loginForm.invalid) {
       this.errorMessage = 'Por favor, complete el formulario correctamente.';
       return;
