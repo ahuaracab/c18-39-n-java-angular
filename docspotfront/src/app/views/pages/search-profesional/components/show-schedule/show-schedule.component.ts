@@ -211,8 +211,26 @@ export class ShowScheduleComponent implements OnInit {
     const dayDate = date.format('DD'); // Get the day of the month as a string (DD format)
     const monthDate = date.format('MMM'); // Get the month as a short string (MMM format)
 
+    const monthNameSpanish:{ [key: string]: string } = {
+      Jan: "Enero",
+      Feb: "Febrero",
+      Mar: "Marzo",
+      Apr: "Abril",
+      May: "Mayo",
+      Jun: "Junio",
+      Jul: "Julio",
+      Aug: "Agosto",
+      Sep: "Septiembre",
+      Oct: "Octubre",
+      Nov: "Noviembre",
+      Dec: "Diciembre"
+    };
+
+    const monthDateShort = monthNameSpanish[monthDate].substring(0,3);
+
+
     // Combine and format the output
-    return `${dayDate} ${monthDate}`;
+    return `${dayDate} ${monthDateShort}`;
   }
 
   public getDayName(dateComplete: string): string {

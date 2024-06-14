@@ -15,3 +15,27 @@ img {
   margin: 1rem;
   box-sizing: border-box;
 }
+
+button {
+  border-radius:8px;
+}
+
+.btn_standard {
+  background-color: #00339f;
+  color: #ffffff;
+
+  &:hover {
+      background-color: #002472;
+  }
+}
+
+.btn_cancel {
+  background-color: transparent;
+  border-color: #00339f;
+  color: #00339f;
+
+  &:hover {
+      background-color: #00339f;
+      color: #ffffff;
+  }
+}

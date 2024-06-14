@@ -27,6 +27,9 @@ import { SearchProfessionalService } from 'src/app/services/search-professional/
 export class DoctorDetailsCardComponent implements OnInit {
   public doctorDetailsForm: FormGroup = this._fb.group({});
   public professionals: Professional[] = [];
+  public professionalSelected: Professional = {} as Professional;
+  public showFecha:boolean = false;
+  public selectProfessional:number | null = null;
 
   constructor(
     private _fb: FormBuilder,
@@ -59,4 +62,18 @@ export class DoctorDetailsCardComponent implements OnInit {
   roundDown(value: number): number {
     return Math.floor(value);
   }
+
+  public showDates(index:number):void {
+    console.log("valor1:",this.selectProfessional,"valor2:",index);
+    this.selectProfessional = this.selectProfessional === index ? null : index;
+    console.log("nuevo valorL",this.selectProfessional);
+    if(this.selectProfessional !== null) {
+      this.professionalSelected = {...this.professionals[index]};
+      console.log("data cargada para showturnos: ", this.professionalSelected);
+    }
+    this.showFecha = true;
+    this.cdr.detectChanges();
+  }
+
+
 }

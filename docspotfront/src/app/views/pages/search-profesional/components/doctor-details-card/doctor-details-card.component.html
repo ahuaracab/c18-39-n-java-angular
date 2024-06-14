@@ -18,6 +18,13 @@
     <div class="text-start w-100" style="font-weight: 400; font-size: 1.25rem; margin: 0.5rem;">
       {{ professional.valueQuery | currency:'USD' }}
     </div>
+    <div>
+      <button (click)="showDates($index)"
+      [ngClass]="{'btn_standard': showFecha && selectProfessional === $index, 'btn_cancel': !showFecha || selectProfessional !== $index}"
+      >
+      {{showFecha && (this.selectProfessional == $index) ? 'Ocultar horarios':'Ver Horarios'}}
+    </button>
+    </div>
   </div>
   }
 </div>
