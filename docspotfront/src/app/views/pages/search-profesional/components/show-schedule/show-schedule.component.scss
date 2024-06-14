@@ -34,14 +34,14 @@
 
                     border: 1px solid black;
                     border-radius: 16px;
-                    background-color: yellow;
+                    background-color: #dceaff;
 
                     .fecha-short {
-                        color: red;
+                        color: #3064ba;
                     }
 
                     .fecha-name {
-                        color: red;
+                        color: #3064ba;
                         font-size: 1.25rem;
                         font-weight: 500;
                     }
@@ -58,24 +58,22 @@
         gap:16px;
         width: 100%;
 
-        background-color: orange;
+        background-color: #f1f1f1;
         padding: 16px;
         border-radius: 16px;
         z-index: 2;
 
         .hora {
             border-radius: 8px;
-            background-color: yellowgreen;
+            background-color: #dceaff;
             font-weight: 500;
-            color:red;
-
+            color:#337690;
             padding: 8px 16px;
-
-            
         }
 
         .hora:hover {
-            background-color: green;
+            background-color: #3064ba;
+            color: #ffffff;
         }
     }
 
@@ -102,7 +100,7 @@
 }
 
 .select {
-    background-color: orange !important;
+    background-color: #f1f1f1 !important;
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
 }

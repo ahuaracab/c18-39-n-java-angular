@@ -27,14 +27,11 @@ export class ReservationService {
     const ctrl: string = `${ApiRoutes.reservations}`;
 
     let token:string = this.getToken();
-    let data:any = reservationDto;
+    let data:ReservDto = reservationDto;
 
     let header = new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`
     });
-
-    console.log("header cargado:", token);
-    console.log("data:", data);
 
     return this.http.post<any>(`${this.appUrl}${ctrl}`, data,
       {observe: 'response',headers: header}

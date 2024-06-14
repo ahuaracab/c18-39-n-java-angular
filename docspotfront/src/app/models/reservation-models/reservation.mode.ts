@@ -1,7 +1,7 @@
 export interface ReservDto {
     queryIntent:string,
     shift: {
-        idShitf:string
+        idShift:string
     },
     patient: {
         idPatient:string

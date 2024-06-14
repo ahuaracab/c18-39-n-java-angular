@@ -41,7 +41,7 @@ public class ReservationController {
     @Autowired
     private ModelMapper mapper;
 
-    @PreAuthorize("hasRole('ROLE_PROFESSIONAL')")
+    //@PreAuthorize("hasRole('ROLE_PROFESSIONAL')")
     @GetMapping("/professional/{id}")
     public ResponseEntity<List<ReservationListDTO>> listReservationsByProfessional(@PathVariable UUID id) {
         List<ReservationListDTO> response = service.findAllReservationListsByProfesionalId(id).stream().map(p->mapper.map(p,ReservationListDTO.class)).collect(Collectors.toList());;
@@ -65,7 +65,7 @@ public class ReservationController {
             return new ResponseEntity<>(mapper.map(obj,ReservationDTO.class),HttpStatus.OK);
         }
     }
-    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    //@PreAuthorize("hasRole('ROLE_PATIENT')")
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody ReservationDTO dto){
         Reservation obj = service.saveTransaction(mapper.map(dto, Reservation.class));
@@ -107,7 +107,7 @@ public class ReservationController {
         return resource;
     }
     
-    @PreAuthorize("hasRole('ROLE_PATIENT')")
+    //@PreAuthorize("hasRole('ROLE_PATIENT')")
     @GetMapping("/patient/{id}")
     public ResponseEntity<List<ReservationListDTO>> listReservationsByPatient(@PathVariable UUID id) {
         List<ReservationListDTO> response = service.findAllReservationListsByPatientId(id).stream().map(p->mapper.map(p,ReservationListDTO.class)).collect(Collectors.toList());;
