@@ -41,7 +41,7 @@
         <mat-menu #userMenu="matMenu">
           <button mat-menu-item [routerLink]="['/profile']">Mi Perfil</button>
           <button mat-menu-item [routerLink]="['/reservation']">Mis Reservas</button>
-          <button mat-menu-item (click)="logout()">Cerrar Sesión</button>
+          <button mat-menu-item (click)="logout()" [routerLink]="['/']">Cerrar Sesión</button>
         </mat-menu>
       </span>
 
