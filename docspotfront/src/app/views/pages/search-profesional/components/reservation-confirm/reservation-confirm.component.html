@@ -1,1 +1,41 @@
-<p>reservation-confirm works!</p>
+<div class="dialog">
+    <div class="content">
+        <h1 *ngIf="data?.tittle">{{data.tittle}}</h1>
+        <!-- name doctor -->
+        <div *ngIf="data?.nameProfessional">
+            <p class="msg">Doctor:</p>
+            <p class="msg">{{data.nameProfessional}}</p>
+        </div>
+
+        <!-- name paciente -->
+        <div *ngIf="data?.namePatient">
+            <p class="msg">Paciente:</p>
+            <p class="msg">{{data.namePatient}}</p>
+        </div>
+        <!-- fecha reserva -->
+        <div *ngIf="data?.fecha">
+            <p class="msg">fecha:</p>
+            <p class="msg">{{getDateLong(data.fecha)}}</p>
+        </div>
+        <!-- hora reserva -->
+        <div *ngIf="data?.hour">
+            <p class="msg">Hora:</p>
+            <p class="msg">{{data.hour}}</p>
+        </div>
+        <!-- precio reserva -->
+        <div *ngIf="data?.priceProfessional">
+            <p class="msg">Precio:</p>
+            <p class="msg">{{data.priceProfessional | currency:'USD'}}</p>
+        </div>
+    </div>
+
+    <div mat-dialog-actions>
+        <ng-container *ngIf="data?.actions">
+            <button *ngFor="let action of data.actions"
+            [ngClass]="(action.style)?(action.style):('btn_standard')"
+            [mat-dialog-close]="action.returnValue">
+                {{action.name}}
+            </button>
+        </ng-container>
+    </div>
+</div>
