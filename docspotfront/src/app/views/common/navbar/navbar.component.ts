@@ -24,11 +24,8 @@ export class NavbarComponent {
   public initial: string | null = null;
 
   ngOnInit(): void {
-    if(localStorage.getItem("role") == 'ROLE_PATIENT'){
-      this.name = localStorage.getItem('namePatient');
-    } else if (localStorage.getItem("role") == 'ROLE_PROFESSIONAL') {
-      this.name = localStorage.getItem('nameProfesional');
-    }
+    this.name = localStorage.getItem('name');
+
     if (this.name) {
       this.initial = this.name.charAt(0).toUpperCase();
       console.log('Letra inicial de usuario:', this.initial);
@@ -44,6 +41,7 @@ export class NavbarComponent {
     localStorage.removeItem('idPatient');
     localStorage.removeItem('nameProfessional');
     localStorage.removeItem('role');
+    localStorage.removeItem('name');
     window.location.reload(); // Optional: To refresh the view
   }
 }

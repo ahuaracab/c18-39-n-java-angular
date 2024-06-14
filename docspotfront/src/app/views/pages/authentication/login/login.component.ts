@@ -121,15 +121,13 @@ export class LoginComponent implements OnInit {
                     localStorage.setItem('name', res.body.patient.namePatient);
                     localStorage.setItem('namePatient', res.body.patient.namePatient);
                     localStorage.setItem('idPatient', res.body.patient.idPatient);
-                    localStorage.removeItem('nameProfessional');
-                    localStorage.removeItem('idProfessional');
+                   
                   } else {
                     localStorage.setItem('id', res.body.professional.idProfessional);
                     localStorage.setItem('name', res.body.professional.nameProfessional);
                     localStorage.setItem('nameProfessional',res.body.professional.nameProfessional);
                     localStorage.setItem('idProfessional', res.body.professional.idProfessional);
-                    localStorage.removeItem('namePatient');
-                    localStorage.removeItem('idPatient');
+                    
                   }
 
                   let data: DialogDataDto = this.loadSuccessResponse();
