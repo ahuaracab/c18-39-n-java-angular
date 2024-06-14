@@ -6,6 +6,8 @@ import { DialogSuccessComponent } from 'src/app/views/common/dialogs/dialog-succ
 import { DialogBaseComponent } from 'src/app/views/common/dialogs/dialog-base/dialog-base.component';
 import { DialogLoadingComponent } from 'src/app/views/common/dialogs/dialog-loading/dialog-loading.component';
 import { Observable } from 'rxjs';
+import { ReservationDataDto } from 'src/app/models/reservation-models/reservationPopUpConfirm.model';
+import { ReservationConfirmComponent } from 'src/app/views/pages/search-profesional/components/reservation-confirm/reservation-confirm.component';
 
 @Injectable({
   providedIn: 'root'
@@ -100,5 +102,13 @@ export class DialogService {
     };
 
     return params;
+  }
+
+  /* CUSTOM */
+  public openReservationConfirm(data:ReservationDataDto, dialogParams?: DialogParams){
+    const dialogRef = this.dialog.open(
+      ReservationConfirmComponent,
+      this.setParams<ReservationDataDto>('reservationConfirm', data, dialogParams)
+    );
   }
 }
