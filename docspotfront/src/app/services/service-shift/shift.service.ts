@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiRoutes } from 'src/app/utils/config/api/api-routes';
@@ -18,10 +18,11 @@ export class ShiftService {
     this.appUrl = this.properties.url_api;
   }
 
-  public getShitfByProfessionalId(id:string): Observable<HttpResponse<any>> {
+  public getShitfByProfessionalId(id:string, date:string): Observable<HttpResponse<any>> {
     const ctrl: string = `${ApiRoutes.shifts}/${id}`;
+    let params = new HttpParams().set('localDate', date);
     return this.http.get<any>(`${this.appUrl}${ctrl}`,
-      {observe: 'response'}
+      {observe: 'response', params: params}
     );
   }
 
