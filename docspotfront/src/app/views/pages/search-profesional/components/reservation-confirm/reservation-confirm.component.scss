@@ -1,5 +1,6 @@
 .dialog {
     width: 100%;
+    min-width: 320px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,12 +23,32 @@
         font-weight: 500;
         margin: 0;
       }
-  
+      
       p {
         font-size: 0.9rem;
         font-weight: 400;
         margin: 0;
       }
+
+      div {
+        display: flex;
+        flex-direction: row;
+        width: 95%;
+        flex-wrap: wrap;
+        justify-content:space-between;
+        column-gap: 16px;
+        row-gap: 8px;
+        margin-bottom: 12px;
+
+        :first-child{
+          font-weight: 500;
+        }
+
+        :last-child{
+          font-weight: 300;
+        }
+      }
+  
     }
 
     .mat-mdc-dialog-actions {
