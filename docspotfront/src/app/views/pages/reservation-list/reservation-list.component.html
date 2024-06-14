@@ -1,0 +1,39 @@
+<h2 class="mb-5">Mis Reservas</h2>
+
+<div class="text-end">
+    <button class="btn btn-primary" routerLink="/doctors/list">
+        Reservar otra cita
+    </button>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>DOCTOR</th>
+            <th>PACIENTE</th>
+            <th>FECHA</th>
+            <th>HORA</th>
+            <th>COSTO</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (reservation of reservations; track reservation.idReservation) {
+        <tr>
+            <td>{{ reservation.nameProfessional }}</td>
+            <td>{{ reservation.namePatient }}</td>
+            <td>{{ reservation.dateShift }}</td>
+            <td>{{ reservation.hoursTime | date: 'hh:mm'}}</td>
+            <td class="text-end">
+                <div class="btn-group">
+                    <button class="btn btn-primary" routerLink="/">
+                        Reprogramar
+                    </button>
+                    <button class="btn btn-danger" routerLink="/">
+                        Cancelar
+                    </button>
+                </div>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>

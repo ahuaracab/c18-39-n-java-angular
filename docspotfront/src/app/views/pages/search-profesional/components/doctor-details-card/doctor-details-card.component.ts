@@ -10,6 +10,7 @@ import { CardModule } from 'primeng/card';
 import { RatingModule } from 'primeng/rating';
 import { Professional } from 'src/app/models/search-professional-models/searchProfessional.model';
 import { SearchProfessionalService } from 'src/app/services/search-professional/search-professional.service';
+import { ShowScheduleComponent } from '../show-schedule/show-schedule.component';
 
 @Component({
   selector: 'app-doctor-details-card',
@@ -20,6 +21,7 @@ import { SearchProfessionalService } from 'src/app/services/search-professional/
     RatingModule,
     ReactiveFormsModule,
     FormsModule,
+    ShowScheduleComponent,
   ],
   templateUrl: './doctor-details-card.component.html',
   styleUrl: './doctor-details-card.component.scss',
@@ -68,7 +70,7 @@ export class DoctorDetailsCardComponent implements OnInit {
     this.selectProfessional = this.selectProfessional === index ? null : index;
     console.log("nuevo valorL",this.selectProfessional);
     if(this.selectProfessional !== null) {
-      this.professionalSelected = {...this.professionals[index]};
+      this.professionalSelected = this.professionals[this.selectProfessional];
       console.log("data cargada para showturnos: ", this.professionalSelected);
     }
     this.showFecha = true;

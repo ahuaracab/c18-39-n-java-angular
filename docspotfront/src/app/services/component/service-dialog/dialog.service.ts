@@ -105,10 +105,11 @@ export class DialogService {
   }
 
   /* CUSTOM */
-  public openReservationConfirm(data:ReservationDataDto, dialogParams?: DialogParams){
+  public openReservationConfirm(data:ReservationDataDto, dialogParams?: DialogParams):Observable<any>{
     const dialogRef = this.dialog.open(
       ReservationConfirmComponent,
-      this.setParams<ReservationDataDto>('reservationConfirm', data, dialogParams)
+      this.setParams<ReservationDataDto>('reservationConfirm', data, this.standardDialogParams)
     );
+    return dialogRef.afterClosed();
   }
 }
