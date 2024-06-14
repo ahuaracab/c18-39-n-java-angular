@@ -52,7 +52,7 @@ export class ReservationConfirmComponent {
     const dayName = this.getDayName(dateComplete);
 
     // Combine and format the output
-    return `${dayName} de ${monthDateShort} del ${year}`;
+    return `${dayName} ${dayDate}, de ${monthDateShort} del ${year}`;
   }
 
 
@@ -75,7 +75,7 @@ export class ReservationConfirmComponent {
     const dayName = date.format('dddd'); // Get day name in Spanish (long format)
 
     // Get the first three letters
-    const abbreviatedDayName = dayNameSpanish[dayName].substring(0, 3);
+    const abbreviatedDayName = dayNameSpanish[dayName];
 
     return abbreviatedDayName;
   }

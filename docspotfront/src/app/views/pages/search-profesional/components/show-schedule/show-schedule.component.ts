@@ -9,6 +9,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { DialogService } from 'src/app/services/component/service-dialog/dialog.service';
 import { ReservDto } from 'src/app/models/reservation-models/reservation.mode';
 import { ReservationDataDto } from 'src/app/models/reservation-models/reservationPopUpConfirm.model';
+import { ReservationService } from 'src/app/services/service-reservation/reservation.service';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { DialogActionsDataDto, DialogDataDto } from 'src/app/models/components/common/dialog.model';
 
 /*
 {
@@ -74,9 +77,9 @@ interface DescHour {
 })
 export class ShowScheduleComponent implements OnInit {
   // obtener el especialista
-  @Input() idDoctor: string = '3da859d0-7c5c-451a-a4df-8e73cadb0a48';
-  @Input() nameDoctor: string = 'Doctor Test Name';
-  @Input() priceDoctor: number = 200;
+  @Input() idDoctor: string = '';
+  @Input() nameDoctor: string = '';
+  @Input() priceDoctor: number = 0;
 
   private daysLen: number = 7;
   private daysLoad: string[] = [];
@@ -97,6 +100,7 @@ export class ShowScheduleComponent implements OnInit {
     private shiftService: ShiftService, // servicio obtener data usuario para la reserva
     // servicios reservar turno
     private dialogService: DialogService,
+    private reservationService: ReservationService
   ) 
   {}
 
@@ -304,13 +308,54 @@ export class ShowScheduleComponent implements OnInit {
   public selectHours(hour: DescHour): void {
     this.hourSelect = hour;
     console.log('hora seleccionada: ', this.hourSelect);
-    let data:ReservationDataDto = this.loadReaservations();
+    let data:ReservationDataDto = this.loadReservations();
     // obtener id del paciente
     /* llamar a modal setteando data */
-    this.dialogService.openReservationConfirm(data).subscribe();
+    this.dialogService.openReservationConfirm(data).subscribe(
+      (result) => {
+        if(result){
+          this.dialogService.openLoadingWindow();
+          let reservDto:ReservDto = this.loadReservationPost();
+          this.reservationService.postReservation(reservDto).subscribe({
+            next: (res:HttpResponse<any>) => {
+              this.dialogService.closeDialog();
+              this.dialogService.openSuccessDialog(this.loadSuccessResponse());
+            },
+            error: (error:HttpErrorResponse) => {
+              this.dialogService.closeDialog();
+              this.dialogService.openAlertDialog(this.loadErrorResponse());
+            }
+          });
+        }
+      return;
+    });
   }
 
-  private loadReaservations():ReservationDataDto {
+  private loadErrorResponse():DialogDataDto {
+    let dataError:DialogDataDto = {
+      tittle: "Reservación fallida!",
+      content: "No se realizó la reservación",
+      actions: [{
+        name:"Volver",
+        returnValue: true,
+      }]
+    }
+    return dataError;
+  }
+
+  private loadSuccessResponse():DialogDataDto {
+    let dataSuccess:DialogDataDto = {
+      tittle: "Reservacion Realizada!",
+      content: "Se registró la reservación correctamente",
+      actions: [{
+        name:"Ok",
+        returnValue: true,
+      }]
+    }
+    return dataSuccess;
+  }
+
+  private loadReservations():ReservationDataDto {
     const reservationDto:ReservationDataDto = {
       tittle:"Confimacion de Reserva",
       nameProfessional:this.nameDoctor,
@@ -322,8 +367,26 @@ export class ShowScheduleComponent implements OnInit {
         name: "Aceptar",
         returnValue: true,
         style: "btn_standard",
-      }],
+      },{
+        name: "Cancelar",
+        returnValue: false,
+        style: "btn_cancel",
+      }
+      ],
     }
     return reservationDto;
+  }
+
+  private loadReservationPost():ReservDto {
+    let reserv:ReservDto = {
+      queryIntent:'',
+    shift: {
+        idShitf:this.hourSelect.id
+    },
+    patient: {
+        idPatient:localStorage.getItem("idPatient")??''
+    }
+    }
+    return reserv
   }
 }

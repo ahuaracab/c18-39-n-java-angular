@@ -36,7 +36,11 @@
     <!-- horarios disponibles -->
     @if((this.selectProfessional !== null) && (this.professionalSelected == this.professionals[$index])){
       <div>
-        <app-show-schedule></app-show-schedule>
+        <app-show-schedule 
+        [idDoctor]="this.professionalSelected.idProfessional"
+        [nameDoctor]="this.professionalSelected.nameProfessional"
+        [priceDoctor]="this.professionalSelected.valueQuery"
+        ></app-show-schedule>
       </div>
     }
 
