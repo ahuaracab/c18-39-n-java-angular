@@ -5,13 +5,16 @@ import { Observable, forkJoin, map } from 'rxjs';
 import { ResponseShift } from 'src/app/models/shitf-models/shift.model';
 import { ShiftService } from 'src/app/services/service-shift/shift.service';
 // import Swiper from 'swiper';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DialogService } from 'src/app/services/component/service-dialog/dialog.service';
 import { ReservDto } from 'src/app/models/reservation-models/reservation.mode';
 import { ReservationDataDto } from 'src/app/models/reservation-models/reservationPopUpConfirm.model';
 import { ReservationService } from 'src/app/services/service-reservation/reservation.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { DialogActionsDataDto, DialogDataDto } from 'src/app/models/components/common/dialog.model';
+import {
+  DialogActionsDataDto,
+  DialogDataDto,
+} from 'src/app/models/components/common/dialog.model';
 
 /*
 {
@@ -92,7 +95,7 @@ export class ShowScheduleComponent implements OnInit {
   public daySelect: Available = {} as Available;
   public hourSelect: DescHour = {} as DescHour;
 
-  public loading:boolean = false;
+  public loading: boolean = false;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -101,8 +104,7 @@ export class ShowScheduleComponent implements OnInit {
     // servicios reservar turno
     private dialogService: DialogService,
     private reservationService: ReservationService
-  ) 
-  {}
+  ) {}
 
   ngOnInit(): void {
     // settear la cantidad de dias a traer
@@ -219,23 +221,22 @@ export class ShowScheduleComponent implements OnInit {
     const dayDate = date.format('DD'); // Get the day of the month as a string (DD format)
     const monthDate = date.format('MMM'); // Get the month as a short string (MMM format)
 
-    const monthNameSpanish:{ [key: string]: string } = {
-      Jan: "Enero",
-      Feb: "Febrero",
-      Mar: "Marzo",
-      Apr: "Abril",
-      May: "Mayo",
-      Jun: "Junio",
-      Jul: "Julio",
-      Aug: "Agosto",
-      Sep: "Septiembre",
-      Oct: "Octubre",
-      Nov: "Noviembre",
-      Dec: "Diciembre"
+    const monthNameSpanish: { [key: string]: string } = {
+      Jan: 'Enero',
+      Feb: 'Febrero',
+      Mar: 'Marzo',
+      Apr: 'Abril',
+      May: 'Mayo',
+      Jun: 'Junio',
+      Jul: 'Julio',
+      Aug: 'Agosto',
+      Sep: 'Septiembre',
+      Oct: 'Octubre',
+      Nov: 'Noviembre',
+      Dec: 'Diciembre',
     };
 
-    const monthDateShort = monthNameSpanish[monthDate].substring(0,3);
-
+    const monthDateShort = monthNameSpanish[monthDate].substring(0, 3);
 
     // Combine and format the output
     return `${dayDate} ${monthDateShort}`;
@@ -265,7 +266,7 @@ export class ShowScheduleComponent implements OnInit {
     return abbreviatedDayName;
   }
 
-  public getHourShort(hour:string):string {
+  public getHourShort(hour: string): string {
     const timeString = hour;
     const timeParts = timeString.split(':');
 
@@ -308,85 +309,90 @@ export class ShowScheduleComponent implements OnInit {
   public selectHours(hour: DescHour): void {
     this.hourSelect = hour;
     console.log('hora seleccionada: ', this.hourSelect);
-    let data:ReservationDataDto = this.loadReservations();
+    let data: ReservationDataDto = this.loadReservations();
     // obtener id del paciente
     /* llamar a modal setteando data */
-    this.dialogService.openReservationConfirm(data).subscribe(
-      (result) => {
-        if(result){
-          this.dialogService.openLoadingWindow();
-          let reservDto:ReservDto = this.loadReservationPost();
-          this.reservationService.postReservation(reservDto).subscribe({
-            next: (res:HttpResponse<any>) => {
-              this.dialogService.closeDialog();
-              this.dialogService.openSuccessDialog(this.loadSuccessResponse());
-            },
-            error: (error:HttpErrorResponse) => {
-              this.dialogService.closeDialog();
-              this.dialogService.openAlertDialog(this.loadErrorResponse());
-            }
-          });
-        }
+    this.dialogService.openReservationConfirm(data).subscribe((result) => {
+      if (result) {
+        this.dialogService.openLoadingWindow();
+        let reservDto: ReservDto = this.loadReservationPost();
+        this.reservationService.postReservation(reservDto).subscribe({
+          next: (res: HttpResponse<any>) => {
+            this.dialogService.closeDialog();
+            this.dialogService.openSuccessDialog(this.loadSuccessResponse());
+          },
+          error: (error: HttpErrorResponse) => {
+            this.dialogService.closeDialog();
+            this.dialogService.openAlertDialog(this.loadErrorResponse());
+          },
+        });
+      }
       return;
     });
   }
 
-  private loadErrorResponse():DialogDataDto {
-    let dataError:DialogDataDto = {
-      tittle: "Reservación fallida!",
-      content: "No se realizó la reservación",
-      actions: [{
-        name:"Volver",
-        returnValue: true,
-      }]
-    }
+  private loadErrorResponse(): DialogDataDto {
+    let dataError: DialogDataDto = {
+      tittle: 'Reservación fallida!',
+      content: 'No se realizó la reservación',
+      actions: [
+        {
+          name: 'Volver',
+          returnValue: true,
+        },
+      ],
+    };
     return dataError;
   }
 
-  private loadSuccessResponse():DialogDataDto {
-    let dataSuccess:DialogDataDto = {
-      tittle: "Reservacion Realizada!",
-      content: "Se registró la reservación correctamente",
-      actions: [{
-        name:"Ok",
-        returnValue: true,
-      }]
-    }
+  private loadSuccessResponse(): DialogDataDto {
+    let dataSuccess: DialogDataDto = {
+      tittle: 'Reservacion Realizada!',
+      content: 'Se registró la reservación correctamente',
+      actions: [
+        {
+          name: 'Ok',
+          returnValue: true,
+        },
+      ],
+    };
     return dataSuccess;
   }
 
-  private loadReservations():ReservationDataDto {
-    const reservationDto:ReservationDataDto = {
-      tittle:"Confimacion de Reserva",
-      nameProfessional:this.nameDoctor,
-      namePatient:localStorage.getItem('namePatient')??'',
-      fecha:this.daySelect.fecha,
-      hour:this.hourSelect.hour,
-      priceProfessional:this.priceDoctor,
-      actions: [{
-        name: "Aceptar",
-        returnValue: true,
-        style: "btn_standard",
-      },{
-        name: "Cancelar",
-        returnValue: false,
-        style: "btn_cancel",
-      }
+  private loadReservations(): ReservationDataDto {
+    const reservationDto: ReservationDataDto = {
+      tittle: 'Confimacion de Reserva',
+      nameProfessional: this.nameDoctor,
+      namePatient: localStorage.getItem('namePatient') ?? '',
+      fecha: this.daySelect.fecha,
+      hour: this.hourSelect.hour,
+      priceProfessional: this.priceDoctor,
+      actions: [
+        {
+          name: 'Aceptar',
+          returnValue: true,
+          style: 'btn_standard',
+        },
+        {
+          name: 'Cancelar',
+          returnValue: false,
+          style: 'btn_cancel',
+        },
       ],
-    }
+    };
     return reservationDto;
   }
 
-  private loadReservationPost():ReservDto {
-    let reserv:ReservDto = {
-      queryIntent:'',
-    shift: {
-        idShitf:this.hourSelect.id
-    },
-    patient: {
-        idPatient:localStorage.getItem("idPatient")??''
-    }
-    }
-    return reserv
+  private loadReservationPost(): ReservDto {
+    let reserv: ReservDto = {
+      queryIntent: '',
+      shift: {
+        idShift: this.hourSelect.id,
+      },
+      patient: {
+        idPatient: localStorage.getItem('idPatient') ?? '',
+      },
+    };
+    return reserv;
   }
 }
