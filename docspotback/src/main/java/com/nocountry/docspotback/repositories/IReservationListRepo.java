@@ -18,8 +18,6 @@ public interface IReservationListRepo extends IGenericRepo<ReservationList, UUID
 	List<ReservationList> findAllReservationListsByProfesionalId(@Param("idProfessional") UUID idProfessional);
 	
 	@Modifying
-	@Query(value = "UPDATE Shift\r\n"
-			+ "SET stateShift = false\r\n"
-			+ "WHERE idShift =: idShift")
+	@Query(value = "UPDATE shifts SET state_shift = false WHERE id_shift=:idShift",nativeQuery = true)
 	void updateStateShift(@Param("idShift") UUID idShift);
 }
