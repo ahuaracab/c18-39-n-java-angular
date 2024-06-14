@@ -58,7 +58,7 @@ public class ShiftController {
             return new ResponseEntity<>(mapper.map(obj,ShiftDTO.class),HttpStatus.OK);
         }
     }
-    @PreAuthorize("hasRole('ROLE_PROFESSIONAL')")
+    //@PreAuthorize("hasRole('ROLE_PROFESSIONAL')")
     @PostMapping
     public ResponseEntity<Void> save(@RequestBody ShiftDTO dto){
         Shift obj = service.save(mapper.map(dto, Shift.class));
